@@ -3,7 +3,7 @@
   "description": "Extend Laravel 5's generators scaffold.",
   "keywords": ["laravel", "generators", "scaffold" , "laravel5"],
   "license": "MIT",
-  "minimum-stability": "dev",
+  "minimum-stability": "stable",
   "authors": [
     {
       "name": "Fernando Brito",
