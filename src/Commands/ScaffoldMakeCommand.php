@@ -170,7 +170,11 @@ class ScaffoldMakeCommand extends Command
 
 
         $this->info('Views created successfully!');
+
+        $this->info('Dump-autoload...');
         $this->composer->dumpAutoloads();
+
+        $this->info('Route::resource("'.$this->getObjName("names").'","'.$this->getObjName("Name").'Controller"); // Add this line in routes.php');
 
     }
 
