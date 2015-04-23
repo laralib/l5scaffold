@@ -1,0 +1,31 @@
+@extends('layout')
+
+@section('content')
+    <div class="page-header">
+        <h1>{{Class}} / Edit </h1>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <form action="{{ route('{{class}}.update', ${{classSingle}}->id) }}" method="POST">
+                <input type="hidden" name="_method" value="PUT">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
+                <div class="form-group">
+                    <label for="nome">ID</label>
+                    <p class="form-control-static">{{${{classSingle}}->id}}</p>
+                </div>
+                {{content_fields}}
+
+
+
+            <a class="btn btn-default" href="{{ route('{{class}}.index') }}">Back</a>
+            <button class="btn btn-primary" type="submit" >Save</a>
+            </form>
+        </div>
+    </div>
+
+
+@endsection
