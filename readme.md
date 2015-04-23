@@ -29,6 +29,8 @@ You're all set. Run `php artisan` from the console, and you'll see the new comma
 
 
 ```
-php artisan make:scaffold Tweet --schema="title:string, message:string"
+php artisan make:scaffold Tweet --schema="title:string, body:text"
 ```
 
+## Scaffold
+![image](https://dl-web.dropbox.com/get/github-imgs/laralib-index.png?_subject_uid=80022178&w=AACwQ_7fRJKijZAx4B70FpfYXJdAjdnV5JeUotlqcwf67Q)
