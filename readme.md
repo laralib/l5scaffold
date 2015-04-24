@@ -37,6 +37,7 @@ This command will generate:
 app/Tweet.php
 app/Http/Controllers/TweetController.php
 database/migrations/2015_04_23_234422_create_tweets_table.php
+database/seeds/TweetTableSeeder.php
 resources/views/layout.blade.php
 resources/views/tweets/index.blade.php
 resources/views/tweets/show.blade.php
