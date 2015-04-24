@@ -44,7 +44,7 @@ class MakeMigration {
         // Grava o arquivo
         $this->files->put($path, $this->compileMigrationStub());
 
-        $this->scaffoldCommandObj->info('Migration created successfully!');
+        $this->scaffoldCommandObj->info('Migration created successfully');
     }
 
 

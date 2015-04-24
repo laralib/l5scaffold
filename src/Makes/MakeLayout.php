@@ -30,12 +30,16 @@ class MakeLayout {
         if ($this->files->exists($path_resource = $this->getPathResource('layout'))) {
             if ($this->scaffoldCommandObj->confirm($path_resource . ' already exists! Do you wish to overwrite? [yes|no]')) {
                 $this->putViewLayout($path_resource);
+
+                $this->scaffoldCommandObj->info('Layout created successfully.');
+            } else {
+                $this->scaffoldCommandObj->comment('Skip Layout, because already exists.');
             }
         } else {
             $this->putViewLayout($path_resource);
         }
 
-        $this->scaffoldCommandObj->info('Layout created successfully!');
+
     }
 
 

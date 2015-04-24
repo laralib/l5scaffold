@@ -50,6 +50,9 @@ trait MakerTrait {
         } elseif($path == "model"){
             return './app/'.$file_name.'.php';
 
+        } elseif($path == "seed"){
+            return './database/seeds/'.$file_name.'.php';
+
         } elseif($path == "view-index"){
             return './resources/views/'.$file_name.'/index.blade.php';
 

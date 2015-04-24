@@ -12,7 +12,7 @@ namespace Laralib\L5scaffold\Makes;
 use Illuminate\Filesystem\Filesystem;
 use Laralib\L5scaffold\Commands\ScaffoldMakeCommand;
 
-class MakeModel {
+class MakeSeed {
     use MakerTrait;
 
     public function __construct(ScaffoldMakeCommand $scaffoldCommand, Filesystem $files)
@@ -28,14 +28,15 @@ class MakeModel {
     {
 
         $name = $this->scaffoldCommandObj->getObjName('Name');
-        $modelPath = $this->getPath($name, 'model');
 
-        if (! $this->files->exists($modelPath)) {
-            $this->scaffoldCommandObj->call('make:model', [
+        $seedPath = $this->getPath($name, 'seed');
+
+        if (! $this->files->exists($seedPath)) {
+            $this->scaffoldCommandObj->call('make:seed', [
                 'name' => $name,
-                '--no-migration' => true
             ]);
         }
+
 
     }
 

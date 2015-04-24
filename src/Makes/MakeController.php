@@ -43,7 +43,7 @@ class MakeController
         // Grava o arquivo
         $this->files->put($path, $this->compileControllerStub());
 
-        $this->scaffoldCommandObj->info('Controller created successfully!');
+        $this->scaffoldCommandObj->info('Controller created successfully.');
 
         //$this->composer->dumpAutoloads();
     }

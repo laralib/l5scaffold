@@ -11,6 +11,7 @@ use Laralib\L5scaffold\Makes\MakeLayout;
 use Laralib\L5scaffold\Makes\MakeMigration;
 use Laralib\L5scaffold\Makes\MakeModel;
 use Laralib\L5scaffold\Makes\MakerTrait;
+use Laralib\L5scaffold\Makes\MakeSeed;
 use Laralib\L5scaffold\Makes\MakeView;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
@@ -92,6 +93,7 @@ class ScaffoldMakeCommand extends Command
 
         // Generate files
         $this->makeMigration();
+        $this->makeSeed();
         $this->makeModel();
         $this->makeController();
         $this->makeViewLayout();
@@ -117,6 +119,16 @@ class ScaffoldMakeCommand extends Command
     {
         new MakeModel($this, $this->files);
     }
+
+
+    /**
+     * Generate a Seed
+     */
+    private function makeSeed()
+    {
+        new MakeSeed($this, $this->files);
+    }
+
 
 
     /**
@@ -169,7 +181,7 @@ class ScaffoldMakeCommand extends Command
         }
 
 
-        $this->info('Views created successfully!');
+        $this->info('Views created successfully.');
 
         $this->info('Dump-autoload...');
         $this->composer->dumpAutoloads();
@@ -233,6 +245,8 @@ class ScaffoldMakeCommand extends Command
 
 
     }
+
+
 
 
 }
