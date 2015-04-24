@@ -10,7 +10,7 @@ Hi, this is a scaffold generator for Laravel 5.
 ### Step 1: Install Through Composer
 
 ```
-composer require 'laralib\l5scaffold' --dev
+composer require 'laralib/l5scaffold' --dev
 ```
 
 ### Step 2: Add the Service Provider
