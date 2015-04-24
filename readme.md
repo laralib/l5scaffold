@@ -15,7 +15,7 @@ composer require 'laralib/l5scaffold' --dev
 
 ### Step 2: Add the Service Provider
 
-Open `config/app.php` and, to your "providers" array at the bottom, add:
+Open `config/app.php` and, to your **providers** array at the bottom, add:
 
 ```
 "Laralib\L5scaffold\GeneratorsServiceProvider"
@@ -29,8 +29,22 @@ You're all set. Run `php artisan` from the console, and you'll see the new comma
 
 
 ```
-php artisan make:scaffold Tweet --schema="title:string, body:text"
+php artisan make:scaffold Tweet --schema="title:string:default('Tweet #1'), body:text"
 ```
+This command will generate:
+
+```
+app/Tweet.php
+app/Http/Controllers/TweetController.php
+database/migrations/2015_04_23_234422_create_tweets_table.php
+resources/views/layout.blade.php
+resources/views/tweets/index.blade.php
+resources/views/tweets/show.blade.php
+resources/views/tweets/edit.blade.php
+resources/views/tweets/create.blade.php
+```
+
+
 
 ## Scaffold
 ![image](http://i62.tinypic.com/11maveb.png)
