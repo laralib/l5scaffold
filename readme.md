@@ -44,7 +44,11 @@ resources/views/tweets/show.blade.php
 resources/views/tweets/edit.blade.php
 resources/views/tweets/create.blade.php
 ```
+And don't forget to run:
 
+```
+php artisan migrate
+```
 
 
 ## Scaffold
