@@ -12,7 +12,8 @@ namespace Laralib\L5scaffold\Makes;
 use Illuminate\Filesystem\Filesystem;
 use Laralib\L5scaffold\Commands\ScaffoldMakeCommand;
 
-class MakeSeed {
+class MakeSeed
+{
     use MakerTrait;
 
     public function __construct(ScaffoldMakeCommand $scaffoldCommand, Filesystem $files)
@@ -27,17 +28,62 @@ class MakeSeed {
     protected function start()
     {
 
-        $name = $this->scaffoldCommandObj->getObjName('Name');
 
-        $seedPath = $this->getPath($name, 'seed');
+        // Get path
+        $path = $this->getPath($this->scaffoldCommandObj->getObjName('Name') . 'TableSeeder', 'seed');
 
-        if (! $this->files->exists($seedPath)) {
-            $this->scaffoldCommandObj->call('make:seed', [
-                'name' => $name,
-            ]);
+
+        // Create directory
+        $this->makeDirectory($path);
+
+
+        if ($this->files->exists($path)) {
+            if ($this->scaffoldCommandObj->confirm($path . ' already exists! Do you wish to overwrite? [yes|no]')) {
+                // Put file
+                $this->files->put($path, $this->compileSeedStub());
+                $this->getSuccessMsg();
+            }
+        } else {
+
+            // Put file
+            $this->files->put($path, $this->compileSeedStub());
+            $this->getSuccessMsg();
+
         }
 
-
     }
+
+
+    protected function getSuccessMsg()
+    {
+        $this->scaffoldCommandObj->info('Seed created successfully.');
+    }
+
+
+    /**
+     * Compile the migration stub.
+     *
+     * @return string
+     */
+    protected function compileSeedStub()
+    {
+        $stub = $this->files->get(__DIR__ . '/../stubs/seed.stub');
+
+        $this->replaceClassName($stub);
+
+
+        return $stub;
+    }
+
+
+    private function replaceClassName(&$stub)
+    {
+        $name = $this->scaffoldCommandObj->getObjName('Name');
+
+        $stub = str_replace('{{class}}', $name, $stub);
+
+        return $this;
+    }
+
 
 }
