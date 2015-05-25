@@ -231,9 +231,9 @@ class ScaffoldMakeCommand extends Command
         // Name[1] = Tweets
         $names['Names'] = str_plural(ucfirst($args_name));
         // Name[2] = tweets
-        $names['names'] = str_plural(strtolower($args_name));
+        $names['names'] = str_plural(strtolower(preg_replace('/(?<!^)([A-Z])/', '_$1', $args_name)));
         // Name[3] = tweet
-        $names['name'] = str_singular(strtolower($args_name));
+        $names['name'] = str_singular(strtolower(preg_replace('/(?<!^)([A-Z])/', '_$1', $args_name)));
 
 
         if (!isset($names[$config])) {
