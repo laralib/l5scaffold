@@ -39,7 +39,7 @@
                 </tbody>
             </table>
 
-            {{ ${{class}}->render() }}
+            {!! ${{class}}->render() !!}
         </div>
     </div>
 
