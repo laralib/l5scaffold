@@ -1,10 +1,10 @@
-@extends('layout')
+@extends('app')
 
 @section('content')
-    <div class="page-header">
-        <h1>{{Class}}</h1>
+    <div class="page-header clearfix">
+        <h1 class="pull-left">{{Class}}</h1>
+         <a class="btn btn-success pull-right" href="{{ route('{{class}}.create') }}">Create</a>
     </div>
-
 
     <div class="row">
         <div class="col-md-12">
@@ -27,16 +27,19 @@
                     <td class="text-right">
                         <a class="btn btn-primary" href="{{ route('{{class}}.show', ${{classSingle}}->id) }}">View</a>
                         <a class="btn btn-warning " href="{{ route('{{class}}.edit', ${{classSingle}}->id) }}">Edit</a>
-                        <form action="{{ route('{{class}}.destroy', ${{classSingle}}->id) }}" method="POST" style="display: inline;" onsubmit="if(confirm('Delete? Are you sure?')) { return true } else {return false };"><input type="hidden" name="_method" value="DELETE"><input type="hidden" name="_token" value="{{ csrf_token() }}"> <button class="btn btn-danger" type="submit">Delete</button></form>
+                        <form action="{{ route('{{class}}.destroy', ${{classSingle}}->id) }}" method="POST" style="display: inline;" onsubmit="if(confirm('Delete? Are you sure?')) { return true } else {return false };">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            <button class="btn btn-danger" type="submit">Delete</button>
+                        </form>
                     </td>
                 </tr>
 
                 @endforeach
-
                 </tbody>
             </table>
 
-            <a class="btn btn-success" href="{{ route('{{class}}.create') }}">Create</a>
+            {{ ${{class}}->render() }}
         </div>
     </div>
 
