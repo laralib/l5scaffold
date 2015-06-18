@@ -298,7 +298,7 @@ class SyntaxBuilder
 
         $syntax = [];
 
-        $syntax[] = '<div class="form-group @if($errors->has('."'". $column . "'".'")) has-error @endif">';
+        $syntax[] = '<div class="form-group @if($errors->has('."'". $column . "'".')) has-error @endif">';
         $syntax[] = '   <label for="' . $column . '-field">' . $title . '</label>';
         $syntax[] = '   {!! Form::text("' . $column . '", ' . $value . ', array("class" => "form-control", "id" => "'.$column.'-field")) !!}';
 
