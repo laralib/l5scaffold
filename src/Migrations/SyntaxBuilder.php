@@ -287,7 +287,7 @@ class SyntaxBuilder
      */
     private function buildField($field, $variable, $value = true)
     {
-        $column = strtoupper($field['name']);
+        $column = strtolower($field['name']);
         $title = ucfirst($field['name']);
 
         if ($value === true) {
@@ -298,12 +298,7 @@ class SyntaxBuilder
 
         $syntax = [];
 
-        $syntax[] = '@if($errors->has("' . $column . '"))';
-        $syntax[] = '<div class="form-group has-error">';
-        $syntax[] = '@else';
-        $syntax[] = '<div class="form-group">';
-        $syntax[] = '@endif';
-
+        $syntax[] = '<div class="form-group @if($errors->has('."'". $column . "'".'")) has-error @endif">';
         $syntax[] = '   <label for="' . $column . '-field">' . $title . '</label>';
         $syntax[] = '   {!! Form::text("' . $column . '", ' . $value . ', array("class" => "form-control", "id" => "'.$column.'-field")) !!}';
 
