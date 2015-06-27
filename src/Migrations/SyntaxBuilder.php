@@ -266,18 +266,16 @@ class SyntaxBuilder
             // Fields to show view
             $syntax = sprintf("<div class=\"form-group\">\n" .
                 str_repeat(' ', 21)."<label for=\"%s\">%s</label>\n" .
-                str_repeat(' ', 21)."<input type=\"text\" name=\"%s\" class=\"form-control\" value=\"{{\$%s->%s}}\"/>\n" .
+                $this->getFieldType($field, $type) .
                 str_repeat(' ', 16)."</div>", strtolower($field['name']), strtoupper($field['name']), strtolower($field['name']), $meta['var_name'], strtolower($field['name']));
-
 
         } elseif ($type == 'view-create-content') {
 
             // Fields to show view
             $syntax = sprintf("<div class=\"form-group\">\n" .
                 str_repeat(' ', 21)."<label for=\"%s\">%s</label>\n" .
-                str_repeat(' ', 21)."<input type=\"text\" name=\"%s\" class=\"form-control\" value=\"\"/>\n" .
+                $this->getFieldType($field, $type) .
                 str_repeat(' ', 16)."</div>", strtolower($field['name']), strtoupper($field['name']), strtolower($field['name']), $meta['var_name'], strtolower($field['name']));
-
 
         } else {
 
@@ -352,6 +350,30 @@ class SyntaxBuilder
             return implode("\n" . str_repeat(' ', 20), $fields);
         }
 
+    }
+    
+    private function getFieldType($field, $type)
+    {
+
+        $value = '';
+
+        if($type == 'view-edit-content')
+        {
+            $value = "{{\$%s->%s}}";
+        }
+
+        switch ($field['type']) {
+            case 'string':
+                $layout = str_repeat(' ', 21)."<input type=\"text\" name=\"%s\" class=\"form-control\" value=\"$value\"/>\n";
+                break;
+            case 'text':
+                $layout = str_repeat(' ', 21)."<textarea class=\"form-control\" rows=\"3\" name=\"%s\"/>$value</textarea>\n";
+                break;
+            default:
+                $layout =  str_repeat(' ', 21)."<input type=\"text\" name=\"%s\" class=\"form-control\" value=\"$value\"/>\n";
+        }
+
+        return $layout;
     }
 
 }
