@@ -33,7 +33,6 @@ class MakeModel {
         if (! $this->files->exists($modelPath)) {
             $this->scaffoldCommandObj->call('make:model', [
                 'name' => $name,
-                '--no-migration' => true
             ]);
         }
 
