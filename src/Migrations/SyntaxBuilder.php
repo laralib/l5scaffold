@@ -21,16 +21,34 @@ class SyntaxBuilder
     private $template;
 
     /**
+     * @var bool
+     */
+    protected $illuminate = false;
+
+    /**
+     * Enable/Disable use of Illuminate/Html form facades
+     *
+     * @param $value
+     */
+    public function setIllumination($value) {
+        $this->illuminate = $value;
+    }
+
+    /**
      * Create the PHP syntax for the given schema.
      *
      * @param  array $schema
      * @param  array $meta
-     * @param string $type
+     * @param  string $type
+     * @param  bool $illuminate
      * @return string
      * @throws GeneratorException
+     * @throws \Exception
      */
-    public function create($schema, $meta, $type = "migration")
+    public function create($schema, $meta, $type = "migration", $illuminate = false)
     {
+        $this->setIllumination($illuminate);
+
         if ($type == "migration") {
 
             $up = $this->createSchemaForUpMethod($schema, $meta);
@@ -262,11 +280,9 @@ class SyntaxBuilder
 
 
         } elseif ($type == 'view-edit-content') {
-            // Fields to show view
-            $syntax = $this->buildField($field, $meta['var_name']);
+            $syntax = $this->buildField($field, $type, $meta['var_name']);
         } elseif ($type == 'view-create-content') {
-            // Fields to show view
-            $syntax = $this->buildField($field, $meta['var_name'], false);
+            $syntax = $this->buildField($field, $type, $meta['var_name'], false);
         } else {
             // Fields to controller
             $syntax = sprintf("\$%s->%s = \$request->input(\"%s", $meta['var_name'], $field['name'], $field['name']);
@@ -278,14 +294,14 @@ class SyntaxBuilder
     }
 
     /**
-     * Build form field with validation using Illuminate/Html Form facade
+     * Build form field with validation using Illuminate/Html Form facade or pure HTML
      *
      * @param $field
      * @param $variable
      * @param bool $value
      * @return string
      */
-    private function buildField($field, $variable, $value = true)
+    private function buildField($field, $type, $variable, $value = true)
     {
         $column = strtolower($field['name']);
         $title = ucfirst($field['name']);
@@ -298,9 +314,24 @@ class SyntaxBuilder
 
         $syntax = [];
 
+        switch($type) {
+            case 'string':
+            default:
+                $input = 'text';
+                break;
+            case 'text':
+                $input = 'textarea';
+                break;
+        }
+
         $syntax[] = '<div class="form-group @if($errors->has('."'". $column . "'".')) has-error @endif">';
         $syntax[] = '   <label for="' . $column . '-field">' . $title . '</label>';
-        $syntax[] = '   {!! Form::text("' . $column . '", ' . $value . ', array("class" => "form-control", "id" => "'.$column.'-field")) !!}';
+
+        if($this->illuminate) {
+            $syntax[] = '   {!! Form::' . $input . '("' . $column . '", ' . $value . ', array("class" => "form-control", "id" => "' . $column . '-field")) !!}';
+        } else {
+            $syntax[] = $this->htmlField($column, $variable, $field, $type);
+        }
 
         $syntax[] = '   @if($errors->has("' . $column . '"))';
         $syntax[] = '    <span class="help-block">{{ $errors->first("' . $column . '") }}</span>';
@@ -372,6 +403,29 @@ class SyntaxBuilder
             return implode("\n" . str_repeat(' ', 20), $fields);
         }
 
+    }
+    
+    private function htmlField($column, $variable, $field, $type)
+    {
+
+        $value = '{{ old("'.$column.'") }}';
+
+        if($type == 'view-edit-content')
+        {
+            $value = '{{ $'.$variable.'->'.$column.' }}';
+        }
+
+        switch ($field['type']) {
+            case 'string':
+            default:
+                $layout = "<input type=\"text\" id=\"$column-field\" name=\"$column\" class=\"form-control\" value=\"$value\"/>";
+                break;
+            case 'text':
+                $layout = "<textarea class=\"form-control\" id=\"$column-field\" rows=\"3\" name=\"$column\">$value</textarea>";
+                break;
+        }
+
+        return $layout;
     }
 
 }
