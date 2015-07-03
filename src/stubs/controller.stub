@@ -15,7 +15,7 @@ class {{class}} extends Controller {
 	 */
 	public function index()
 	{
-		${{model_name_var}} = {{model_name_class}}::all();
+		${{model_name_var}} = {{model_name_class}}::paginate(10);
 
 		return view('{{model_name_var}}.index', compact('{{model_name_var}}'));
 	}

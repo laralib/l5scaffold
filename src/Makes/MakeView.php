@@ -195,7 +195,7 @@ class MakeView
 
 
         // Create view index content fields
-        $schema = (new SyntaxBuilder)->create($schemaArray, $this->scaffoldCommandObj->getMeta(), 'view-edit-content');
+        $schema = (new SyntaxBuilder)->create($schemaArray, $this->scaffoldCommandObj->getMeta(), 'view-edit-content', $this->scaffoldCommandObj->option('form'));
         $stub = str_replace('{{content_fields}}', $schema, $stub);
 
 
@@ -219,7 +219,7 @@ class MakeView
 
 
         // Create view index content fields
-        $schema = (new SyntaxBuilder)->create($schemaArray, $this->scaffoldCommandObj->getMeta(), 'view-create-content');
+        $schema = (new SyntaxBuilder)->create($schemaArray, $this->scaffoldCommandObj->getMeta(), 'view-create-content', $this->scaffoldCommandObj->option('form'));
         $stub = str_replace('{{content_fields}}', $schema, $stub);
 
 

@@ -1,4 +1,4 @@
-@extends('layout')
+@extends('app')
 
 @section('content')
     <div class="page-header">
@@ -17,11 +17,13 @@
                 {{content_fields}}
             </form>
 
-
-
+            <div class="btn-group">
             <a class="btn btn-default" href="{{ route('{{class}}.index') }}">Back</a>
             <a class="btn btn-warning" href="{{ route('{{class}}.edit', ${{classSingle}}->id) }}">Edit</a>
-            <form action="#/${{classSingle}}->id" method="DELETE" style="display: inline;" onsubmit="if(confirm('Delete? Are you sure?')) { return true } else {return false };"><button class="btn btn-danger" type="submit">Delete</button></form>
+            <form action="#/${{classSingle}}->id" method="DELETE" style="display: inline;" onsubmit="if(confirm('Delete? Are you sure?')) { return true } else {return false };">
+                <button class="btn btn-danger" type="submit">Delete</button>
+            </form>
+            </div>
         </div>
     </div>
 

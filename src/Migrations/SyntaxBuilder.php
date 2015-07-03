@@ -21,16 +21,34 @@ class SyntaxBuilder
     private $template;
 
     /**
+     * @var bool
+     */
+    protected $illuminate = false;
+
+    /**
+     * Enable/Disable use of Illuminate/Html form facades
+     *
+     * @param $value
+     */
+    public function setIllumination($value) {
+        $this->illuminate = $value;
+    }
+
+    /**
      * Create the PHP syntax for the given schema.
      *
      * @param  array $schema
      * @param  array $meta
-     * @param string $type
+     * @param  string $type
+     * @param  bool $illuminate
      * @return string
      * @throws GeneratorException
+     * @throws \Exception
      */
-    public function create($schema, $meta, $type = "migration")
+    public function create($schema, $meta, $type = "migration", $illuminate = false)
     {
+        $this->setIllumination($illuminate);
+
         if ($type == "migration") {
 
             $up = $this->createSchemaForUpMethod($schema, $meta);
@@ -256,29 +274,16 @@ class SyntaxBuilder
 
             // Fields to show view
             $syntax = sprintf("<div class=\"form-group\">\n" .
-                str_repeat(' ', 21)."<label for=\"%s\">%s</label>\n" .
-                str_repeat(' ', 21)."<p class=\"form-control-static\">{{\$%s->%s}}</p>\n" .
-                str_repeat(' ', 16)."</div>", strtolower($field['name']), strtoupper($field['name']), $meta['var_name'], strtolower($field['name']));
+                str_repeat(' ', 21) . "<label for=\"%s\">%s</label>\n" .
+                str_repeat(' ', 21) . "<p class=\"form-control-static\">{{\$%s->%s}}</p>\n" .
+                str_repeat(' ', 16) . "</div>", strtolower($field['name']), strtoupper($field['name']), $meta['var_name'], strtolower($field['name']));
 
 
         } elseif ($type == 'view-edit-content') {
-
-            // Fields to show view
-            $syntax = sprintf("<div class=\"form-group\">\n" .
-                str_repeat(' ', 21)."<label for=\"%s\">%s</label>\n" .
-                $this->getFieldType($field, $type) .
-                str_repeat(' ', 16)."</div>", strtolower($field['name']), strtoupper($field['name']), strtolower($field['name']), $meta['var_name'], strtolower($field['name']));
-
+            $syntax = $this->buildField($field, $type, $meta['var_name']);
         } elseif ($type == 'view-create-content') {
-
-            // Fields to show view
-            $syntax = sprintf("<div class=\"form-group\">\n" .
-                str_repeat(' ', 21)."<label for=\"%s\">%s</label>\n" .
-                $this->getFieldType($field, $type) .
-                str_repeat(' ', 16)."</div>", strtolower($field['name']), strtoupper($field['name']), strtolower($field['name']), $meta['var_name'], strtolower($field['name']));
-
+            $syntax = $this->buildField($field, $type, $meta['var_name'], false);
         } else {
-
             // Fields to controller
             $syntax = sprintf("\$%s->%s = \$request->input(\"%s", $meta['var_name'], $field['name'], $field['name']);
             $syntax .= '");';
@@ -286,6 +291,54 @@ class SyntaxBuilder
 
 
         return $syntax;
+    }
+
+    /**
+     * Build form field with validation using Illuminate/Html Form facade or pure HTML
+     *
+     * @param $field
+     * @param $variable
+     * @param bool $value
+     * @return string
+     */
+    private function buildField($field, $type, $variable, $value = true)
+    {
+        $column = strtolower($field['name']);
+        $title = ucfirst($field['name']);
+
+        if ($value === true) {
+            $value = '$' . $variable . '->' . $column;
+        } else {
+            $value = 'old("'.$column.'")';
+        }
+
+        $syntax = [];
+
+        switch($type) {
+            case 'string':
+            default:
+                $input = 'text';
+                break;
+            case 'text':
+                $input = 'textarea';
+                break;
+        }
+
+        $syntax[] = '<div class="form-group @if($errors->has('."'". $column . "'".')) has-error @endif">';
+        $syntax[] = '   <label for="' . $column . '-field">' . $title . '</label>';
+
+        if($this->illuminate) {
+            $syntax[] = '   {!! Form::' . $input . '("' . $column . '", ' . $value . ', array("class" => "form-control", "id" => "' . $column . '-field")) !!}';
+        } else {
+            $syntax[] = $this->htmlField($column, $variable, $field, $type);
+        }
+
+        $syntax[] = '   @if($errors->has("' . $column . '"))';
+        $syntax[] = '    <span class="help-block">{{ $errors->first("' . $column . '") }}</span>';
+        $syntax[] = '   @endif';
+        $syntax[] = '</div>';
+
+        return join("\n".str_repeat(' ', 20), $syntax);
     }
 
 
@@ -352,25 +405,24 @@ class SyntaxBuilder
 
     }
     
-    private function getFieldType($field, $type)
+    private function htmlField($column, $variable, $field, $type)
     {
 
-        $value = '';
+        $value = '{{ old("'.$column.'") }}';
 
         if($type == 'view-edit-content')
         {
-            $value = "{{\$%s->%s}}";
+            $value = '{{ $'.$variable.'->'.$column.' }}';
         }
 
         switch ($field['type']) {
             case 'string':
-                $layout = str_repeat(' ', 21)."<input type=\"text\" name=\"%s\" class=\"form-control\" value=\"$value\"/>\n";
+            default:
+                $layout = "<input type=\"text\" id=\"$column-field\" name=\"$column\" class=\"form-control\" value=\"$value\"/>";
                 break;
             case 'text':
-                $layout = str_repeat(' ', 21)."<textarea class=\"form-control\" rows=\"3\" name=\"%s\"/>$value</textarea>\n";
+                $layout = "<textarea class=\"form-control\" id=\"$column-field\" rows=\"3\" name=\"$column\">$value</textarea>";
                 break;
-            default:
-                $layout =  str_repeat(' ', 21)."<input type=\"text\" name=\"%s\" class=\"form-control\" value=\"$value\"/>\n";
         }
 
         return $layout;
