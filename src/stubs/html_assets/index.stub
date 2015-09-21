@@ -1,4 +1,4 @@
-@extends('app')
+@extends('layout')
 
 @section('content')
     <div class="page-header clearfix">
