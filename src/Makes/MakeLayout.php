@@ -26,20 +26,8 @@ class MakeLayout {
 
     protected function start()
     {
-
-        if ($this->files->exists($path_resource = $this->getPathResource())) {
-            if ($this->scaffoldCommandObj->confirm($path_resource . ' already exists! Do you wish to overwrite? [yes|no]')) {
-                $this->putViewLayout($path_resource);
-
-                $this->scaffoldCommandObj->info('Layout created successfully.');
-            } else {
-                $this->scaffoldCommandObj->comment('Skip Layout, because already exists.');
-            }
-        } else {
-            $this->putViewLayout($path_resource);
-        }
-
-
+        $this->putViewLayout('Layout', 'stubs/html_assets/layout.stub', 'layout.blade.php');
+        $this->putViewLayout('Error', 'stubs/html_assets/error.stub', 'error.blade.php');
     }
 
 
@@ -47,11 +35,19 @@ class MakeLayout {
      * @param $path_resource
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    protected function putViewLayout($path_resource)
+    protected function putViewLayout($name, $stub, $file)
     {
-        // Copy layout blade bootstrap 3 to resoures
-        $layout_html = $this->files->get(__DIR__ . '/../stubs/html_assets/layout.stub');
-        $this->files->put($path_resource, $layout_html);
+        $path_file = $this->getPathResource().$file;
+        $path_stub = __DIR__ .'/../'.$stub;
+
+        if (!$this->files->exists($path_file)){
+            $html = $this->files->get($path_stub);
+            $this->files->put($path_file, $html);
+
+            $this->scaffoldCommandObj->info("$name created successfully.");
+        }else{
+            $this->scaffoldCommandObj->comment("Skip $name, because already exists.");
+        }
     }
 
 
@@ -63,8 +59,6 @@ class MakeLayout {
      */
     protected function getPathResource()
     {
-
-            return './resources/views/layout.blade.php';
-
+        return './resources/views/';
     }
 }
