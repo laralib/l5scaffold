@@ -1,33 +1,27 @@
 @extends('layout')
 
-@section('content')
+@section('header')
     <div class="page-header">
-        <h1>{{Class}} / Create </h1>
+        <h1><i class="glyphicon glyphicon-plus"></i> {{Class}} / Create </h1>
     </div>
+@endsection
+
+@section('content')
+    @include('error')
 
     <div class="row">
         <div class="col-md-12">
-            @if (count($errors) > 0)
-                <div class="alert alert-danger">
-                    <p>There were some problems with your input.</p>
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
 
             <form action="{{ route('{{class}}.store') }}" method="POST">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                 {{content_fields}}
-
-                <a class="btn btn-default" href="{{ route('{{class}}.index') }}">Back</a>
-                <button class="btn btn-primary" type="submit">Create</button>
+                <div class="well well-sm">
+                    <button type="submit" class="btn btn-primary">Create</button>
+                    <a class="btn btn-link pull-right" href="{{ route('{{class}}.index') }}"><i class="glyphicon glyphicon-backward"></i> Back</a>
+                </div>
             </form>
+
         </div>
     </div>
-
-
 @endsection
