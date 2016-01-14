@@ -5,7 +5,7 @@ namespace Laralib\L5scaffold\Commands;
 use Illuminate\Console\AppNamespaceDetectorTrait;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Foundation\Composer;
+use Illuminate\Support\Composer;
 use Laralib\L5scaffold\Makes\MakeController;
 use Laralib\L5scaffold\Makes\MakeLayout;
 use Laralib\L5scaffold\Makes\MakeMigration;
