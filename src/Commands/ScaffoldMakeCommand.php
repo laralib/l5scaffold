@@ -21,7 +21,7 @@ class ScaffoldMakeCommand extends Command
     use AppNamespaceDetectorTrait, MakerTrait;
 
     /**
-     * The console command name.
+     * The console command name!
      *
      * @var string
      */
