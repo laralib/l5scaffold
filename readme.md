@@ -1,7 +1,7 @@
-# Laravel 5 Scaffold Generator
+# Laravel 5.2 Scaffold Generator
 
 
-Hi, this is a scaffold generator for Laravel 5.
+Hi, this is a scaffold generator for Laravel 5.2. (Laravel scaffold for Laravel 5.1? change branch to laravel-5.1 )
 
 
 
