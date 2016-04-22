@@ -65,10 +65,28 @@ php artisan migrate
 
 
 
-# Todo tasks
+# Todo task list
 1 - Validations
+
 2 - Support a Localization
+
 3 - More fields type
+
 4 - Default tests file
+
 5 - sass and js with gulp
+
 **Send us your ideias.** (send message to @fernandobritofl (Twitter))
+
+
+<br/><br/>
+##Collaborators
+ [Fernando Brito](https://github.com/fernandobritofl "fernandobritofl")
+ <br/>[Sylvio Tavares](https://github.com/sylviot "Sylviot")
+ <br/>[Raphael Heitor](https://github.com/raphaelheitor "raphaelheitor")
+ <br/>[Alfred Nutile](https://github.com/alnutile "alnutile")
+ <br/>[Sazzad Hossain Khan](https://github.com/itsazzad "itsazzad")
+ <br/>[Alexander Makhaev](https://github.com/mankms "mankms")
+ <br/>[Adam Brown](https://github.com/DeftNerd "DeftNerd")
+ <br/>[TJ Webb](https://github.com/webbtj "webbtj")
+ <br/>[Tsaganos Tolis](https://github.com/Dev-Force "Dev-Force")
