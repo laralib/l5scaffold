@@ -57,7 +57,7 @@ php artisan migrate
 ![image](http://i62.tinypic.com/20h7k8n.png)
 
 ###Data type Boolean (on view)
-![image](http://i66.tinypic.com/mj48qg.png)
+![image](http://i66.tinypic.com/mj48qg.png =640x) 
 
 ###Data type Date (on view)
 ![image](http://i68.tinypic.com/17ep3b.png)
