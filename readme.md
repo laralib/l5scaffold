@@ -61,3 +61,14 @@ php artisan migrate
 
 ###Data type Boolean (on view)
 ![image](http://i65.tinypic.com/afehl5.jpg)
+
+
+
+
+# Todo tasks
+1 - Validations
+2 - Support a Localization
+3 - More fields type
+4 - Default tests file
+5 - sass and js with gulp
+**Send us your ideias.** (send message to @fernandobritofl (Twitter))
