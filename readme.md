@@ -76,7 +76,7 @@ php artisan migrate
 
 5 - sass and js with gulp
 
-**Send us your ideias.** (send message to @fernandobritofl (Twitter))
+**Send us your ideas.** (send message to @fernandobritofl (Twitter))
 
 
 <br/><br/>
