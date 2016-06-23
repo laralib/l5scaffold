@@ -21,7 +21,7 @@ class MakeView
 
     protected $scaffoldCommandObj;
     protected $viewName;
-
+    protected $schemaArray = [];
 
     public function __construct(ScaffoldMakeCommand $scaffoldCommand, Filesystem $files, $viewName)
     {
@@ -38,7 +38,14 @@ class MakeView
     }
 
 
-
+    protected function getSchemaArray()
+    {
+      if($this->scaffoldCommandObj->option('schema') != null){
+        if ($schema = $this->scaffoldCommandObj->option('schema')) {
+          $schemaArray = (new SchemaParser)->parse($schema);
+        }
+      }
+    }
 
 
     protected function generateView($nameView = 'index'){
@@ -135,18 +142,13 @@ class MakeView
     protected function replaceSchemaIndex(&$stub)
     {
 
-        if ($schema = $this->scaffoldCommandObj->option('schema')) {
-            $schemaArray = (new SchemaParser)->parse($schema);
-        }
-
-
         // Create view index header fields
-        $schema = (new SyntaxBuilder)->create($schemaArray, $this->scaffoldCommandObj->getMeta(), 'view-index-header');
+        $schema = (new SyntaxBuilder)->create($this->schemaArray, $this->scaffoldCommandObj->getMeta(), 'view-index-header');
         $stub = str_replace('{{header_fields}}', $schema, $stub);
 
 
         // Create view index content fields
-        $schema = (new SyntaxBuilder)->create($schemaArray, $this->scaffoldCommandObj->getMeta(), 'view-index-content');
+        $schema = (new SyntaxBuilder)->create($this->schemaArray, $this->scaffoldCommandObj->getMeta(), 'view-index-content');
         $stub = str_replace('{{content_fields}}', $schema, $stub);
 
 
@@ -166,15 +168,9 @@ class MakeView
     protected function replaceSchemaShow(&$stub)
     {
 
-        if ($schema = $this->scaffoldCommandObj->option('schema')) {
-            $schemaArray = (new SchemaParser)->parse($schema);
-        }
-
-
         // Create view index content fields
-        $schema = (new SyntaxBuilder)->create($schemaArray, $this->scaffoldCommandObj->getMeta(), 'view-show-content');
+        $schema = (new SyntaxBuilder)->create($this->schemaArray, $this->scaffoldCommandObj->getMeta(), 'view-show-content');
         $stub = str_replace('{{content_fields}}', $schema, $stub);
-
 
         return $this;
     }
@@ -189,15 +185,9 @@ class MakeView
     private function replaceSchemaEdit(&$stub)
     {
 
-        if ($schema = $this->scaffoldCommandObj->option('schema')) {
-            $schemaArray = (new SchemaParser)->parse($schema);
-        }
-
-
         // Create view index content fields
-        $schema = (new SyntaxBuilder)->create($schemaArray, $this->scaffoldCommandObj->getMeta(), 'view-edit-content', $this->scaffoldCommandObj->option('form'));
+        $schema = (new SyntaxBuilder)->create($this->schemaArray, $this->scaffoldCommandObj->getMeta(), 'view-edit-content', $this->scaffoldCommandObj->option('form'));
         $stub = str_replace('{{content_fields}}', $schema, $stub);
-
 
         return $this;
 
@@ -213,15 +203,10 @@ class MakeView
     private function replaceSchemaCreate(&$stub)
     {
 
-        if ($schema = $this->scaffoldCommandObj->option('schema')) {
-            $schemaArray = (new SchemaParser)->parse($schema);
-        }
-
 
         // Create view index content fields
-        $schema = (new SyntaxBuilder)->create($schemaArray, $this->scaffoldCommandObj->getMeta(), 'view-create-content', $this->scaffoldCommandObj->option('form'));
+        $schema = (new SyntaxBuilder)->create($this->schemaArray, $this->scaffoldCommandObj->getMeta(), 'view-create-content', $this->scaffoldCommandObj->option('form'));
         $stub = str_replace('{{content_fields}}', $schema, $stub);
-
 
         return $this;
 
