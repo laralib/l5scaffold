@@ -50,6 +50,20 @@ And don't forget to run:
 php artisan migrate
 ```
 
+### Other Examples (new)
+
+Same as above with use of the prefix. It will create the prefix in redirects of controller and the links of views:
+```
+php artisan make:scaffold Tweet --schema="title:string:default('Tweet #1'), body:text" --prefix="admin"
+```
+Create the empty scaffold views, controller, seed, migration and model:
+```
+php artisan make:scaffold Tweet
+```
+Create the empty scaffold (with prefix) views, controller, seed, migration and model:
+```
+php artisan make:scaffold Tweet --prefix="admin"
+```
 
 ## Scaffold
 ![image](http://i62.tinypic.com/11maveb.png)

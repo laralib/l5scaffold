@@ -44,7 +44,7 @@ class {{class}} extends Controller {
 
 		${{model_name_var_sgl}}->save();
 
-		return redirect()->route('{{model_name_var}}.index')->with('message', 'Item created successfully.');
+		return redirect()->route('{{prefix}}{{model_name_var}}.index')->with('message', 'Item created successfully.');
 	}
 
 	/**
@@ -88,7 +88,7 @@ class {{class}} extends Controller {
 
 		${{model_name_var_sgl}}->save();
 
-		return redirect()->route('{{model_name_var}}.index')->with('message', 'Item updated successfully.');
+		return redirect()->route('{{prefix}}{{model_name_var}}.index')->with('message', 'Item updated successfully.');
 	}
 
 	/**
@@ -102,7 +102,7 @@ class {{class}} extends Controller {
 		${{model_name_var_sgl}} = {{model_name_class}}::findOrFail($id);
 		${{model_name_var_sgl}}->delete();
 
-		return redirect()->route('{{model_name_var}}.index')->with('message', 'Item deleted successfully.');
+		return redirect()->route('{{prefix}}{{model_name_var}}.index')->with('message', 'Item deleted successfully.');
 	}
 
 }
