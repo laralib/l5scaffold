@@ -126,6 +126,13 @@ class MakeView
         $stub = str_replace('{{class}}', $this->scaffoldCommandObj->getObjName('names'), $stub);
         $stub = str_replace('{{classSingle}}', $this->scaffoldCommandObj->getObjName('name'), $stub);
 
+        $prefix = $this->scaffoldCommandObj->option('prefix');
+
+        if ($prefix != null)
+            $stub = str_replace('{{prefix}}',$prefix.'.', $stub);
+        else
+            $stub = str_replace('{{prefix}}', '', $stub);
+
         return $this;
     }
 

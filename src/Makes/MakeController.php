@@ -109,11 +109,17 @@ class MakeController
         $model_name_uc = $this->scaffoldCommandObj->getObjName('Name');
         $model_name = $this->scaffoldCommandObj->getObjName('name');
         $model_names = $this->scaffoldCommandObj->getObjName('names');
-
+        $prefix = $this->scaffoldCommandObj->option('prefix');
+        
         $stub = str_replace('{{model_name_class}}', $model_name_uc, $stub);
         $stub = str_replace('{{model_name_var_sgl}}', $model_name, $stub);
         $stub = str_replace('{{model_name_var}}', $model_names, $stub);
-
+        
+        if ($prefix != null)
+            $stub = str_replace('{{prefix}}', $prefix.'.', $stub);
+        else
+            $stub = str_replace('{{prefix}}', '', $stub);
+        
         return $this;
     }
 
@@ -131,6 +137,7 @@ class MakeController
         if ($schema = $this->scaffoldCommandObj->option('schema')) {
             $schema = (new SchemaParser)->parse($schema);
         }
+
 
 
         // Create controllers fields
