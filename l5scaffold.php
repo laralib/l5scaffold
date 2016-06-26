@@ -17,4 +17,8 @@ return [
     'item_created'          => 'Item created successfully.',
     'item_updated'          => 'Item updated successfully.',
     'item_deleted'          => 'Item deleted successfully.',
+<<<<<<< HEAD
+=======
+
+>>>>>>> a45e4f0dc5f66836912983c9b48d72fedbe13cfd
 ];
