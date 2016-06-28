@@ -412,7 +412,7 @@ class SyntaxBuilder
 
         if($type == 'view-edit-content')
         {
-            $value = '{{ $'.$variable.'->'.$column.' }}';
+            $value = '{{ old("'.$column.'") or $'.$variable.'->'.$column.' }}';
         }
 
         switch ($field['type']) {
