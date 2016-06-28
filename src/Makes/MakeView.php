@@ -28,6 +28,7 @@ class MakeView
         $this->files = $files;
         $this->scaffoldCommandObj = $scaffoldCommand;
         $this->viewName = $viewName;
+        $this->getSchemaArray();
 
         $this->start();
     }
@@ -42,7 +43,7 @@ class MakeView
     {
       if($this->scaffoldCommandObj->option('schema') != null){
         if ($schema = $this->scaffoldCommandObj->option('schema')) {
-          $schemaArray = (new SchemaParser)->parse($schema);
+          $this->schemaArray = (new SchemaParser)->parse($schema);
         }
       }
     }
