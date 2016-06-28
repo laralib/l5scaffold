@@ -153,7 +153,8 @@ class ScaffoldMakeCommand extends Command
     {
         return [
             ['schema', 's', InputOption::VALUE_REQUIRED, 'Schema to generate scaffold files. (Ex: --schema="title:string")', null],
-            ['form', 'f', InputOption::VALUE_OPTIONAL, 'Use Illumintate/Html Form facade to generate input fields', false]
+            ['form', 'f', InputOption::VALUE_OPTIONAL, 'Use Illumintate/Html Form facade to generate input fields', false],
+            ['prefix', 'p', InputOption::VALUE_OPTIONAL, 'Generate schema with prefix', false]
         ];
     }
 
