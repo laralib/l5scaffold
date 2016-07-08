@@ -34,7 +34,6 @@ class ScaffoldMakeCommand extends Command
      */
     protected $description = 'Create a scaffold with bootstrap 3';
 
-
     /**
      * Meta information for the requested migration.
      *
@@ -46,7 +45,6 @@ class ScaffoldMakeCommand extends Command
      * @var Composer
      */
     private $composer;
-
 
     /**
      * Views to generate
@@ -85,25 +83,21 @@ class ScaffoldMakeCommand extends Command
      */
     public function fire()
     {
-        // Start Scaffold
         $this->info('Configuring ' . $this->getObjName("Name") . '...');
 
-        // Setup migration and saves configs
+
         $this->meta['action'] = 'create';
         $this->meta['var_name'] = $this->getObjName("name");
         $this->meta['table'] = $this->getObjName("names"); // Store table name
 
-        // Generate files
+
         $this->makeMigration();
         $this->makeSeed();
         $this->makeModel();
         $this->makeController();
         $this->makeViewLayout();
         $this->makeViews();
-
-
     }
-
 
     /**
      * Generate the desired migration.
@@ -115,7 +109,6 @@ class ScaffoldMakeCommand extends Command
         new MakeMigration($this, $this->files);
     }
 
-
     /**
      * Generate an Eloquent model, if the user wishes.
      *
@@ -125,7 +118,6 @@ class ScaffoldMakeCommand extends Command
     {
         new MakeModel($this, $this->files);
     }
-
 
     /**
      * Generate a Seed
@@ -137,8 +129,6 @@ class ScaffoldMakeCommand extends Command
         new MakeSeed($this, $this->files);
     }
 
-
-
     /**
      * Get the console command arguments.
      *
@@ -146,11 +136,11 @@ class ScaffoldMakeCommand extends Command
      */
     protected function getArguments()
     {
-        return [
+        return 
+        [
             ['name', InputArgument::REQUIRED, 'The name of the model. (Ex: Post)'],
         ];
     }
-
 
     /**
      * Get the console command options.
@@ -159,13 +149,31 @@ class ScaffoldMakeCommand extends Command
      */
     protected function getOptions()
     {
-        return [
-            ['schema', 's', InputOption::VALUE_REQUIRED, 'Schema to generate scaffold files. (Ex: --schema="title:string")', null],
-            ['form', 'f', InputOption::VALUE_OPTIONAL, 'Use Illumintate/Html Form facade to generate input fields', false],
-            ['prefix', 'p', InputOption::VALUE_OPTIONAL, 'Generate schema with prefix', false]
+        return 
+        [
+            [
+                'schema', 
+                's', 
+                InputOption::VALUE_REQUIRED, 
+                'Schema to generate scaffold files. (Ex: --schema="title:string")', 
+                null
+            ],
+            [
+                'form', 
+                'f', 
+                InputOption::VALUE_OPTIONAL, 
+                'Use Illumintate/Html Form facade to generate input fields', 
+                false
+            ],
+            [
+                'prefix', 
+                'p', 
+                InputOption::VALUE_OPTIONAL, 
+                'Generate schema with prefix', 
+                false
+            ]
         ];
     }
-
 
     /**
      * Make a Controller with default actions
@@ -174,11 +182,8 @@ class ScaffoldMakeCommand extends Command
      */
     private function makeController()
     {
-
         new MakeController($this, $this->files);
-
     }
-
 
     /**
      * Setup views and assets
@@ -187,12 +192,9 @@ class ScaffoldMakeCommand extends Command
      */
     private function makeViews()
     {
-
         foreach ($this->views as $view) {
-            // index, create, show, edit
             new MakeView($this, $this->files, $view);
         }
-
 
         $this->info('Views created successfully.');
 
@@ -200,9 +202,7 @@ class ScaffoldMakeCommand extends Command
         $this->composer->dumpAutoloads();
 
         $this->info('Route::resource("'.$this->getObjName("names").'","'.$this->getObjName("Name").'Controller"); // Add this line in routes.php');
-
     }
-
 
     /**
      * Make a layout.blade.php with bootstrap
@@ -215,7 +215,6 @@ class ScaffoldMakeCommand extends Command
         new MakeLayout($this, $this->files);
     }
 
-
     /**
      * Get access to $meta array
      *
@@ -226,7 +225,6 @@ class ScaffoldMakeCommand extends Command
         return $this->meta;
     }
 
-
     /**
      * Generate names
      *
@@ -236,10 +234,8 @@ class ScaffoldMakeCommand extends Command
      */
     public function getObjName($config = 'Name')
     {
-
         $names = [];
         $args_name = $this->argument('name');
-
 
         // Name[0] = Tweet
         $names['Name'] = str_singular(ucfirst($args_name));
@@ -251,17 +247,11 @@ class ScaffoldMakeCommand extends Command
         $names['name'] = str_singular(strtolower(preg_replace('/(?<!^)([A-Z])/', '_$1', $args_name)));
 
 
-        if (!isset($names[$config])) {
+        if (!isset($names[$config])) 
+        {
             throw new \Exception("Position name is not found");
         };
 
-
         return $names[$config];
-
-
     }
-
-
-
-
 }

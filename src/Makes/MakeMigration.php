@@ -8,13 +8,13 @@
 
 namespace Laralib\L5scaffold\Makes;
 
-
 use Illuminate\Filesystem\Filesystem;
 use Laralib\L5scaffold\Commands\ScaffoldMakeCommand;
 use Laralib\L5scaffold\Migrations\SchemaParser;
 use Laralib\L5scaffold\Migrations\SyntaxBuilder;
 
-class MakeMigration {
+class MakeMigration
+{
     use MakerTrait;
 
     /**
@@ -63,7 +63,6 @@ class MakeMigration {
         $this->scaffoldCommandObj->info('Migration created successfully');
     }
 
-
     /**
      * Get the path to where we should store the migration.
      *
@@ -75,8 +74,6 @@ class MakeMigration {
         return './database/migrations/'.date('Y_m_d_His').'_'.$name.'.php';
     }
 
-
-
     /**
      * Compile the migration stub.
      *
@@ -86,17 +83,13 @@ class MakeMigration {
     {
         $stub = $this->files->get(__DIR__.'/../stubs/migration.stub');
 
-        $this->replaceClassName($stub)
-            ->replaceSchema($stub)
-            ->replaceTableName($stub);
-
+        $this
+        ->replaceClassName($stub)
+        ->replaceSchema($stub)
+        ->replaceTableName($stub);
 
         return $stub;
     }
-
-
-
-
 
     /**
      * Replace the class name in the stub.
@@ -135,26 +128,22 @@ class MakeMigration {
      */
     protected function replaceSchema(&$stub, $type='migration')
     {
-        if ($schema = $this->scaffoldCommandObj->option('schema')) {
+        if ($schema = $this->scaffoldCommandObj->option('schema'))
+        {
             $schema = (new SchemaParser)->parse($schema);
         }
 
-
-        if($type == 'migration'){
-            // Create migration fields
+        if($type == 'migration')
+        {
             $schema = (new SyntaxBuilder)->create($schema, $this->scaffoldCommandObj->getMeta());
             $stub = str_replace(['{{schema_up}}', '{{schema_down}}'], $schema, $stub);
-
-
-        } else if($type='controller'){
-            // Create controllers fields
+        } 
+        else if($type='controller')
+        {
             $schema = (new SyntaxBuilder)->create($schema, $this->scaffoldCommandObj->getMeta(), 'controller');
             $stub = str_replace('{{model_fields}}', $schema, $stub);
-
-
         } else {}
 
         return $this;
     }
-
 }

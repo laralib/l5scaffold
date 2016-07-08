@@ -8,7 +8,6 @@
 
 namespace Laralib\L5scaffold\Makes;
 
-
 use Illuminate\Filesystem\Filesystem;
 use Laralib\L5scaffold\Commands\ScaffoldMakeCommand;
 
@@ -38,30 +37,23 @@ class MakeSeed
      */
     protected function start()
     {
-
-
-        // Get path
         $path = $this->getPath($this->scaffoldCommandObj->getObjName('Name') . 'TableSeeder', 'seed');
 
-
-        // Create directory
         $this->makeDirectory($path);
 
-
-        if ($this->files->exists($path)) {
-            if ($this->scaffoldCommandObj->confirm($path . ' already exists! Do you wish to overwrite? [yes|no]')) {
-                // Put file
+        if ($this->files->exists($path))
+        {
+            if ($this->scaffoldCommandObj->confirm($path . ' already exists! Do you wish to overwrite? [yes|no]'))
+            {
                 $this->files->put($path, $this->compileSeedStub());
                 $this->getSuccessMsg();
             }
-        } else {
-
-            // Put file
+        }
+        else
+        {
             $this->files->put($path, $this->compileSeedStub());
             $this->getSuccessMsg();
-
         }
-
     }
 
     /**
@@ -74,7 +66,6 @@ class MakeSeed
         $this->scaffoldCommandObj->info('Seed created successfully.');
     }
 
-
     /**
      * Compile the migration stub.
      *
@@ -85,7 +76,6 @@ class MakeSeed
         $stub = $this->files->get(__DIR__ . '/../stubs/seed.stub');
 
         $this->replaceClassName($stub);
-
 
         return $stub;
     }
@@ -103,6 +93,4 @@ class MakeSeed
 
         return $this;
     }
-
-
 }

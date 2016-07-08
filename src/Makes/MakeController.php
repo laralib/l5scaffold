@@ -19,7 +19,6 @@ class MakeController
      */
     protected $scaffoldCommandObj;
 
-
     /**
      * Create a new instance.
      *
@@ -33,7 +32,6 @@ class MakeController
         $this->scaffoldCommandObj = $scaffoldCommand;
 
         $this->start();
-
     }
 
     /**
@@ -43,30 +41,19 @@ class MakeController
      */
     private function start()
     {
-        // Cria o nome do arquivo do controller // TweetController
-
-
         $name = $this->scaffoldCommandObj->getObjName('Name') . 'Controller';
 
-        // Verifica se o arquivo existe com o mesmo o nome
-        if ($this->files->exists($path = $this->getPath($name))) {
+        if ($this->files->exists($path = $this->getPath($name))) 
+        {
             return $this->scaffoldCommandObj->error($name . ' already exists!');
         }
 
-        // Cria a pasta caso nao exista
         $this->makeDirectory($path);
 
-        // Grava o arquivo
         $this->files->put($path, $this->compileControllerStub());
 
         $this->scaffoldCommandObj->info('Controller created successfully.');
-
-        //$this->composer->dumpAutoloads();
     }
-
-
-
-
 
     /**
      * Compile the migration stub.
@@ -77,15 +64,14 @@ class MakeController
     {
         $stub = $this->files->get(__DIR__ . '/../stubs/controller.stub');
 
-        $this->replaceClassName($stub, "controller")
-            ->replaceModelPath($stub)
-            ->replaceModelName($stub)
-            ->replaceSchema($stub, 'controller');
-
+        $this
+        ->replaceClassName($stub, "controller")
+        ->replaceModelPath($stub)
+        ->replaceModelName($stub)
+        ->replaceSchema($stub, 'controller');
 
         return $stub;
     }
-
 
     /**
      * Replace the class name in the stub.
@@ -95,13 +81,11 @@ class MakeController
      */
     protected function replaceClassName(&$stub)
     {
-
         $className = $this->scaffoldCommandObj->getObjName('Name') . 'Controller';
         $stub = str_replace('{{class}}', $className, $stub);
 
         return $this;
     }
-
 
     /**
      * Rename Model address to controller
@@ -111,14 +95,11 @@ class MakeController
      */
     private function replaceModelPath(&$stub)
     {
-
         $model_name = $this->getAppNamespace() . $this->scaffoldCommandObj->getObjName('Name');
         $stub = str_replace('{{model_path}}', $model_name, $stub);
 
         return $this;
-
     }
-
 
     /**
      * Rename variable to controller
@@ -138,13 +119,16 @@ class MakeController
         $stub = str_replace('{{model_name_var}}', $model_names, $stub);
         
         if ($prefix != null)
+        {
             $stub = str_replace('{{prefix}}', $prefix.'.', $stub);
+        }
         else
+        {
             $stub = str_replace('{{prefix}}', '', $stub);
+        }
         
         return $this;
     }
-
 
     /**
      * Replace the schema for the stub.
@@ -155,17 +139,13 @@ class MakeController
      */
     protected function replaceSchema(&$stub, $type = 'migration')
     {
-
-        if ($schema = $this->scaffoldCommandObj->option('schema')) {
+        if ($schema = $this->scaffoldCommandObj->option('schema')) 
+        {
             $schema = (new SchemaParser)->parse($schema);
         }
 
-
-
-        // Create controllers fields
         $schema = (new SyntaxBuilder)->create($schema, $this->scaffoldCommandObj->getMeta(), 'controller');
         $stub = str_replace('{{model_fields}}', $schema, $stub);
-
 
         return $this;
     }

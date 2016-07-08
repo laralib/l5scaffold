@@ -8,11 +8,11 @@
 
 namespace Laralib\L5scaffold\Makes;
 
-
 use Illuminate\Filesystem\Filesystem;
 use Laralib\L5scaffold\Commands\ScaffoldMakeCommand;
 
-class MakeModel {
+class MakeModel
+{
     use MakerTrait;
 
     /**
@@ -37,16 +37,17 @@ class MakeModel {
      */
     protected function start()
     {
-
         $name = $this->scaffoldCommandObj->getObjName('Name');
         $modelPath = $this->getPath($name, 'model');
 
-        if (! $this->files->exists($modelPath)) {
-            $this->scaffoldCommandObj->call('make:model', [
-                'name' => $name
-            ]);
+        if(!$this->files->exists($modelPath))
+        {
+            $this->scaffoldCommandObj->call(
+                'make:model', 
+                [
+                    'name' => $name
+                ]
+            );
         }
-
     }
-
 }

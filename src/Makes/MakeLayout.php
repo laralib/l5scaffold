@@ -8,11 +8,11 @@
 
 namespace Laralib\L5scaffold\Makes;
 
-
 use Illuminate\Filesystem\Filesystem;
 use Laralib\L5scaffold\Commands\ScaffoldMakeCommand;
 
-class MakeLayout {
+class MakeLayout
+{
     use MakerTrait;
 
     /**
@@ -54,17 +54,18 @@ class MakeLayout {
         $path_file = $this->getPathResource().$file;
         $path_stub = __DIR__ .'/../'.$stub;
 
-        if (!$this->files->exists($path_file)){
+        if (!$this->files->exists($path_file))
+        {
             $html = $this->files->get($path_stub);
             $this->files->put($path_file, $html);
 
             $this->scaffoldCommandObj->info("$name created successfully.");
-        }else{
+        }
+        else
+        {
             $this->scaffoldCommandObj->comment("Skip $name, because already exists.");
         }
     }
-
-
 
     /**
      * Get the path to where we should store the view.
