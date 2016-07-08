@@ -42,8 +42,9 @@ class MakeController
     private function start()
     {
         $name = $this->scaffoldCommandObj->getObjName('Name') . 'Controller';
+        $path = $this->getPath($name, 'controller');
 
-        if ($this->files->exists($path = $this->getPath($name))) 
+        if ($this->files->exists($path)) 
         {
             return $this->scaffoldCommandObj->error($name . ' already exists!');
         }
@@ -64,88 +65,32 @@ class MakeController
     {
         $stub = $this->files->get(__DIR__ . '/../stubs/controller.stub');
 
-        $this
-        ->replaceClassName($stub, "controller")
-        ->replaceModelPath($stub)
-        ->replaceModelName($stub)
-        ->replaceSchema($stub, 'controller');
+        $this->build($stub);
 
         return $stub;
     }
 
     /**
-     * Replace the class name in the stub.
+     * Build stub replacing the variable template.
      *
-     * @param  string $stub
-     * @return $this
+     * @return string
      */
-    protected function replaceClassName(&$stub)
+    protected function build(&$stub)
     {
-        $className = $this->scaffoldCommandObj->getObjName('Name') . 'Controller';
-        $stub = str_replace('{{class}}', $className, $stub);
-
-        return $this;
-    }
-
-    /**
-     * Rename Model address to controller
-     *
-     * @param $stub
-     * @return $this
-     */
-    private function replaceModelPath(&$stub)
-    {
-        $model_name = $this->getAppNamespace() . $this->scaffoldCommandObj->getObjName('Name');
-        $stub = str_replace('{{model_path}}', $model_name, $stub);
-
-        return $this;
-    }
-
-    /**
-     * Rename variable to controller
-     *
-     * @param $stub
-     * @return $this
-     */
-    private function replaceModelName(&$stub)
-    {
-        $model_name_uc = $this->scaffoldCommandObj->getObjName('Name');
-        $model_name = $this->scaffoldCommandObj->getObjName('name');
-        $model_names = $this->scaffoldCommandObj->getObjName('names');
+        $namespace = $model_name = $this->getAppNamespace();
+        $Name = $this->scaffoldCommandObj->getObjName('Name');
+        $name = $this->scaffoldCommandObj->getObjName('name');
+        $names =  $this->scaffoldCommandObj->getObjName('names');
         $prefix = $this->scaffoldCommandObj->option('prefix');
         
-        $stub = str_replace('{{model_name_class}}', $model_name_uc, $stub);
-        $stub = str_replace('{{model_name_var_sgl}}', $model_name, $stub);
-        $stub = str_replace('{{model_name_var}}', $model_names, $stub);
-        
-        if ($prefix != null)
-        {
-            $stub = str_replace('{{prefix}}', $prefix.'.', $stub);
-        }
-        else
-        {
-            $stub = str_replace('{{prefix}}', '', $stub);
-        }
-        
-        return $this;
-    }
+        if(!empty($prefix)) $prefix = "$prefix.";
 
-    /**
-     * Replace the schema for the stub.
-     *
-     * @param  string $stub
-     * @param string $type
-     * @return $this
-     */
-    protected function replaceSchema(&$stub, $type = 'migration')
-    {
-        if ($schema = $this->scaffoldCommandObj->option('schema')) 
-        {
-            $schema = (new SchemaParser)->parse($schema);
-        }
 
-        $schema = (new SyntaxBuilder)->create($schema, $this->scaffoldCommandObj->getMeta(), 'controller');
-        $stub = str_replace('{{model_fields}}', $schema, $stub);
+        $stub = str_replace('{{model_namespace}}', $namespace.$Name, $stub);
+        $stub = str_replace('{{model_class}}', $Name, $stub);
+        $stub = str_replace('{{model_variable}}', $name, $stub);
+        $stub = str_replace('{{model_multiple}}', $names, $stub);
+        $stub = str_replace('{{prefix}}', $prefix, $stub);
 
         return $this;
     }

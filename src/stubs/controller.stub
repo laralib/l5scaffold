@@ -1,12 +1,29 @@
-<?php namespace App\Http\Controllers;
+<?php
 
-use App\Http\Requests;
+namespace App\Http\Controllers;
+
+use {{model_namespace}};
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-use {{model_path}};
-use Illuminate\Http\Request;
+class {{model_class}}Controller extends Controller
+{
+	/**
+	 * Variable to model
+	 *
+	 * @var {{model_class}}
+	 */
+	protected $model;
 
-class {{class}} extends Controller {
+	/**
+	 * Create instance of controller with Model
+	 *
+	 * @return void
+	 */
+	public function __construct({{model_class}} $model)
+	{
+		$this->model = $model;
+	}
 
 	/**
 	 * Display a listing of the resource.
@@ -15,9 +32,9 @@ class {{class}} extends Controller {
 	 */
 	public function index()
 	{
-		${{model_name_var}} = {{model_name_class}}::orderBy('id', 'desc')->paginate(10);
+		${{model_multiple}} = $this->model->paginate();
 
-		return view('{{model_name_var}}.index', compact('{{model_name_var}}'));
+		return view('{{model_multiple}}.index', compact('{{model_multiple}}'));
 	}
 
 	/**
@@ -27,7 +44,7 @@ class {{class}} extends Controller {
 	 */
 	public function create()
 	{
-		return view('{{model_name_var}}.create');
+		return view('{{model_multiple}}.create');
 	}
 
 	/**
@@ -38,13 +55,10 @@ class {{class}} extends Controller {
 	 */
 	public function store(Request $request)
 	{
-		${{model_name_var_sgl}} = new {{model_name_class}}();
+		$inputs = $request->all();
+		$this->model->create($inputs);
 
-		{{model_fields}}
-
-		${{model_name_var_sgl}}->save();
-
-		return redirect()->route('{{prefix}}{{model_name_var}}.index')->with('message', 'Item created successfully.');
+		return redirect()->route('{{prefix}}{{model_multiple}}.index')->with('message', 'Item created successfully.');
 	}
 
 	/**
@@ -55,9 +69,14 @@ class {{class}} extends Controller {
 	 */
 	public function show($id)
 	{
-		${{model_name_var_sgl}} = {{model_name_class}}::findOrFail($id);
+		${{model_variable}} = $this->model->find($id);
+		
+		if(!${{model_variable}}->exists)
+		{
+			return $this->notFound();
+		}
 
-		return view('{{model_name_var}}.show', compact('{{model_name_var_sgl}}'));
+		return view('{{model_multiple}}.show', compact('{{model_variable}}'));
 	}
 
 	/**
@@ -68,9 +87,14 @@ class {{class}} extends Controller {
 	 */
 	public function edit($id)
 	{
-		${{model_name_var_sgl}} = {{model_name_class}}::findOrFail($id);
+		${{model_variable}} = $this->model->find($id);
+		
+		if(!${{model_variable}}->exists)
+		{
+			return $this->notFound();
+		}
 
-		return view('{{model_name_var}}.edit', compact('{{model_name_var_sgl}}'));
+		return view('{{model_multiple}}.edit', compact('{{model_variable}}'));
 	}
 
 	/**
@@ -82,13 +106,17 @@ class {{class}} extends Controller {
 	 */
 	public function update(Request $request, $id)
 	{
-		${{model_name_var_sgl}} = {{model_name_class}}::findOrFail($id);
+		${{model_variable}} = $this->model->find($id);
+		
+		if(!${{model_variable}}->exists)
+		{
+			return $this->notFound();
+		}
 
-		{{model_fields}}
+		$inputs = $request->all();
+		$this->model->create($inputs);
 
-		${{model_name_var_sgl}}->save();
-
-		return redirect()->route('{{prefix}}{{model_name_var}}.index')->with('message', 'Item updated successfully.');
+		return redirect()->route('{{prefix}}{{model_multiple}}.index')->with('message', 'Item updated successfully.');
 	}
 
 	/**
@@ -99,10 +127,19 @@ class {{class}} extends Controller {
 	 */
 	public function destroy($id)
 	{
-		${{model_name_var_sgl}} = {{model_name_class}}::findOrFail($id);
-		${{model_name_var_sgl}}->delete();
+		$this->model->destroy($id);
 
-		return redirect()->route('{{prefix}}{{model_name_var}}.index')->with('message', 'Item deleted successfully.');
+		return redirect()->route('{{prefix}}{{model_multiple}}.index')->with('message', 'Item deleted successfully.');
 	}
 
+	/**
+	 * Redirect to index and show message not found!
+	 *
+	 * @param  string $message
+	 * @return Response
+	 */
+ 	public function notFound($message = '{{model_class}} not found!')
+	{
+		return redirect()->route('{{model_multiple}}.index')->with('message', $message);
+	}
 }

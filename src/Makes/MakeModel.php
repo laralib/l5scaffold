@@ -10,6 +10,8 @@ namespace Laralib\L5scaffold\Makes;
 
 use Illuminate\Filesystem\Filesystem;
 use Laralib\L5scaffold\Commands\ScaffoldMakeCommand;
+use Laralib\L5scaffold\Migrations\SchemaParser;
+use Laralib\L5scaffold\Migrations\SyntaxBuilder;
 
 class MakeModel
 {
@@ -31,23 +33,63 @@ class MakeModel
     }
 
     /**
-     * Start make model.
+     * Start make controller.
      *
      * @return void
      */
-    protected function start()
+    private function start()
     {
         $name = $this->scaffoldCommandObj->getObjName('Name');
-        $modelPath = $this->getPath($name, 'model');
+        $path = $this->getPath($name, 'model');
 
-        if(!$this->files->exists($modelPath))
+        if ($this->files->exists($path)) 
         {
-            $this->scaffoldCommandObj->call(
-                'make:model', 
-                [
-                    'name' => $name
-                ]
-            );
+            return $this->scaffoldCommandObj->error($name . ' already exists!');
         }
+
+        $this->files->put($path, $this->compileModelStub());
+
+        $this->scaffoldCommandObj->info('Model created successfully.');
+    }
+
+    /**
+     * Compile the migration stub.
+     *
+     * @return string
+     */
+    protected function compileModelStub()
+    {
+        $stub = $this->files->get(__DIR__ . '/../stubs/model.stub');
+
+        $this->build($stub);
+
+        return $stub;
+    }
+
+    /**
+     * Build stub replacing the variable template.
+     *
+     * @return string
+     */
+    protected function build(&$stub)
+    {
+        $Name = $this->scaffoldCommandObj->getObjName('Name');
+        $schema = $this->scaffoldCommandObj->option('schema');
+        $schemaArray = [];
+
+        if ($schema)
+        {
+            $schemaArray = array_map(function($item){
+                return "'".$item['name']."'";
+            }, (new SchemaParser)->parse($schema));
+
+            $schemaArray = join(", ", $schemaArray);
+        }
+
+
+        $stub = str_replace('{{model_class}}', $Name, $stub);
+        $stub = str_replace('{{model_fillable}}', $schemaArray, $stub);
+
+        return $this;
     }
 }
