@@ -16,6 +16,13 @@ class MakeSeed
 {
     use MakerTrait;
 
+    /**
+     * Create a new instance.
+     *
+     * @param ScaffoldMakeCommand $scaffoldCommand
+     * @param Filesystem $files
+     * @return void
+     */
     public function __construct(ScaffoldMakeCommand $scaffoldCommand, Filesystem $files)
     {
         $this->files = $files;
@@ -24,7 +31,11 @@ class MakeSeed
         $this->start();
     }
 
-
+    /**
+     * Start make seed.
+     *
+     * @return void
+     */
     protected function start()
     {
 
@@ -53,7 +64,11 @@ class MakeSeed
 
     }
 
-
+    /**
+     * Command to show info in console
+     *
+     * @return void
+     */
     protected function getSuccessMsg()
     {
         $this->scaffoldCommandObj->info('Seed created successfully.');
@@ -75,7 +90,11 @@ class MakeSeed
         return $stub;
     }
 
-
+    /**
+     * Rename the class name in Seed
+     *
+     * @return $this
+     */
     private function replaceClassName(&$stub)
     {
         $name = $this->scaffoldCommandObj->getObjName('Name');

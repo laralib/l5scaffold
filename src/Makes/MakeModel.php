@@ -15,6 +15,13 @@ use Laralib\L5scaffold\Commands\ScaffoldMakeCommand;
 class MakeModel {
     use MakerTrait;
 
+    /**
+     * Create a new instance.
+     *
+     * @param ScaffoldMakeCommand $scaffoldCommand
+     * @param Filesystem $files
+     * @return void
+     */
     public function __construct(ScaffoldMakeCommand $scaffoldCommand, Filesystem $files)
     {
         $this->files = $files;
@@ -23,7 +30,11 @@ class MakeModel {
         $this->start();
     }
 
-
+    /**
+     * Start make model.
+     *
+     * @return void
+     */
     protected function start()
     {
 

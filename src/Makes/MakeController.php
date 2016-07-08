@@ -12,10 +12,21 @@ class MakeController
 {
     use AppNamespaceDetectorTrait, MakerTrait;
 
-
-
+    /**
+     * Store name from Model
+     *
+     * @var ScaffoldMakeCommand
+     */
     protected $scaffoldCommandObj;
 
+
+    /**
+     * Create a new instance.
+     *
+     * @param ScaffoldMakeCommand $scaffoldCommand
+     * @param Filesystem $files
+     * @return void
+     */
     function __construct(ScaffoldMakeCommand $scaffoldCommand, Filesystem $files)
     {
         $this->files = $files;
@@ -25,6 +36,11 @@ class MakeController
 
     }
 
+    /**
+     * Start make controller.
+     *
+     * @return void
+     */
     private function start()
     {
         // Cria o nome do arquivo do controller // TweetController
@@ -88,7 +104,7 @@ class MakeController
 
 
     /**
-     * Renomeia o endereço do Model para o controller
+     * Rename Model address to controller
      *
      * @param $stub
      * @return $this
@@ -104,6 +120,12 @@ class MakeController
     }
 
 
+    /**
+     * Rename variable to controller
+     *
+     * @param $stub
+     * @return $this
+     */
     private function replaceModelName(&$stub)
     {
         $model_name_uc = $this->scaffoldCommandObj->getObjName('Name');

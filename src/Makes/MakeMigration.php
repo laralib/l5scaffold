@@ -17,8 +17,20 @@ use Laralib\L5scaffold\Migrations\SyntaxBuilder;
 class MakeMigration {
     use MakerTrait;
 
+    /**
+     * Store scaffold command.
+     *
+     * @var ScaffoldMakeCommand
+     */
     protected $scaffoldCommandObj;
 
+    /**
+     * Create a new instance.
+     *
+     * @param ScaffoldMakeCommand $scaffoldCommand
+     * @param Filesystem $files
+     * @return void
+     */
     public function __construct(ScaffoldMakeCommand $scaffoldCommand, Filesystem $files)
     {
         $this->files = $files;
@@ -27,7 +39,11 @@ class MakeMigration {
         $this->start();
     }
 
-
+    /**
+     * Start make migration.
+     *
+     * @return void
+     */
     protected function start(){
         // Cria o nome do arquivo do migration // create_tweets_table
         $name = 'create_'.str_plural(strtolower( $this->scaffoldCommandObj->argument('name') )).'_table';

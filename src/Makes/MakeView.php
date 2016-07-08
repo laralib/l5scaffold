@@ -18,11 +18,35 @@ class MakeView
 {
     use MakerTrait;
 
-
+    /**
+     * Store scaffold command.
+     *
+     * @var ScaffoldMakeCommand
+     */
     protected $scaffoldCommandObj;
+
+    /**
+     * Store view name.
+     *
+     * @var string
+     */
     protected $viewName;
+
+    /**
+     * Store property of model
+     *
+     * @var array
+     */
     protected $schemaArray = [];
 
+    /**
+     * Create a new instance.
+     *
+     * @param ScaffoldMakeCommand $scaffoldCommand
+     * @param Filesystem $files
+     * @param sting $viewName
+     * @return void
+     */
     public function __construct(ScaffoldMakeCommand $scaffoldCommand, Filesystem $files, $viewName)
     {
         $this->files = $files;
@@ -33,12 +57,21 @@ class MakeView
         $this->start();
     }
 
+    /**
+     * Start make view.
+     *
+     * @return void
+     */
     private function start()
     {
         $this->generateView($this->viewName); // index, show, edit and create
     }
 
-
+    /**
+     * Get all property of model
+     *
+     * @return void
+     */
     protected function getSchemaArray()
     {
       if($this->scaffoldCommandObj->option('schema') != null){
@@ -48,7 +81,11 @@ class MakeView
       }
     }
 
-
+    /**
+     * Write wiew in path.
+     *
+     * @return void
+     */
     protected function generateView($nameView = 'index'){
         // Get path
         $path = $this->getPath($this->scaffoldCommandObj->getObjName('names'), 'view-'.$nameView);

@@ -15,6 +15,13 @@ use Laralib\L5scaffold\Commands\ScaffoldMakeCommand;
 class MakeLayout {
     use MakerTrait;
 
+    /**
+     * Create a new instance.
+     *
+     * @param ScaffoldMakeCommand $scaffoldCommand
+     * @param Filesystem $files
+     * @return void
+     */
     public function __construct(ScaffoldMakeCommand $scaffoldCommand, Filesystem $files)
     {
         $this->files = $files;
@@ -23,7 +30,11 @@ class MakeLayout {
         $this->start();
     }
 
-
+    /**
+     * Start make layout(view).
+     *
+     * @return void
+     */
     protected function start()
     {
         $this->putViewLayout('Layout', 'stubs/html_assets/layout.stub', 'layout.blade.php');
@@ -32,7 +43,10 @@ class MakeLayout {
 
 
     /**
+     * Write layout in path
+     *
      * @param $path_resource
+     * @return void
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     protected function putViewLayout($name, $stub, $file)

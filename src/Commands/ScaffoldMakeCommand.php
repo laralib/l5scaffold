@@ -57,6 +57,7 @@ class ScaffoldMakeCommand extends Command
 
     /**
      * Store name from Model
+     *
      * @var string
      */
     private $nameModel = "";
@@ -66,6 +67,7 @@ class ScaffoldMakeCommand extends Command
      *
      * @param Filesystem $files
      * @param Composer $composer
+     * @return void
      */
     public function __construct(Filesystem $files, Composer $composer)
     {
@@ -79,7 +81,7 @@ class ScaffoldMakeCommand extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return void
      */
     public function fire()
     {
@@ -105,6 +107,8 @@ class ScaffoldMakeCommand extends Command
 
     /**
      * Generate the desired migration.
+     *
+     * @return void
      */
     protected function makeMigration()
     {
@@ -114,6 +118,8 @@ class ScaffoldMakeCommand extends Command
 
     /**
      * Generate an Eloquent model, if the user wishes.
+     *
+     * @return void
      */
     protected function makeModel()
     {
@@ -123,6 +129,8 @@ class ScaffoldMakeCommand extends Command
 
     /**
      * Generate a Seed
+     *
+     * @return void
      */
     private function makeSeed()
     {
@@ -161,6 +169,8 @@ class ScaffoldMakeCommand extends Command
 
     /**
      * Make a Controller with default actions
+     *
+     * @return void
      */
     private function makeController()
     {
@@ -173,6 +183,7 @@ class ScaffoldMakeCommand extends Command
     /**
      * Setup views and assets
      *
+     * @return void
      */
     private function makeViews()
     {
@@ -196,6 +207,7 @@ class ScaffoldMakeCommand extends Command
     /**
      * Make a layout.blade.php with bootstrap
      *
+     * @return void
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
     private function makeViewLayout()
@@ -206,6 +218,7 @@ class ScaffoldMakeCommand extends Command
 
     /**
      * Get access to $meta array
+     *
      * @return array
      */
     public function getMeta()
