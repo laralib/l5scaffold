@@ -114,7 +114,7 @@ class {{model_class}}Controller extends Controller
 		}
 
 		$inputs = $request->all();
-		$this->model->create($inputs);
+		$this->model->update($inputs);
 
 		return redirect()->route('{{prefix}}{{model_multiple}}.index')->with('message', 'Item updated successfully.');
 	}
