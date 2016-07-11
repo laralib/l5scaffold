@@ -25,13 +25,6 @@ class MakeView
     protected $scaffoldCommandObj;
 
     /**
-     * Store view name.
-     *
-     * @var string
-     */
-    protected $viewName;
-
-    /**
      * Store property of model
      *
      * @var array
@@ -46,11 +39,10 @@ class MakeView
      * @param sting $viewName
      * @return void
      */
-    public function __construct(ScaffoldMakeCommand $scaffoldCommand, Filesystem $files, $viewName)
+    public function __construct(ScaffoldMakeCommand $scaffoldCommand, Filesystem $files)
     {
         $this->files = $files;
         $this->scaffoldCommandObj = $scaffoldCommand;
-        $this->viewName = $viewName;
         $this->getSchemaArray();
 
         $this->start();
@@ -63,7 +55,14 @@ class MakeView
      */
     private function start()
     {
-        $this->generateView($this->viewName); // index, show, edit and create
+        $this->scaffoldCommandObj->info("~Views~");
+        
+        $views = ['index', 'show', 'edit', 'create'];
+        foreach($views as $view)
+        {
+            $this->generateView($view);
+            $this->scaffoldCommandObj->info("   + $view");
+        }
     }
 
     /**

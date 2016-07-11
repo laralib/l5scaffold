@@ -47,13 +47,6 @@ class ScaffoldMakeCommand extends Command
     private $composer;
 
     /**
-     * Views to generate
-     *
-     * @var array
-     */
-    private $views = ['index', 'create', 'show', 'edit'];
-
-    /**
      * Store name from Model
      *
      * @var string
@@ -85,11 +78,12 @@ class ScaffoldMakeCommand extends Command
     {
         $this->info('Configuring ' . $this->getObjName("Name") . '...');
 
+        $names = $this->getObjName("names");
+        $Name = $this->getObjName("Name");
 
         $this->meta['action'] = 'create';
         $this->meta['var_name'] = $this->getObjName("name");
         $this->meta['table'] = $this->getObjName("names"); // Store table name
-
 
         $this->makeMigration();
         $this->makeSeed();
@@ -97,6 +91,18 @@ class ScaffoldMakeCommand extends Command
         $this->makeController();
         $this->makeViewLayout();
         $this->makeViews();
+
+        // Finish with dump autoload.
+        $this->info('Dump-autoload...');
+        $this->composer->dumpAutoloads();
+        
+
+        $this->line("----------- Add manualy -----------\n\n");
+        
+        $this->error("/* add in app/Http/routes.php */");
+        $this->info("Route::resource('$names', '$Name"."Controller');");
+
+        $this->line("\n\n----------- ----------- -----------");
     }
 
     /**
@@ -107,6 +113,27 @@ class ScaffoldMakeCommand extends Command
     protected function makeMigration()
     {
         new MakeMigration($this, $this->files);
+    }
+
+    /**
+     * Make a Controller with default actions
+     *
+     * @return void
+     */
+    private function makeController()
+    {
+        new MakeController($this, $this->files);
+    }
+    
+    /**
+     * Make a layout.blade.php with bootstrap
+     *
+     * @return void
+     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     */
+    private function makeViewLayout()
+    {
+        new MakeLayout($this, $this->files);
     }
 
     /**
@@ -127,6 +154,16 @@ class ScaffoldMakeCommand extends Command
     private function makeSeed()
     {
         new MakeSeed($this, $this->files);
+    }
+
+    /**
+     * Setup views and assets
+     *
+     * @return void
+     */
+    private function makeViews()
+    {
+        new MakeView($this, $this->files);
     }
 
     /**
@@ -173,46 +210,6 @@ class ScaffoldMakeCommand extends Command
                 false
             ]
         ];
-    }
-
-    /**
-     * Make a Controller with default actions
-     *
-     * @return void
-     */
-    private function makeController()
-    {
-        new MakeController($this, $this->files);
-    }
-
-    /**
-     * Setup views and assets
-     *
-     * @return void
-     */
-    private function makeViews()
-    {
-        foreach ($this->views as $view) {
-            new MakeView($this, $this->files, $view);
-        }
-
-        $this->info('Views created successfully.');
-
-        $this->info('Dump-autoload...');
-        $this->composer->dumpAutoloads();
-
-        $this->info('Route::resource("'.$this->getObjName("names").'","'.$this->getObjName("Name").'Controller"); // Add this line in routes.php');
-    }
-
-    /**
-     * Make a layout.blade.php with bootstrap
-     *
-     * @return void
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     */
-    private function makeViewLayout()
-    {
-        new MakeLayout($this, $this->files);
     }
 
     /**
