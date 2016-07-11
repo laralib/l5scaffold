@@ -1,5 +1,7 @@
 @extends('layout')
-
+@section('css')
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/css/bootstrap-datepicker.css" rel="stylesheet">
+@endsection
 @section('header')
     <div class="page-header">
         <h1><i class="glyphicon glyphicon-plus"></i> {{Class}} / Create </h1>
@@ -24,4 +26,11 @@
 
         </div>
     </div>
+@endsection
+@section('scripts')
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.min.js"></script>
+  <script>
+    $('.date-picker').datepicker({
+    });
+  </script>
 @endsection
