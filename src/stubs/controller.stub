@@ -2,6 +2,7 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 use {{model_path}};
 use Illuminate\Http\Request;
@@ -38,7 +39,7 @@ class {{class}} extends Controller {
 	 */
 	public function store(Request $request)
 	{
-	    $validator = $this->validate($request, [
+	    $validator = Validator::make($request->input(), [
             {{validation_fields}}
 	    ]);
 
@@ -65,7 +66,7 @@ class {{class}} extends Controller {
 	 */
 	public function show($id)
 	{
-	    $validator = $this->validate(['id' => $id], [
+	    $validator = Validator::make(['id' => $id], [
             'id' => 'required|exists:{{model_name_var}},id'
         ]);
 
@@ -88,7 +89,7 @@ class {{class}} extends Controller {
 	 */
 	public function edit($id)
 	{
-        $validator = $this->validate(['id' => $id], [
+        $validator = Validator::make(['id' => $id], [
             'id' => 'required|exists:{{model_name_var}},id'
         ]);
 
@@ -113,7 +114,7 @@ class {{class}} extends Controller {
 	public function update(Request $request, $id)
 	{
 
-        $validator = $this->validate($request, [
+        $validator = Validator::make($request->input(), [
             {{validation_fields}}
         ]);
 
@@ -140,7 +141,7 @@ class {{class}} extends Controller {
 	 */
 	public function destroy($id)
 	{
-        $validator = $this->validate(['id' => $id], [
+        $validator = Validator::make(['id' => $id], [
             'id' => 'required|exists:{{model_name_var}},id'
         ]);
 
