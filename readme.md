@@ -76,7 +76,10 @@ php artisan make:scaffold Tweet --prefix="admin"
 ###Data type Boolean (on view)
 ![image](http://i65.tinypic.com/afehl5.jpg)
 
-
+## Validations
+```
+php artisan make:scaffold Tweet --schema="firstname:string" --validator="lastname:unique(tweets,id),firstname:required|unique(tweets)"
+```
 
 
 # Todo task list
