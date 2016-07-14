@@ -5,8 +5,8 @@ php:
 
 before_script:
   - composer self-update
-  - composer update
   - composer install --no-interaction
 
 script:
+  - composer install --no-interaction
   - vendor/bin/phpunit
