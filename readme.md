@@ -21,6 +21,11 @@ Open `config/app.php` and, to your **providers** array at the bottom, add:
 "Laralib\L5scaffold\GeneratorsServiceProvider"
 ```
 
+or 
+```
+Laralib\L5scaffold\GeneratorsServiceProvider::class,
+```
+
 ### Step 3: Run Artisan!
 
 You're all set. Run `php artisan` from the console, and you'll see the new commands `make:scaffold`.
@@ -29,7 +34,7 @@ You're all set. Run `php artisan` from the console, and you'll see the new comma
 
 
 ```
-php artisan make:scaffold Tweet --schema="title:string:default('Tweet #1'), body:text"
+php artisan make:scaffold Tweet --schema="title:string:default('Tweet #1'):(required,unique/Tweets), body:text(validators)"
 ```
 This command will generate:
 
@@ -65,6 +70,11 @@ Create the empty scaffold (with prefix) views, controller, seed, migration and m
 php artisan make:scaffold Tweet --prefix="admin"
 ```
 
+Create the scaffold with validation
+```
+php artisan make:scaffold Tweet --schema="title:string(required,unique/tweets.title)"
+```
+
 ## Scaffold
 ![image](http://i62.tinypic.com/11maveb.png)
 ![image](http://i58.tinypic.com/eqchat.png)
@@ -76,19 +86,24 @@ php artisan make:scaffold Tweet --prefix="admin"
 ###Data type Boolean (on view)
 ![image](http://i65.tinypic.com/afehl5.jpg)
 
-
+## Validation
+### Syntax of Command
+```
+php artisan make:scaffold {scaffold} --schema="firstname:string()"
+```
+The `()` denote validators, and when you start putting validators in the parenthesis you need to use standard laravel validator strings. You *MUST* replace certain characters:
+ - ":" with "/"
+ - "," with "."
 
 
 # Todo task list
-1 - Validations
+1 - Support a Localization
 
-2 - Support a Localization
+2 - More fields type
 
-3 - More fields type
+3 - Default tests file
 
-4 - Default tests file
-
-5 - sass and js with gulp
+4 - sass and js with gulp
 
 **Send us your ideas.** (send message to @fernandobritofl (Twitter))
 

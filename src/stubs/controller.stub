@@ -2,6 +2,7 @@
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 use {{model_path}};
 use Illuminate\Http\Request;
@@ -38,13 +39,23 @@ class {{class}} extends Controller {
 	 */
 	public function store(Request $request)
 	{
-		${{model_name_var_sgl}} = new {{model_name_class}}();
+	    $validator = Validator::make($request->input(), [
+            {{validation_fields}}
+	    ]);
 
-		{{model_fields}}
+	    if($validator->fails()){
 
-		${{model_name_var_sgl}}->save();
+            return redirect()->back()->withErrors($validator)->withInput();
 
-		return redirect()->route('{{prefix}}{{model_name_var}}.index')->with('message', 'Item created successfully.');
+        }
+
+        ${{model_name_var_sgl}} = new {{model_name_class}}();
+
+        {{model_fields}}
+
+        ${{model_name_var_sgl}}->save();
+
+        return redirect()->route('{{prefix}}{{model_name_var}}.index')->with('message', 'Item created successfully.');
 	}
 
 	/**
@@ -55,6 +66,16 @@ class {{class}} extends Controller {
 	 */
 	public function show($id)
 	{
+	    $validator = Validator::make(['id' => $id], [
+            'id' => 'required|exists:{{model_name_var}},id'
+        ]);
+
+        if($validator->fails()){
+
+            return redirect()->back()->withErrors($validator);
+
+        }
+
 		${{model_name_var_sgl}} = {{model_name_class}}::findOrFail($id);
 
 		return view('{{model_name_var}}.show', compact('{{model_name_var_sgl}}'));
@@ -68,6 +89,16 @@ class {{class}} extends Controller {
 	 */
 	public function edit($id)
 	{
+        $validator = Validator::make(['id' => $id], [
+            'id' => 'required|exists:{{model_name_var}},id'
+        ]);
+
+        if($validator->fails()){
+
+            return redirect()->back()->withErrors($validator);
+
+        }
+
 		${{model_name_var_sgl}} = {{model_name_class}}::findOrFail($id);
 
 		return view('{{model_name_var}}.edit', compact('{{model_name_var_sgl}}'));
@@ -82,6 +113,17 @@ class {{class}} extends Controller {
 	 */
 	public function update(Request $request, $id)
 	{
+
+        $validator = Validator::make($request->input(), [
+            {{validation_fields}}
+        ]);
+
+        if($validator->fails()){
+
+            return redirect()->back()->withErrors($validator)->withInput();
+
+        }
+
 		${{model_name_var_sgl}} = {{model_name_class}}::findOrFail($id);
 
 		{{model_fields}}
@@ -99,6 +141,16 @@ class {{class}} extends Controller {
 	 */
 	public function destroy($id)
 	{
+        $validator = Validator::make(['id' => $id], [
+            'id' => 'required|exists:{{model_name_var}},id'
+        ]);
+
+        if($validator->fails()){
+
+            return redirect()->back()->withErrors($validator)->withInput();
+
+        }
+
 		${{model_name_var_sgl}} = {{model_name_class}}::findOrFail($id);
 		${{model_name_var_sgl}}->delete();
 

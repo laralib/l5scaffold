@@ -1,3 +1,4 @@
+
 {
   "name": "laralib/l5scaffold",
   "description": "Extend Laravel 5's generators scaffold.",
@@ -11,8 +12,11 @@
     }
   ],
   "require": {
-    "php": ">=5.4.0",
-    "illuminate/support": "~5.0"
+    "php": ">=5.4.0"
+  },
+  "require-dev": {
+    "laravel/laravel": "dev-master",
+    "phpunit/phpunit": "^5.4"
   },
   "autoload": {
     "psr-4": {

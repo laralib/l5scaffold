@@ -64,6 +64,7 @@ class MakeController
         $this->replaceClassName($stub, "controller")
             ->replaceModelPath($stub)
             ->replaceModelName($stub)
+            ->replaceValidator($stub)
             ->replaceSchema($stub, 'controller');
 
 
@@ -124,6 +125,19 @@ class MakeController
     }
 
 
+    private function replaceValidator(&$stub)
+    {
+        if($schema = $this->scaffoldCommandObj->option('schema')){
+            $schema = (new SchemaParser)->parse($schema);
+        }
+
+        $schema = (new SyntaxBuilder)->create($schema, $this->scaffoldCommandObj->getMeta(), 'validation');
+        $stub = str_replace('{{validation_fields}}', $schema, $stub);
+
+        return $this;
+    }
+
+
     /**
      * Replace the schema for the stub.
      *
@@ -147,4 +161,6 @@ class MakeController
 
         return $this;
     }
+
+
 }

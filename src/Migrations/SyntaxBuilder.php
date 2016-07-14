@@ -61,6 +61,10 @@ class SyntaxBuilder
             $fieldsc = $this->createSchemaForControllerMethod($schema, $meta);
             return $fieldsc;
 
+        } else if($type == "validation"){
+
+            $fieldsc = $this->createSchemaForValidation($schema);
+            return $fieldsc;
 
         } else if ($type == "view-index-header") {
 
@@ -432,6 +436,22 @@ class SyntaxBuilder
         }
 
         return $layout;
+    }
+
+    private function createSchemaForValidation($schema)
+    {
+        $validator = '';
+        foreach($schema as $s){
+            $validator .= "'" . $s['name'] . "' => '";
+            foreach($s['arguments'] as $k => $a) {
+                $validator .= str_replace(".", ",", str_replace("/", ":", $a));
+                if((count($s['arguments'])-1) != $k){
+                    $validator .= "|";
+                }
+            }
+            $validator .= "',\n\t\t\t";
+        }
+        return $validator;
     }
 
 }
