@@ -196,6 +196,13 @@ class ScaffoldMakeCommand extends Command
                 null
             ],
             [
+                'validator',
+                'a',
+                InputOption::VALUE_OPTIONAL,
+                'Validators to generate scaffold files. (Ex: --validator="title:required")',
+                null
+            ],
+            [
                 'form', 
                 'f', 
                 InputOption::VALUE_OPTIONAL, 
