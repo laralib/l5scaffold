@@ -81,7 +81,7 @@ class MakeMigration
      */
     protected function compileMigrationStub()
     {
-        $stub = $this->files->get(__DIR__ . '/../Stubs/migration.stub');
+        $stub = $this->files->get(__DIR__ . '../Stubs/migration.stub');
 
         $this
         ->replaceClassName($stub)
