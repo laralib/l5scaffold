@@ -113,7 +113,7 @@ class MakeView
      */
     protected function compileViewStub($nameView)
     {
-        $stub = $this->files->get(__DIR__ . './../Stubs/html_assets/' .$nameView.'.stub');
+        $stub = $this->files->get(substr(__DIR__,0, -5) . '/Stubs/html_assets/' .$nameView.'.stub');
 
         if($nameView == 'show')
         {
