@@ -6,8 +6,10 @@ use Illuminate\Console\AppNamespaceDetectorTrait;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Composer;
+use Illuminate\Support\Facades\Input;
 use Laralib\L5scaffold\Makes\MakeController;
 use Laralib\L5scaffold\Makes\MakeLayout;
+use Laralib\L5scaffold\Makes\MakeLocalization;
 use Laralib\L5scaffold\Makes\MakeMigration;
 use Laralib\L5scaffold\Makes\MakeModel;
 use Laralib\L5scaffold\Makes\MakerTrait;
@@ -91,6 +93,7 @@ class ScaffoldMakeCommand extends Command
         $this->makeController();
         $this->makeViewLayout();
         $this->makeViews();
+        $this->makeLocalization();
 
         // Finish with dump autoload.
         $this->info('Dump-autoload...');
@@ -167,6 +170,14 @@ class ScaffoldMakeCommand extends Command
     }
 
     /**
+     * Setup the localizations
+     */
+    private function makeLocalization()
+    {
+        new MakeLocalization($this, $this->files);
+    }
+
+    /**
      * Get the console command arguments.
      *
      * @return array
@@ -201,6 +212,20 @@ class ScaffoldMakeCommand extends Command
                 InputOption::VALUE_OPTIONAL,
                 'Validators to generate scaffold files. (Ex: --validator="title:required")',
                 null
+            ],
+            [
+                'localization',
+                'l',
+                InputOption::VALUE_OPTIONAL,
+                'Localizations to generate scaffold files. (Ex. --localization="key:value")',
+                null
+            ],
+            [
+                'lang',
+                'b',
+                InputOption::VALUE_OPTIONAL,
+                'Language for Localization (Ex. --lang="en")',
+                null,
             ],
             [
                 'form', 
