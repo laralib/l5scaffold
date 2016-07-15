@@ -63,7 +63,7 @@ class MakeController
      */
     protected function compileControllerStub()
     {
-        $stub = $this->files->get(__DIR__ . '/../Stubs/controller.stub');
+        $stub = $this->files->get(__DIR__ . './../Stubs/controller.stub');
 
         $this->build($stub);
 

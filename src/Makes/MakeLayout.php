@@ -52,7 +52,7 @@ class MakeLayout
     protected function putViewLayout($name, $stub, $file)
     {
         $path_file = $this->getPathResource().$file;
-        $path_stub = __DIR__ .'/../'.$stub;
+        $path_stub = __DIR__ .'./../'.$stub;
 
         if (!$this->files->exists($path_file))
         {
