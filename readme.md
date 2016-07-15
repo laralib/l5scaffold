@@ -83,15 +83,13 @@ php artisan make:scaffold Tweet --schema="firstname:string" --validator="lastnam
 
 
 # Todo task list
-1 - Validations
+1 - Support a Localization
 
-2 - Support a Localization
+2 - More fields type
 
-3 - More fields type
+3 - Default tests file
 
-4 - Default tests file
-
-5 - sass and js with gulp
+4 - sass and js with gulp
 
 **Send us your ideas.** (send message to @fernandobritofl (Twitter))
 
