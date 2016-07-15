@@ -432,5 +432,4 @@ class SyntaxBuilder
 
         return $layout;
     }
-
 }

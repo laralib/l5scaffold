@@ -4,8 +4,8 @@ namespace Laralib\L5scaffold\Makes;
 use Illuminate\Console\AppNamespaceDetectorTrait;
 use Illuminate\Filesystem\Filesystem;
 use Laralib\L5scaffold\Commands\ScaffoldMakeCommand;
-use Laralib\L5scaffold\Migrations\SchemaParser;
-use Laralib\L5scaffold\Migrations\SyntaxBuilder;
+use Laralib\L5scaffold\Validators\SchemaParser as ValidatorParser;
+use Laralib\L5scaffold\Validators\SyntaxBuilder as ValidatorSyntax;
 
 
 class MakeController
@@ -85,6 +85,7 @@ class MakeController
         
         if(!empty($prefix)) $prefix = "$prefix.";
 
+        $this->replaceValidator($stub);
 
         $stub = str_replace('{{model_namespace}}', $namespace.$Name, $stub);
         $stub = str_replace('{{model_class}}', $Name, $stub);
@@ -94,4 +95,18 @@ class MakeController
 
         return $this;
     }
+
+    private function replaceValidator(&$stub)
+    {
+        if($schema = $this->scaffoldCommandObj->option('validator')){
+            $schema = (new ValidatorParser)->parse($schema);
+        }
+
+        $schema = (new ValidatorSyntax)->create($schema, $this->scaffoldCommandObj->getMeta(), 'validation');
+        $stub = str_replace('{{validation_fields}}', $schema, $stub);
+
+        return $this;
+    }
+
+
 }
