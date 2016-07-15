@@ -37,8 +37,8 @@ class MakeLayout
      */
     protected function start()
     {
-        $this->putViewLayout('Layout', 'stubs/html_assets/layout.stub', 'layout.blade.php');
-        $this->putViewLayout('Error', 'stubs/html_assets/error.stub', 'error.blade.php');
+        $this->putViewLayout('Layout', 'Stubs/html_assets/layout.stub', 'layout.blade.php');
+        $this->putViewLayout('Error', 'Stubs/html_assets/error.stub', 'error.blade.php');
     }
 
 
