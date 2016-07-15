@@ -59,7 +59,7 @@ class MakeModel
      */
     protected function compileModelStub()
     {
-        $stub = $this->files->get(substr(__DIR__,0, -5) . '/Stubs/model.stub');
+        $stub = $this->files->get(substr(__DIR__,0, -5) . 'Stubs/model.stub');
 
         $this->build($stub);
 

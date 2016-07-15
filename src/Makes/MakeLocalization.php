@@ -78,7 +78,7 @@ class MakeLocalization
      */
     protected function compileLocalizationStub()
     {
-        $stub = $this->files->get(substr(__DIR__,0, -5) . '/Stubs/localization.stub');
+        $stub = $this->files->get(substr(__DIR__,0, -5) . 'Stubs/localization.stub');
 
         $this->build($stub);
 
