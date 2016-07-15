@@ -1,0 +1,196 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use {{model_namespace}};
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
+
+class {{model_class}}Controller extends Controller
+{
+	/**
+	 * Variable to model
+	 *
+	 * @var {{model_class}}
+	 */
+	protected $model;
+
+	/**
+	 * Create instance of controller with Model
+	 *
+	 * @return void
+	 */
+	public function __construct({{model_class}} $model)
+	{
+		$this->model = $model;
+	}
+
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function index()
+	{
+		${{model_multiple}} = $this->model->paginate();
+
+		return view('{{model_multiple}}.index', compact('{{model_multiple}}'));
+	}
+
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Response
+	 */
+	public function create()
+	{
+		return view('{{model_multiple}}.create');
+	}
+
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @param Request $request
+	 * @return Response
+	 */
+	public function store(Request $request)
+	{
+        $validator = Validator::make($request->input(), [
+            {{validation_fields}}
+        ]);
+
+        if($validator->fails()){
+
+            return redirect()->back()->withErrors($validator)->withInput();
+
+        }
+
+		$inputs = $request->all();
+		$this->model->create($inputs);
+
+		return redirect()->route('{{prefix}}{{model_multiple}}.index')->with('message', 'Item created successfully.');
+	}
+
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function show($id)
+	{
+        $validator = Validator::make(['id' => $id], [
+            'id' => 'required|exists:{{model_class}},id'
+        ]);
+
+        if($validator->fails()){
+
+            return redirect()->back()->withErrors($validator);
+
+        }
+
+		${{model_variable}} = $this->model->find($id);
+		
+		if(!${{model_variable}}->exists)
+		{
+			return $this->notFound();
+		}
+
+		return view('{{model_multiple}}.show', compact('{{model_variable}}'));
+	}
+
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function edit($id)
+	{
+	    $validator = Validator::make(['id' => $id], [
+            'id' => 'required|exists:{{model_class}},id'
+        ]);
+
+        if($validator->fails()){
+
+            return redirect()->back()->withErrors($validator);
+
+        }
+
+		${{model_variable}} = $this->model->find($id);
+		
+		if(!${{model_variable}}->exists)
+		{
+			return $this->notFound();
+		}
+
+		return view('{{model_multiple}}.edit', compact('{{model_variable}}'));
+	}
+
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  int  $id
+	 * @param Request $request
+	 * @return Response
+	 */
+	public function update(Request $request, $id)
+	{
+        $validator = Validator::make($request->input(), [
+            {{validation_fields}}
+        ]);
+
+        if($validator->fails()){
+
+            return redirect()->back()->withErrors($validator)->withInput();
+
+        }
+
+		${{model_variable}} = $this->model->find($id);
+		
+		if(!${{model_variable}}->exists)
+		{
+			return $this->notFound();
+		}
+
+		$inputs = $request->all();
+		${{model_variable}}->update($inputs);
+
+		return redirect()->route('{{prefix}}{{model_multiple}}.index')->with('message', 'Item updated successfully.');
+	}
+
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function destroy($id)
+	{
+        $validator = Validator::make(['id' => $id], [
+            'id' => 'required|exists:{{model_class}},id'
+        ]);
+
+        if($validator->fails()){
+
+            return redirect()->back()->withErrors($validator)->withInput();
+
+        }
+
+		$this->model->destroy($id);
+
+		return redirect()->route('{{prefix}}{{model_multiple}}.index')->with('message', 'Item deleted successfully.');
+	}
+
+	/**
+	 * Redirect to index and show message not found!
+	 *
+	 * @param  string $message
+	 * @return Response
+	 */
+ 	public function notFound($message = '{{model_class}} not found!')
+	{
+		return redirect()->route('{{model_multiple}}.index')->with('message', $message);
+	}
+}
