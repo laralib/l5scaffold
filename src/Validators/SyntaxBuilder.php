@@ -2,6 +2,11 @@
 
 namespace Laralib\L5scaffold\Validators;
 
+/**
+ * Class SyntaxBuilder
+ * @package Laralib\L5scaffold\Migrations
+ * @author Ryan Gurnick <ryangurnick@gmail.com>
+ */
 class SyntaxBuilder
 {
 

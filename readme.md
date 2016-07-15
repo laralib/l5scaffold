@@ -105,3 +105,4 @@ php artisan make:scaffold Tweet --schema="firstname:string" --validator="lastnam
  <br/>[Adam Brown](https://github.com/DeftNerd "DeftNerd")
  <br/>[TJ Webb](https://github.com/webbtj "webbtj")
  <br/>[Tsaganos Tolis](https://github.com/Dev-Force "Dev-Force")
+ <br/>[Ryan Gurnick](https://github.com/ryangurn "ryangurn")

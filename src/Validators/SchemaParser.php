@@ -3,9 +3,9 @@
 namespace Laralib\L5scaffold\Validators;
 
 /**
- * Class SchemaParser with modifications by Fernando
+ * Class SchemaParser
  * @package Laralib\L5scaffold\Migrations
- * @author Jeffrey Way <jeffrey@jeffrey-way.com>
+ * @author Ryan Gurnick <ryangurnick@gmail.com>
  */
 class SchemaParser
 {
