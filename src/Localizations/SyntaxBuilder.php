@@ -30,8 +30,10 @@ class SyntaxBuilder
     private function createSchemaForLocalization($schema)
     {
         $localization = '';
-        foreach($schema as $k => $v){
-            $localization .= "'".$v['name']."' => '".$v['argument']."',\n\t";
+        if(is_array($schema)) {
+            foreach ($schema as $k => $v) {
+                $localization .= "'" . $v['name'] . "' => '" . $v['argument'] . "',\n\t";
+            }
         }
         return $localization;
     }
