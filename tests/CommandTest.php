@@ -82,7 +82,7 @@ class CommandTest extends PHPUnit
 
 		Artisan::call('make:scaffold',
 		[
-			'name' => 'Tweet',
+			'name' => 'Tweet2',
 			'--schema' => 'title:string',
 			'--localization' => 'title:required',
 			'--lang' => 'fr',
