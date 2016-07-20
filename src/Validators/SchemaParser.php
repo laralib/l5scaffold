@@ -72,19 +72,10 @@ class SchemaParser
         $segments = explode(':', $field);
 
         $name = array_shift($segments);
-        $arguments = [];
-
+        $arguments = $segments;
         // Do we have arguments being used here?
         // Like: string(100)
-        if(isset($segments[0]) && $segments[0] != null) {
-            if (preg_match('/(.+?)\(([^)]+)\)/', $segments[0], $matches)) {
-                $arguments[$matches[1]] = $matches[2];
-            } else {
-                $arguments[$segments[0]] = '';
-            }
-        }
         return compact('name', 'arguments');
     }
 
 }
-
