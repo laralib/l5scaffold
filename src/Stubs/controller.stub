@@ -66,7 +66,7 @@ class {{model_class}}Controller extends Controller
 
         }
 
-		$inputs = $request->all();
+		$inputs = $this->inputs($request);
 		$this->model->create($inputs);
 
 		return redirect()->route('{{prefix}}{{model_multiple}}.index')->with('message', 'Item created successfully.');
@@ -154,7 +154,7 @@ class {{model_class}}Controller extends Controller
 			return $this->notFound();
 		}
 
-		$inputs = $request->all();
+		$inputs = $this->inputs($request);
 		${{model_variable}}->update($inputs);
 
 		return redirect()->route('{{prefix}}{{model_multiple}}.index')->with('message', 'Item updated successfully.');
@@ -193,4 +193,17 @@ class {{model_class}}Controller extends Controller
 	{
 		return redirect()->route('{{model_multiple}}.index')->with('message', $message);
 	}
+
+	/**
+	* Return the correct array of inputs
+	*
+	* @param null
+	*
+	*/
+	protected function inputs(Request $request){
+	    $inputs = $request->all();
+	    unset($inputs['_token'], $inputs['_method']);
+	    return $inputs;
+	}
+
 }
