@@ -35,8 +35,10 @@ class SyntaxBuilder
                 $validator .= "'" . $s['name'] . "' => '";
 
                 #deal with the different format of the console
-                $validator .= str_replace(")", "", str_replace("(", ":", $s['arguments'][0]));
-                $validator .= "',\n\t\t\t";
+                if(isset($s['arguments'][0]) && $s['arguments'][0] != null ) {
+                    $validator .= str_replace(")", "", str_replace("(", ":", $s['arguments'][0]));
+                    $validator .= "',\n\t\t\t";
+                }
             }
             return $validator;
         }

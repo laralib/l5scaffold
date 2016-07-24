@@ -75,6 +75,9 @@ trait MakerTrait
         elseif($path == "localization"){
             return './resources/lang/'.$file_name.'.php';
         }
+        elseif($path == "route"){
+            return './app/Http/routes.php';
+        }
     }
 
     /**

@@ -12,6 +12,7 @@ use Laralib\L5scaffold\Makes\MakeLayout;
 use Laralib\L5scaffold\Makes\MakeLocalization;
 use Laralib\L5scaffold\Makes\MakeMigration;
 use Laralib\L5scaffold\Makes\MakeModel;
+use Laralib\L5scaffold\Makes\MakeRoute;
 use Laralib\L5scaffold\Makes\MakerTrait;
 use Laralib\L5scaffold\Makes\MakeSeed;
 use Laralib\L5scaffold\Makes\MakeView;
@@ -99,12 +100,7 @@ class ScaffoldMakeCommand extends Command
         $this->info('Dump-autoload...');
         $this->composer->dumpAutoloads();
         
-
-        $this->line("----------- Add manualy -----------\n\n");
-        
-        $this->error("/* add in app/Http/routes.php */");
-        $this->info("Route::resource('$names', '$Name"."Controller');");
-
+        $this->makeRoute();
         $this->line("\n\n----------- ----------- -----------");
     }
 
@@ -252,6 +248,10 @@ class ScaffoldMakeCommand extends Command
     public function getMeta()
     {
         return $this->meta;
+    }
+
+    public function makeRoute(){
+        new MakeRoute($this, $this->files);
     }
 
     /**
