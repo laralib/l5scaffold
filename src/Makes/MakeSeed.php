@@ -9,6 +9,7 @@
 namespace Laralib\L5scaffold\Makes;
 
 
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Filesystem\Filesystem;
 use Laralib\L5scaffold\Commands\ScaffoldMakeCommand;
 
@@ -67,7 +68,11 @@ class MakeSeed
      */
     protected function compileSeedStub()
     {
-        $stub = $this->files->get(__DIR__ . '/../stubs/seed.stub');
+        try {
+            $stub = $this->files->get(config_path('l5scaffold/stubs/seed.stub'));
+        } catch (FileNotFoundException $e) {
+            $stub = $this->files->get(__DIR__ . '/../stubs/seed.stub');
+        }
 
         $this->replaceClassName($stub);
 

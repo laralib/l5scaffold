@@ -13,7 +13,8 @@ class GeneratorsServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		//
+
+	    $this->publishStubFiles();
 
 	}
 
@@ -41,6 +42,16 @@ class GeneratorsServiceProvider extends ServiceProvider {
 
 		$this->commands('command.larascaf.scaffold');
 	}
+
+	/**
+     * Publish the stubs to the config folder
+     */
+	private function publishStubFiles()
+    {
+
+        $this->publishes([__DIR__ . '/stubs/' => config_path('l5scaffold/stubs/')], 'stubs');
+
+    }
 
 
 }

@@ -9,6 +9,7 @@
 namespace Laralib\L5scaffold\Makes;
 
 
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Filesystem\Filesystem;
 use Laralib\L5scaffold\Commands\ScaffoldMakeCommand;
 use Laralib\L5scaffold\Migrations\SchemaParser;
@@ -86,7 +87,11 @@ class MakeView
      */
     protected function compileViewStub($nameView)
     {
-        $stub = $this->files->get(__DIR__ . '/../stubs/html_assets/'.$nameView.'.stub');
+        try {
+            $stub = $this->files->get(config_path('l5scaffold/stubs/html_assets/' . $nameView . '.stub'));
+        } catch (FileNotFoundException $e) {
+            $stub = $this->files->get(__DIR__ . '/../stubs/html_assets/' . $nameView . '.stub');
+        }
 
         if($nameView == 'show'){
             // show.blade.php

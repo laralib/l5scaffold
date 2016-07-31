@@ -2,6 +2,7 @@
 namespace Laralib\L5scaffold\Makes;
 
 use Illuminate\Console\AppNamespaceDetectorTrait;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Filesystem\Filesystem;
 use Laralib\L5scaffold\Commands\ScaffoldMakeCommand;
 use Laralib\L5scaffold\Migrations\SchemaParser;
@@ -59,7 +60,11 @@ class MakeController
      */
     protected function compileControllerStub()
     {
-        $stub = $this->files->get(__DIR__ . '/../stubs/controller.stub');
+        try {
+            $stub = $this->files->get(config_path('l5scaffold/stubs/controller.stub'));
+        } catch (FileNotFoundException $e) {
+            $stub = $this->files->get(__DIR__ . '/../stubs/controller.stub');
+        }
 
         $this->replaceClassName($stub, "controller")
             ->replaceModelPath($stub)

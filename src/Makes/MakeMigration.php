@@ -9,6 +9,7 @@
 namespace Laralib\L5scaffold\Makes;
 
 
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Filesystem\Filesystem;
 use Laralib\L5scaffold\Commands\ScaffoldMakeCommand;
 use Laralib\L5scaffold\Migrations\SchemaParser;
@@ -68,7 +69,11 @@ class MakeMigration {
      */
     protected function compileMigrationStub()
     {
-        $stub = $this->files->get(__DIR__.'/../stubs/migration.stub');
+        try {
+            $stub = $this->files->get(config_path('l5scaffold/stubs/migration.stub'));
+        } catch (FileNotFoundException $e) {
+            $stub = $this->files->get(__DIR__ . '/../stubs/migration.stub');
+        }
 
         $this->replaceClassName($stub)
             ->replaceSchema($stub)
