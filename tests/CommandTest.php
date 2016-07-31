@@ -76,7 +76,6 @@ class CommandTest extends PHPUnit
 		[
         	'name' => 'Tweet', 
         	'--schema' => 'title:string',
-			'--validator' => 'title:required|unique:tweets,id',
         	'--no-interaction'
     	]);
 	}
