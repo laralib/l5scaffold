@@ -50,6 +50,17 @@ And don't forget to run:
 php artisan migrate
 ```
 
+## Validations
+```
+php artisan make:scaffold Tweet --schema="firstname:string" --validator="lastname:unique(tweets,id),firstname:required|unique(tweets)"
+```
+
+## Localization
+Localization required two arguments, the first being the `--localization` one which is a key value pair the key being the string that you want to reference the Localized value string by. 
+```
+php artisan make:scaffold Tweet --schema="firstname:string" --localization="key:value" --lang="country_code"
+```
+
 ### Other Examples (new)
 
 Same as above with use of the prefix. It will create the prefix in redirects of controller and the links of views (v1.0.7):
@@ -76,22 +87,12 @@ php artisan make:scaffold Tweet --prefix="admin"
 ###Data type Boolean (on view)
 ![image](http://i65.tinypic.com/afehl5.jpg)
 
-## Validations
-```
-php artisan make:scaffold Tweet --schema="firstname:string" --validator="lastname:unique(tweets,id),firstname:required|unique(tweets)"
-```
-
-
 # Todo task list
-1 - Validations
+1 - More fields type
 
-2 - Support a Localization
+2 - Default tests file
 
-3 - More fields type
-
-4 - Default tests file
-
-5 - sass and js with gulp
+3 - sass and js with gulp
 
 **Send us your ideas.** (send message to @fernandobritofl (Twitter))
 
@@ -107,3 +108,4 @@ php artisan make:scaffold Tweet --schema="firstname:string" --validator="lastnam
  <br/>[Adam Brown](https://github.com/DeftNerd "DeftNerd")
  <br/>[TJ Webb](https://github.com/webbtj "webbtj")
  <br/>[Tsaganos Tolis](https://github.com/Dev-Force "Dev-Force")
+ <br/>[Ryan Gurnick](https://github.com/ryangurn "ryangurn")

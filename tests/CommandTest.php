@@ -79,5 +79,14 @@ class CommandTest extends PHPUnit
 			'--validator' => 'title:required|unique:tweets,id',
         	'--no-interaction'
     	]);
+
+		Artisan::call('make:scaffold',
+		[
+			'name' => 'Tweet2',
+			'--schema' => 'title:string',
+			'--localization' => 'title:required',
+			'--lang' => 'fr',
+			'--no-interaction'
+		]);
 	}
 }

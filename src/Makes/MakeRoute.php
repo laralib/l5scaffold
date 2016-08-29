@@ -8,14 +8,15 @@
 
 namespace Laralib\L5scaffold\Makes;
 
+use Illuminate\Console\AppNamespaceDetectorTrait;
 use Illuminate\Filesystem\Filesystem;
 use Laralib\L5scaffold\Commands\ScaffoldMakeCommand;
 use Laralib\L5scaffold\Migrations\SchemaParser;
 use Laralib\L5scaffold\Migrations\SyntaxBuilder;
 
-class MakeModel
+class MakeRoute
 {
-    use MakerTrait;
+    use AppNamespaceDetectorTrait, MakerTrait;
 
     /**
      * Create a new instance.
@@ -40,16 +41,11 @@ class MakeModel
     private function start()
     {
         $name = $this->scaffoldCommandObj->getObjName('Name');
-        $path = $this->getPath($name, 'model');
+        $path = $this->getPath($name, 'route');
 
-        if ($this->files->exists($path)) 
-        {
-            return $this->scaffoldCommandObj->error($name . ' already exists!');
-        }
+        $this->files->append($path, $this->compileRouteStub());
 
-        $this->files->put($path, $this->compileModelStub());
-
-        $this->scaffoldCommandObj->info('Model created successfully.');
+        $this->scaffoldCommandObj->info('Routes Updated successfully.');
     }
 
     /**
@@ -57,9 +53,9 @@ class MakeModel
      *
      * @return string
      */
-    protected function compileModelStub()
+    protected function compileRouteStub()
     {
-        $stub = $this->files->get(substr(__DIR__,0, -5) . 'Stubs/model.stub');
+        $stub = $this->files->get(substr(__DIR__,0, -5) . 'Stubs/route.stub');
 
         $this->build($stub);
 
@@ -73,22 +69,19 @@ class MakeModel
      */
     protected function build(&$stub)
     {
+        $namespace = $model_name = $this->getAppNamespace();
         $Name = $this->scaffoldCommandObj->getObjName('Name');
-        $schema = $this->scaffoldCommandObj->option('schema');
-        $schemaArray = [];
+        $name = $this->scaffoldCommandObj->getObjName('name');
+        $names =  $this->scaffoldCommandObj->getObjName('names');
+        $prefix = $this->scaffoldCommandObj->option('prefix');
 
-        if ($schema)
-        {
-            $schemaArray = array_map(function($item){
-                return "'".$item['name']."'";
-            }, (new SchemaParser)->parse($schema));
+        if(!empty($prefix)) $prefix = "$prefix.";
 
-            $schemaArray = join(", ", $schemaArray);
-        }
-
-
+        $stub = str_replace('{{model_namespace}}', $namespace.$Name, $stub);
         $stub = str_replace('{{model_class}}', $Name, $stub);
-        $stub = str_replace('{{model_fillable}}', $schemaArray, $stub);
+        $stub = str_replace('{{model_variable}}', $name, $stub);
+        $stub = str_replace('{{model_multiple}}', $names, $stub);
+        $stub = str_replace('{{prefix}}', $prefix, $stub);
 
         return $this;
     }

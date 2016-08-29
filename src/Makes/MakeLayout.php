@@ -37,8 +37,8 @@ class MakeLayout
      */
     protected function start()
     {
-        $this->putViewLayout('Layout', 'stubs/html_assets/layout.stub', 'layout.blade.php');
-        $this->putViewLayout('Error', 'stubs/html_assets/error.stub', 'error.blade.php');
+        $this->putViewLayout('Layout', 'Stubs/html_assets/layout.stub', 'layout.blade.php');
+        $this->putViewLayout('Error', 'Stubs/html_assets/error.stub', 'error.blade.php');
     }
 
 
@@ -52,7 +52,7 @@ class MakeLayout
     protected function putViewLayout($name, $stub, $file)
     {
         $path_file = $this->getPathResource().$file;
-        $path_stub = __DIR__ .'/../'.$stub;
+        $path_stub = substr(__DIR__,0, -5) .$stub;
 
         if (!$this->files->exists($path_file))
         {

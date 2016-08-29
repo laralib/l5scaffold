@@ -6,10 +6,13 @@ use Illuminate\Console\AppNamespaceDetectorTrait;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Composer;
+use Illuminate\Support\Facades\Input;
 use Laralib\L5scaffold\Makes\MakeController;
 use Laralib\L5scaffold\Makes\MakeLayout;
+use Laralib\L5scaffold\Makes\MakeLocalization;
 use Laralib\L5scaffold\Makes\MakeMigration;
 use Laralib\L5scaffold\Makes\MakeModel;
+use Laralib\L5scaffold\Makes\MakeRoute;
 use Laralib\L5scaffold\Makes\MakerTrait;
 use Laralib\L5scaffold\Makes\MakeSeed;
 use Laralib\L5scaffold\Makes\MakeView;
@@ -91,17 +94,13 @@ class ScaffoldMakeCommand extends Command
         $this->makeController();
         $this->makeViewLayout();
         $this->makeViews();
+        $this->makeLocalization();
 
         // Finish with dump autoload.
         $this->info('Dump-autoload...');
         $this->composer->dumpAutoloads();
         
-
-        $this->line("----------- Add manualy -----------\n\n");
-        
-        $this->error("/* add in app/Http/routes.php */");
-        $this->info("Route::resource('$names', '$Name"."Controller');");
-
+        $this->makeRoute();
         $this->line("\n\n----------- ----------- -----------");
     }
 
@@ -167,6 +166,14 @@ class ScaffoldMakeCommand extends Command
     }
 
     /**
+     * Setup the localizations
+     */
+    private function makeLocalization()
+    {
+        new MakeLocalization($this, $this->files);
+    }
+
+    /**
      * Get the console command arguments.
      *
      * @return array
@@ -203,6 +210,20 @@ class ScaffoldMakeCommand extends Command
                 null
             ],
             [
+                'localization',
+                'l',
+                InputOption::VALUE_OPTIONAL,
+                'Localizations to generate scaffold files. (Ex. --localization="key:value")',
+                null
+            ],
+            [
+                'lang',
+                'b',
+                InputOption::VALUE_OPTIONAL,
+                'Language for Localization (Ex. --lang="en")',
+                null,
+            ],
+            [
                 'form', 
                 'f', 
                 InputOption::VALUE_OPTIONAL, 
@@ -227,6 +248,10 @@ class ScaffoldMakeCommand extends Command
     public function getMeta()
     {
         return $this->meta;
+    }
+
+    public function makeRoute(){
+        new MakeRoute($this, $this->files);
     }
 
     /**

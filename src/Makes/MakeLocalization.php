@@ -10,10 +10,14 @@ namespace Laralib\L5scaffold\Makes;
 
 use Illuminate\Filesystem\Filesystem;
 use Laralib\L5scaffold\Commands\ScaffoldMakeCommand;
+use Laralib\L5scaffold\Localizations\SchemaParser as LocalizationsParser;
+use Laralib\L5scaffold\Localizations\SyntaxBuilder as LocalizationsBuilder;
 
-class MakeSeed
+class MakeLocalization
 {
     use MakerTrait;
+
+    private $language_code;
 
     /**
      * Create a new instance.
@@ -26,6 +30,7 @@ class MakeSeed
     {
         $this->files = $files;
         $this->scaffoldCommandObj = $scaffoldCommand;
+        $this->language_code = $this->scaffoldCommandObj->option('lang');
 
         $this->start();
     }
@@ -37,7 +42,7 @@ class MakeSeed
      */
     protected function start()
     {
-        $path = $this->getPath($this->scaffoldCommandObj->getObjName('Name') . 'TableSeeder', 'seed');
+        $path = $this->getPath($this->language_code . '/'.$this->scaffoldCommandObj->getObjName('Name'), 'localization');
 
         $this->makeDirectory($path);
 
@@ -45,13 +50,13 @@ class MakeSeed
         {
             if ($this->scaffoldCommandObj->confirm($path . ' already exists! Do you wish to overwrite? [yes|no]'))
             {
-                $this->files->put($path, $this->compileSeedStub());
+                $this->files->put($path, $this->compileLocalizationStub());
                 $this->getSuccessMsg();
             }
         }
         else
         {
-            $this->files->put($path, $this->compileSeedStub());
+            $this->files->put($path, $this->compileLocalizationStub());
             $this->getSuccessMsg();
         }
     }
@@ -63,7 +68,7 @@ class MakeSeed
      */
     protected function getSuccessMsg()
     {
-        $this->scaffoldCommandObj->info('Seed created successfully.');
+        $this->scaffoldCommandObj->info('Localization created successfully.');
     }
 
     /**
@@ -71,26 +76,28 @@ class MakeSeed
      *
      * @return string
      */
-    protected function compileSeedStub()
+    protected function compileLocalizationStub()
     {
-        $stub = $this->files->get(substr(__DIR__,0, -5) . 'Stubs/seed.stub');
+        $stub = $this->files->get(substr(__DIR__,0, -5) . 'Stubs/localization.stub');
 
-        $this->replaceClassName($stub);
+        $this->build($stub);
 
         return $stub;
     }
 
-    /**
-     * Rename the class name in Seed
-     *
-     * @return $this
-     */
-    private function replaceClassName(&$stub)
-    {
-        $name = $this->scaffoldCommandObj->getObjName('Name');
+    private function build(&$stub){
+        $this->replaceLocalization($stub);
+    }
 
-        $stub = str_replace('{{class}}', $name, $stub);
+    private function replaceLocalization(&$stub){
+        if($schema = $this->scaffoldCommandObj->option('localization')){
+            $schema = (new LocalizationsParser())->parse($schema);
+        }
+
+        $schema = (new LocalizationsBuilder())->create($schema, $this->scaffoldCommandObj->getMeta(), 'validation');
+        $stub = str_replace('{{localization}}', $schema, $stub);
 
         return $this;
     }
+
 }

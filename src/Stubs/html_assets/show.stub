@@ -20,7 +20,7 @@
             <form action="#">
                 <div class="form-group">
                     <label for="nome">ID</label>
-                    <p class="form-control-static"></p>
+                    <p class="form-control-static">{{ ${{classSingle}}->id }}</p>
                 </div>
                 {{content_fields}}
             </form>

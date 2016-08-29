@@ -2,6 +2,11 @@
 
 namespace Laralib\L5scaffold\Validators;
 
+/**
+ * Class SyntaxBuilder
+ * @package Laralib\L5scaffold\Migrations
+ * @author Ryan Gurnick <ryangurnick@gmail.com>
+ */
 class SyntaxBuilder
 {
 
@@ -28,17 +33,12 @@ class SyntaxBuilder
         if(is_array($schema)) {
             foreach ($schema as $s) {
                 $validator .= "'" . $s['name'] . "' => '";
-                foreach ($s['arguments'] as $k => $a) {
-                    if ($a != null) {
-                        $validator .= $k . ":" . str_replace(".", ",", str_replace("/", ":", $a));
-                    } elseif ($a == null) {
-                        $validator .= str_replace(".", ",", str_replace("/", ":", $k));
-                    }
-                    if ((count($s['arguments']) - 1) != $k) {
-                        $validator .= "|";
-                    }
+
+                #deal with the different format of the console
+                if(isset($s['arguments'][0]) && $s['arguments'][0] != null ) {
+                    $validator .= str_replace(")", "", str_replace("(", ":", $s['arguments'][0]));
+                    $validator .= "',\n\t\t\t";
                 }
-                $validator .= "',\n\t\t\t";
             }
             return $validator;
         }

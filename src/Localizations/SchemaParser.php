@@ -1,6 +1,6 @@
 <?php
 
-namespace Laralib\L5scaffold\Validators;
+namespace Laralib\L5scaffold\Localizations;
 
 /**
  * Class SchemaParser
@@ -72,10 +72,11 @@ class SchemaParser
         $segments = explode(':', $field);
 
         $name = array_shift($segments);
-        $arguments = $segments;
-        // Do we have arguments being used here?
-        // Like: string(100)
-        return compact('name', 'arguments');
+        $argument = $segments[0];
+
+        return compact('name', 'argument');
+
     }
 
 }
+
