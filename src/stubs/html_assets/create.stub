@@ -4,7 +4,7 @@
 @endsection
 @section('header')
     <div class="page-header">
-        <h1><i class="glyphicon glyphicon-plus"></i> {{Class}} / Create </h1>
+        <h1><i class="glyphicon glyphicon-plus"></i> {{Class}} / @lang('l5scaffold.create') </h1>
     </div>
 @endsection
 
@@ -19,8 +19,8 @@
 
                 {{content_fields}}
                 <div class="well well-sm">
-                    <button type="submit" class="btn btn-primary">Create</button>
-                    <a class="btn btn-link pull-right" href="{{ route('{{prefix}}{{class}}.index') }}"><i class="glyphicon glyphicon-backward"></i> Back</a>
+                    <button type="submit" class="btn btn-primary">@lang('l5scaffold.create')</button>
+                    <a class="btn btn-link pull-right" href="{{ route('{{prefix}}{{class}}.index') }}"><i class="glyphicon glyphicon-backward"></i> @lang('l5scaffold.back')</a>
                 </div>
             </form>
 

@@ -77,7 +77,12 @@ php artisan make:scaffold Tweet --prefix="admin"
 ![image](http://i65.tinypic.com/afehl5.jpg)
 
 
+## Internationalization (I18l)
 
+After instalation/update through Composer a new file with default labels in english called `l5scaffold.php` will be placed at language resources app folder `resources/lang/en`.
+
+To change the labels of your app, you just need to add a new language file called `l5scaffold.php` into `resources/lang/YOUR_APP_LANGUAGE`.
+And then configure your app Location acording to the docs of [Laravel Localization](https://laravel.com/docs/5.2/localization) component.
 
 # Todo task list
 1 - Validations
