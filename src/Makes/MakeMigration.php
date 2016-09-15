@@ -77,40 +77,10 @@ class MakeMigration
     {
         $stub = $this->files->get(substr(__DIR__,0, -5) . 'Stubs/migration.stub');
 
-        $this
-        ->replaceClassName($stub)
-        ->replaceSchema($stub)
-        ->replaceTableName($stub);
+        $this->replaceSchema($stub);
+        $this->buildStub($this->scaffoldCommandObj->getMeta(), $stub);
 
         return $stub;
-    }
-
-    /**
-     * Replace the class name in the stub.
-     *
-     * @param  string $stub
-     * @return $this
-     */
-    protected function replaceClassName(&$stub)
-    {
-        $className = ucwords(camel_case('Create'.str_plural($this->scaffoldCommandObj->argument('name')).'Table'));
-        $stub = str_replace('{{class}}', $className, $stub);
-
-        return $this;
-    }
-
-    /**
-     * Replace the table name in the stub.
-     *
-     * @param  string $stub
-     * @return $this
-     */
-    protected function replaceTableName(&$stub)
-    {
-        $table = $this->scaffoldCommandObj->getMeta()['table'];
-        $stub = str_replace('{{table}}', $table, $stub);
-
-        return $this;
     }
 
     /**
@@ -127,17 +97,9 @@ class MakeMigration
             $schema = (new SchemaParser)->parse($schema);
         }
 
-        if($type == 'migration')
-        {
-            $schema = (new SyntaxBuilder)->create($schema, $this->scaffoldCommandObj->getMeta());
-            $stub = str_replace(['{{schema_up}}', '{{schema_down}}'], $schema, $stub);
-        } 
-        else if($type='controller')
-        {
-            $schema = (new SyntaxBuilder)->create($schema, $this->scaffoldCommandObj->getMeta(), 'controller');
-            $stub = str_replace('{{model_fields}}', $schema, $stub);
-        } else {}
-
+        $schema = (new SyntaxBuilder)->create($schema, $this->scaffoldCommandObj->getMeta());
+        $stub = str_replace(['{{schema_up}}', '{{schema_down}}'], $schema, $stub);
+        
         return $this;
     }
 }

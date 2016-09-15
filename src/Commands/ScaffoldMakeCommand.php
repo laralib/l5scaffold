@@ -111,7 +111,7 @@ class ScaffoldMakeCommand extends Command
         // ToDo - Verificar utilidade...
         $this->meta['action'] = 'create';
         $this->meta['var_name'] = $this->getObjName("name");
-        $this->meta['table'] = $this->getObjName("names");
+        $this->meta['table'] = $this->getObjName("names");//obsoleto
 
         // $namespace = $model_name = $this->getAppNamespace();
         // $Name = $this->scaffoldCommandObj->getObjName('Name');
@@ -121,10 +121,14 @@ class ScaffoldMakeCommand extends Command
 
         // ToDo - Method getObjName repeating...
         $this->meta['namespace'] = $this->getAppNamespace();
+        
         $this->meta['Model'] = $this->getObjName('Name');
         $this->meta['Models'] = $this->getObjName('Names');
         $this->meta['model'] = $this->getObjName('name');
         $this->meta['models'] = $this->getObjName('names');
+        $this->meta['ModelMigration'] = "Create{$this->meta['Models']}Table";
+        
+        $this->meta['schema'] = $this->option('schema');
         $this->meta['prefix'] = ($prefix = $this->option('prefix')) ? "$prefix." : "";
     }
 
