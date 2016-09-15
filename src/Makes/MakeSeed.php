@@ -51,7 +51,7 @@ class MakeSeed
     }
 
     /**
-     * Compile the migration stub.
+     * Compile the seed stub.
      *
      * @return string
      */
@@ -59,22 +59,8 @@ class MakeSeed
     {
         $stub = $this->files->get(substr(__DIR__,0, -5) . 'Stubs/seed.stub');
 
-        $this->replaceClassName($stub);
+        $this->buildStub($this->scaffoldCommandObj->getMeta(), $stub);
 
         return $stub;
-    }
-
-    /**
-     * Rename the class name in Seed
-     *
-     * @return $this
-     */
-    private function replaceClassName(&$stub)
-    {
-        $name = $this->scaffoldCommandObj->getObjName('Name');
-
-        $stub = str_replace('{{class}}', $name, $stub);
-
-        return $this;
     }
 }

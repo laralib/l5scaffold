@@ -61,7 +61,8 @@ class MakeModel
     {
         $stub = $this->files->get(substr(__DIR__,0, -5) . 'Stubs/model.stub');
 
-        $this->build($stub);
+        $this->buildStub($this->scaffoldCommandObj->getMeta(), $stub);
+        $this->buildFillable($stub);
 
         return $stub;
     }
@@ -71,24 +72,24 @@ class MakeModel
      *
      * @return string
      */
-    protected function build(&$stub)
+    protected function buildFillable(&$stub)
     {
-        $Name = $this->scaffoldCommandObj->getObjName('Name');
-        $schema = $this->scaffoldCommandObj->option('schema');
         $schemaArray = [];
+
+        $schema = $this->scaffoldCommandObj->getMeta()['schema'];
 
         if ($schema)
         {
-            $schemaArray = array_map(function($item){
-                return "'".$item['name']."'";
-            }, (new SchemaParser)->parse($schema));
+            $items = (new SchemaParser)->parse($schema);
+            foreach($items as $item)
+            {
+                $schemaArray[] = "'{$item['name']}'";
+            }
 
             $schemaArray = join(", ", $schemaArray);
         }
 
-
-        $stub = str_replace('{{model_class}}', $Name, $stub);
-        $stub = str_replace('{{model_fillable}}', $schemaArray, $stub);
+        $stub = str_replace('{{fillable}}', $schemaArray, $stub);
 
         return $this;
     }
