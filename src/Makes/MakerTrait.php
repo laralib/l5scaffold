@@ -31,9 +31,35 @@ trait MakerTrait
         $this->files = $files;
         $this->scaffoldCommandM = $scaffoldCommand;
 
-        $this->generateNames($scaffoldCommand);
+        $this->generateNames($this->scaffoldCommandM);
     }
 
+    /**
+     * Get stub path.
+     *
+     * @param $file_name
+     * @param string $path
+     * @return string
+     */
+    protected function getStubPath()
+    {
+        return substr(__DIR__,0, -5) . 'Stubs';
+    }
+
+    /**
+     * Build file replacing metas in template.
+     *
+     * @param array $metas
+     * @param string &$template
+     * @return void
+     */
+    protected function buildStub(array $metas, &$template)
+    {
+        foreach($metas as $k => $v)
+        {
+            $template = str_replace("{{". $k ."}}", $v, $template);
+        }
+    }
 
     /**
      * Get the path to where we should store the controller.

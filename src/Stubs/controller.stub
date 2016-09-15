@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use {{model_namespace}};
+use {{namespace}}{{Model}};
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
-class {{model_class}}Controller extends Controller
+class {{Model}}Controller extends Controller
 {
 	/**
 	 * Variable to model
 	 *
-	 * @var {{model_class}}
+	 * @var {{model}}
 	 */
 	protected $model;
 
@@ -21,7 +21,7 @@ class {{model_class}}Controller extends Controller
 	 *
 	 * @return void
 	 */
-	public function __construct({{model_class}} $model)
+	public function __construct({{Model}} $model)
 	{
 		$this->model = $model;
 	}
@@ -33,9 +33,9 @@ class {{model_class}}Controller extends Controller
 	 */
 	public function index()
 	{
-		${{model_multiple}} = $this->model->paginate();
+		${{models}} = $this->model->paginate();
 
-		return view('{{model_multiple}}.index', compact('{{model_multiple}}'));
+		return view('{{models}}.index', compact('{{models}}'));
 	}
 
 	/**
@@ -45,7 +45,7 @@ class {{model_class}}Controller extends Controller
 	 */
 	public function create()
 	{
-		return view('{{model_multiple}}.create');
+		return view('{{models}}.create');
 	}
 
 	/**
@@ -69,7 +69,7 @@ class {{model_class}}Controller extends Controller
 		$inputs = $this->inputs($request);
 		$this->model->create($inputs);
 
-		return redirect()->route('{{prefix}}{{model_multiple}}.index')->with('message', 'Item created successfully.');
+		return redirect()->route('{{prefix}}{{models}}.index')->with('message', 'Item created successfully.');
 	}
 
 	/**
@@ -81,7 +81,7 @@ class {{model_class}}Controller extends Controller
 	public function show($id)
 	{
         $validator = Validator::make(['id' => $id], [
-            'id' => 'required|exists:{{model_multiple}},id'
+            'id' => 'required|exists:{{models}},id'
         ]);
 
         if($validator->fails()){
@@ -90,14 +90,9 @@ class {{model_class}}Controller extends Controller
 
         }
 
-		${{model_variable}} = $this->model->find($id);
+		${{model}} = $this->model->findOrFail($id);
 		
-		if(!${{model_variable}}->exists)
-		{
-			return $this->notFound();
-		}
-
-		return view('{{model_multiple}}.show', compact('{{model_variable}}'));
+		return view('{{models}}.show', compact('{{model}}'));
 	}
 
 	/**
@@ -109,7 +104,7 @@ class {{model_class}}Controller extends Controller
 	public function edit($id)
 	{
 	    $validator = Validator::make(['id' => $id], [
-            'id' => 'required|exists:{{model_multiple}},id'
+            'id' => 'required|exists:{{models}},id'
         ]);
 
         if($validator->fails()){
@@ -118,14 +113,9 @@ class {{model_class}}Controller extends Controller
 
         }
 
-		${{model_variable}} = $this->model->find($id);
+		${{model}} = $this->model->findOrFail($id);
 		
-		if(!${{model_variable}}->exists)
-		{
-			return $this->notFound();
-		}
-
-		return view('{{model_multiple}}.edit', compact('{{model_variable}}'));
+		return view('{{models}}.edit', compact('{{model}}'));
 	}
 
 	/**
@@ -147,17 +137,12 @@ class {{model_class}}Controller extends Controller
 
         }
 
-		${{model_variable}} = $this->model->find($id);
-		
-		if(!${{model_variable}}->exists)
-		{
-			return $this->notFound();
-		}
-
 		$inputs = $this->inputs($request);
-		${{model_variable}}->update($inputs);
 
-		return redirect()->route('{{prefix}}{{model_multiple}}.index')->with('message', 'Item updated successfully.');
+		${{model}} = $this->model->findOrFail($id);		
+		${{model}}->update($inputs);
+
+		return redirect()->route('{{prefix}}{{models}}.index')->with('message', 'Item updated successfully.');
 	}
 
 	/**
@@ -169,7 +154,7 @@ class {{model_class}}Controller extends Controller
 	public function destroy($id)
 	{
         $validator = Validator::make(['id' => $id], [
-            'id' => 'required|exists:{{model_multiple}},id'
+            'id' => 'required|exists:{{models}},id'
         ]);
 
         if($validator->fails()){
@@ -180,18 +165,7 @@ class {{model_class}}Controller extends Controller
 
 		$this->model->destroy($id);
 
-		return redirect()->route('{{prefix}}{{model_multiple}}.index')->with('message', 'Item deleted successfully.');
-	}
-
-	/**
-	 * Redirect to index and show message not found!
-	 *
-	 * @param  string $message
-	 * @return Response
-	 */
- 	public function notFound($message = '{{model_class}} not found!')
-	{
-		return redirect()->route('{{model_multiple}}.index')->with('message', $message);
+		return redirect()->route('{{prefix}}{{models}}.index')->with('message', 'Item deleted successfully.');
 	}
 
 	/**

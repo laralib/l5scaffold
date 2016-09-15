@@ -78,18 +78,13 @@ class ScaffoldMakeCommand extends Command
      * @return void
      */
     public function fire()
-    {
-        $this->meta['action'] = 'create';
-        $this->meta['var_name'] = $this->getObjName("name");
-        $this->meta['table'] = $this->getObjName("names");
-
-        
+    {        
         $header = "scaffold: {$this->getObjName("Name")}";
         $footer = str_pad('', strlen($header), '-');
 
         $this->line("\n----------- $header -----------\n");
 
-
+        $this->makeMeta();
         $this->makeMigration();
         $this->makeSeed();
         $this->makeModel();
@@ -104,6 +99,33 @@ class ScaffoldMakeCommand extends Command
         $this->composer->dumpAutoloads();
         
         $this->makeRoute();
+    }
+
+    /**
+     * Generate the desired migration.
+     *
+     * @return void
+     */
+    protected function makeMeta()    
+    {
+        // ToDo - Verificar utilidade...
+        $this->meta['action'] = 'create';
+        $this->meta['var_name'] = $this->getObjName("name");
+        $this->meta['table'] = $this->getObjName("names");
+
+        // $namespace = $model_name = $this->getAppNamespace();
+        // $Name = $this->scaffoldCommandObj->getObjName('Name');
+        // $name = $this->scaffoldCommandObj->getObjName('name');
+        // $names =  $this->scaffoldCommandObj->getObjName('names');
+        // $prefix = $this->scaffoldCommandObj->option('prefix');
+
+        // ToDo - Method getObjName repeating...
+        $this->meta['namespace'] = $this->getAppNamespace();
+        $this->meta['Model'] = $this->getObjName('Name');
+        $this->meta['Models'] = $this->getObjName('Names');
+        $this->meta['model'] = $this->getObjName('name');
+        $this->meta['models'] = $this->getObjName('names');
+        $this->meta['prefix'] = ($prefix = $this->option('prefix')) ? "$prefix." : "";
     }
 
     /**

@@ -57,7 +57,7 @@ class MakeController
     }
 
     /**
-     * Compile the migration stub.
+     * Compile the controller stub.
      *
      * @return string
      */
@@ -65,37 +65,18 @@ class MakeController
     {
         $stub = $this->files->get(substr(__DIR__,0, -5) . 'Stubs/controller.stub');
 
-        $this->build($stub);
+        $this->buildStub($this->scaffoldCommandObj->getMeta(), $stub);
+        $this->replaceValidator($stub);
 
         return $stub;
     }
 
+
     /**
-     * Build stub replacing the variable template.
+     * Replace validator in the controller stub.
      *
-     * @return string
+     * @return $this
      */
-    protected function build(&$stub)
-    {
-        $namespace = $model_name = $this->getAppNamespace();
-        $Name = $this->scaffoldCommandObj->getObjName('Name');
-        $name = $this->scaffoldCommandObj->getObjName('name');
-        $names =  $this->scaffoldCommandObj->getObjName('names');
-        $prefix = $this->scaffoldCommandObj->option('prefix');
-        
-        if(!empty($prefix)) $prefix = "$prefix.";
-
-        $this->replaceValidator($stub);
-
-        $stub = str_replace('{{model_namespace}}', $namespace.$Name, $stub);
-        $stub = str_replace('{{model_class}}', $Name, $stub);
-        $stub = str_replace('{{model_variable}}', $name, $stub);
-        $stub = str_replace('{{model_multiple}}', $names, $stub);
-        $stub = str_replace('{{prefix}}', $prefix, $stub);
-
-        return $this;
-    }
-
     private function replaceValidator(&$stub)
     {
         if($schema = $this->scaffoldCommandObj->option('validator')){
