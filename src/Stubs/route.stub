@@ -1,7 +1,1 @@
-Route::get('/{{model_multiple}}', ['as' => '{{prefix}}{{model_multiple}}.index', 'uses' => '{{model_class}}Controller@index']);
-Route::post('/{{model_multiple}}', ['as' => '{{prefix}}{{model_multiple}}.store', 'uses' => '{{model_class}}Controller@store']);
-Route::get('/{{model_multiple}}/create', ['as' => '{{prefix}}{{model_multiple}}.create', 'uses' => '{{model_class}}Controller@create']);
-Route::delete('/{{model_multiple}}/{{{model_multiple}}}', ['as' => '{{prefix}}{{model_multiple}}.destroy', 'uses' => '{{model_class}}Controller@destroy']);
-Route::put('/{{model_multiple}}/{{{model_multiple}}}', ['as' => '{{prefix}}{{model_multiple}}.update', 'uses' => '{{model_class}}Controller@update']);
-Route::get('/{{model_multiple}}/{{{model_multiple}}}', ['as' => '{{prefix}}{{model_multiple}}.show', 'uses' => '{{model_class}}Controller@show']);
-Route::get('/{{model_multiple}}/{{{model_multiple}}}/edit', ['as' => '{{prefix}}{{model_multiple}}.edit', 'uses' => '{{model_class}}Controller@edit']);
+Route::resource('{{models}}', '{{Model}}Controller');

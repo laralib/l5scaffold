@@ -57,32 +57,8 @@ class MakeRoute
     {
         $stub = $this->files->get(substr(__DIR__,0, -5) . 'Stubs/route.stub');
 
-        $this->build($stub);
+        $this->buildStub($this->scaffoldCommandObj->getMeta(), $stub);
 
         return $stub;
-    }
-
-    /**
-     * Build stub replacing the variable template.
-     *
-     * @return string
-     */
-    protected function build(&$stub)
-    {
-        $namespace = $model_name = $this->getAppNamespace();
-        $Name = $this->scaffoldCommandObj->getObjName('Name');
-        $name = $this->scaffoldCommandObj->getObjName('name');
-        $names =  $this->scaffoldCommandObj->getObjName('names');
-        $prefix = $this->scaffoldCommandObj->option('prefix');
-
-        if(!empty($prefix)) $prefix = "$prefix.";
-
-        $stub = str_replace('{{model_namespace}}', $namespace.$Name, $stub);
-        $stub = str_replace('{{model_class}}', $Name, $stub);
-        $stub = str_replace('{{model_variable}}', $name, $stub);
-        $stub = str_replace('{{model_multiple}}', $names, $stub);
-        $stub = str_replace('{{prefix}}', $prefix, $stub);
-
-        return $this;
     }
 }
