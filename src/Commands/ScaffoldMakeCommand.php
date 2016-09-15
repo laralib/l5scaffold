@@ -35,7 +35,7 @@ class ScaffoldMakeCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Create a scaffold with bootstrap 3';
+    protected $description = 'Create a laralib scaffold';
 
     /**
      * Meta information for the requested migration.
@@ -79,29 +79,31 @@ class ScaffoldMakeCommand extends Command
      */
     public function fire()
     {
-        $this->info('Configuring ' . $this->getObjName("Name") . '...');
-
-        $names = $this->getObjName("names");
-        $Name = $this->getObjName("Name");
-
         $this->meta['action'] = 'create';
         $this->meta['var_name'] = $this->getObjName("name");
-        $this->meta['table'] = $this->getObjName("names"); // Store table name
+        $this->meta['table'] = $this->getObjName("names");
+
+        
+        $header = "scaffold: {$this->getObjName("Name")}";
+        $footer = str_pad('', strlen($header), '-');
+
+        $this->line("\n----------- $header -----------\n");
+
 
         $this->makeMigration();
         $this->makeSeed();
         $this->makeModel();
         $this->makeController();
-        $this->makeViewLayout();
-        $this->makeViews();
         $this->makeLocalization();
+        $this->makeViews();
+        $this->makeViewLayout();
 
-        // Finish with dump autoload.
-        $this->info('Dump-autoload...');
+        $this->line("\n----------- $footer -----------");
+        $this->comment("-> DUMP AUTOLOAD <-");
+
         $this->composer->dumpAutoloads();
         
         $this->makeRoute();
-        $this->line("\n\n----------- ----------- -----------");
     }
 
     /**

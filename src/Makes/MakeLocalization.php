@@ -48,27 +48,11 @@ class MakeLocalization
 
         if ($this->files->exists($path))
         {
-            if ($this->scaffoldCommandObj->confirm($path . ' already exists! Do you wish to overwrite? [yes|no]'))
-            {
-                $this->files->put($path, $this->compileLocalizationStub());
-                $this->getSuccessMsg();
-            }
+            return $this->scaffoldCommandObj->comment('x Localization');
         }
-        else
-        {
-            $this->files->put($path, $this->compileLocalizationStub());
-            $this->getSuccessMsg();
-        }
-    }
 
-    /**
-     * Command to show info in console
-     *
-     * @return void
-     */
-    protected function getSuccessMsg()
-    {
-        $this->scaffoldCommandObj->info('Localization created successfully.');
+        $this->files->put($path, $this->compileLocalizationStub());
+        $this->scaffoldCommandObj->info('+ Localization');
     }
 
     /**

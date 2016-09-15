@@ -45,22 +45,16 @@ class MakeMigration
      * @return void
      */
     protected function start(){
-        // Cria o nome do arquivo do migration // create_tweets_table
         $name = 'create_'.str_plural(strtolower( $this->scaffoldCommandObj->argument('name') )).'_table';
 
-        // Verifica se o arquivo existe com o mesmo o nome
         if ($this->files->exists($path = $this->getPath($name)))
         {
             return $this->scaffoldCommandObj->error($this->type.' already exists!');
         }
 
-        // Cria a pasta caso nao exista
         $this->makeDirectory($path);
-
-        // Grava o arquivo
         $this->files->put($path, $this->compileMigrationStub());
-
-        $this->scaffoldCommandObj->info('Migration created successfully');
+        $this->scaffoldCommandObj->info('+ Migration');
     }
 
     /**

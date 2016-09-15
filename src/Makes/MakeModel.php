@@ -44,12 +44,12 @@ class MakeModel
 
         if ($this->files->exists($path)) 
         {
-            return $this->scaffoldCommandObj->error($name . ' already exists!');
+            return $this->scaffoldCommandObj->comment("x $name");
         }
 
         $this->files->put($path, $this->compileModelStub());
 
-        $this->scaffoldCommandObj->info('Model created successfully.');
+        $this->scaffoldCommandObj->info('+ Model');
     }
 
     /**

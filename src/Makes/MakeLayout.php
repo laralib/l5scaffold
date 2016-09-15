@@ -54,17 +54,14 @@ class MakeLayout
         $path_file = $this->getPathResource().$file;
         $path_stub = substr(__DIR__,0, -5) .$stub;
 
-        if (!$this->files->exists($path_file))
+        if ($this->files->exists($path_file))
         {
-            $html = $this->files->get($path_stub);
-            $this->files->put($path_file, $html);
+            return $this->scaffoldCommandObj->comment("x $name (Skip)");
+        }
 
-            $this->scaffoldCommandObj->info("$name created successfully.");
-        }
-        else
-        {
-            $this->scaffoldCommandObj->comment("Skip $name, because already exists.");
-        }
+        $html = $this->files->get($path_stub);
+        $this->files->put($path_file, $html);
+        $this->scaffoldCommandObj->info("+ $name");
     }
 
     /**

@@ -55,13 +55,13 @@ class MakeView
      */
     private function start()
     {
-        $this->scaffoldCommandObj->info("~Views~");
+        $this->scaffoldCommandObj->line("\n--- Views ---");
         
         $views = ['index', 'show', 'edit', 'create'];
         foreach($views as $view)
         {
             $this->generateView($view);
-            $this->scaffoldCommandObj->info("   + $view");
+            
         }
     }
 
@@ -89,19 +89,15 @@ class MakeView
     protected function generateView($nameView = 'index'){
         $path = $this->getPath($this->scaffoldCommandObj->getObjName('names'), 'view-'.$nameView);
 
-        $this->makeDirectory($path);
 
         if ($this->files->exists($path))
         {
-            if ($this->scaffoldCommandObj->confirm($path . ' already exists! Do you wish to overwrite? [yes|no]'))
-            {
-                $this->files->put($path, $this->compileViewStub($nameView));
-            }
+            return $this->scaffoldCommandObj->comment("   x $nameView");
         }
-        else
-        {
-            $this->files->put($path, $this->compileViewStub($nameView));
-        }
+        
+        $this->makeDirectory($path);
+        $this->files->put($path, $this->compileViewStub($nameView));
+        $this->scaffoldCommandObj->info("   + $nameView");
     }
 
     /**

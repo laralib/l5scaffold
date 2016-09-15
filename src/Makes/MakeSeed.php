@@ -39,31 +39,15 @@ class MakeSeed
     {
         $path = $this->getPath($this->scaffoldCommandObj->getObjName('Name') . 'TableSeeder', 'seed');
 
-        $this->makeDirectory($path);
 
         if ($this->files->exists($path))
         {
-            if ($this->scaffoldCommandObj->confirm($path . ' already exists! Do you wish to overwrite? [yes|no]'))
-            {
-                $this->files->put($path, $this->compileSeedStub());
-                $this->getSuccessMsg();
-            }
+            return $this->scaffoldCommandObj->comment('x Seed');
         }
-        else
-        {
-            $this->files->put($path, $this->compileSeedStub());
-            $this->getSuccessMsg();
-        }
-    }
 
-    /**
-     * Command to show info in console
-     *
-     * @return void
-     */
-    protected function getSuccessMsg()
-    {
-        $this->scaffoldCommandObj->info('Seed created successfully.');
+        $this->makeDirectory($path);
+        $this->files->put($path, $this->compileSeedStub());
+        $this->scaffoldCommandObj->info('+ Seed');
     }
 
     /**
