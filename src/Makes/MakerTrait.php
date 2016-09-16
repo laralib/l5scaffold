@@ -34,6 +34,31 @@ trait MakerTrait
         $this->generateNames($this->scaffoldCommandM);
     }
 
+    protected function getFilesRecursive($path)
+    {
+        $files = [];
+        $scan = array_diff(scandir($path), ['.', '..']);
+
+        foreach ($scan as $file)
+        {
+            $file = realpath("$path$file");
+
+            if(is_dir($file))
+            {
+                $files = array_merge
+                (
+                    $files, 
+                    $this->getFilesRecursive($file.DIRECTORY_SEPARATOR)
+                );
+                continue;
+            }
+
+            $files[] = $file;
+        }
+
+        return $files;
+    }
+
     /**
      * Get stub path.
      *
@@ -43,7 +68,32 @@ trait MakerTrait
      */
     protected function getStubPath()
     {
-        return substr(__DIR__,0, -5) . 'Stubs';
+        return substr(__DIR__,0, -5) . 'Stubs/';
+    }
+
+    /**
+     * Get views stubs.
+     *
+     * @return array views
+     */
+    protected function getStubViews()
+    {
+        $viewsPath = $this->getStubPath().'views/';
+        $files = $this->getFilesRecursive($viewsPath);
+        $viewFiles = [];
+
+        foreach ($files as $file)
+        {
+            $viewFiles[str_replace($viewsPath, '', $file)] = $file;
+        }
+
+        return $viewFiles;
+    }
+
+
+    protected function getDestinationViews($model)
+    {
+        return "./resources/views/$model/";
     }
 
     /**
@@ -59,6 +109,8 @@ trait MakerTrait
         {
             $template = str_replace("{{". $k ."}}", $v, $template);
         }
+
+        return $template;
     }
 
     /**

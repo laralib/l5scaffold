@@ -43,9 +43,27 @@ class MakeView
     {
         $this->files = $files;
         $this->scaffoldCommandObj = $scaffoldCommand;
-        $this->getSchemaArray();
 
         $this->start();
+    }
+
+    /**
+     * Get all property of model
+     *
+     * @return void
+     */
+    protected function getSchemaArray()
+    {
+        // ToDo - schema is required?
+        if($this->scaffoldCommandObj->option('schema') != null)
+        {
+            if ($schema = $this->scaffoldCommandObj->option('schema'))
+            {
+                return (new SchemaParser)->parse($schema);
+            }
+        }
+
+        return [];
     }
 
     /**
@@ -56,202 +74,75 @@ class MakeView
     private function start()
     {
         $this->scaffoldCommandObj->line("\n--- Views ---");
-        
-        $views = ['index', 'show', 'edit', 'create'];
-        foreach($views as $view)
-        {
-            $this->generateView($view);
-            
-        }
-    }
 
-    /**
-     * Get all property of model
-     *
-     * @return void
-     */
-    protected function getSchemaArray()
-    {
-        if($this->scaffoldCommandObj->option('schema') != null)
-        {
-            if ($schema = $this->scaffoldCommandObj->option('schema'))
-            {
-                $this->schemaArray = (new SchemaParser)->parse($schema);
-            }
-        }
-    }
-
-    /**
-     * Write wiew in path.
-     *
-     * @return void
-     */
-    protected function generateView($nameView = 'index'){
-        $path = $this->getPath($this->scaffoldCommandObj->getObjName('names'), 'view-'.$nameView);
-
-
-        if ($this->files->exists($path))
-        {
-            return $this->scaffoldCommandObj->comment("   x $nameView");
-        }
-        
-        $this->makeDirectory($path);
-        $this->files->put($path, $this->compileViewStub($nameView));
-        $this->scaffoldCommandObj->info("   + $nameView");
-    }
-
-    /**
-     * Compile the migration stub.
-     *
-     * @param $nameView
-     * @return string
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
-     */
-    protected function compileViewStub($nameView)
-    {
-        $stub = $this->files->get(substr(__DIR__,0, -5) . 'Stubs/html_assets/' .$nameView.'.stub');
-
-        if($nameView == 'show')
-        {
-            // show.blade.php
-            $this
-            ->replaceName($stub)
-            ->replaceSchemaShow($stub);
-        }
-        elseif($nameView == 'edit')
-        {
-            // edit.blade.php
-            $this
-            ->replaceName($stub)
-            ->replaceSchemaEdit($stub);
-        }
-        elseif($nameView == 'create')
-        {
-            // edit.blade.php
-            $this
-            ->replaceName($stub)
-            ->replaceSchemaCreate($stub);
-        }
-        else
-        {
-            // index.blade.php
-            $this
-            ->replaceName($stub)
-            ->replaceSchemaIndex($stub);
-        }
-
-        return $stub;
-    }
-
-    /**
-     * Replace the class name in the stub.
-     *
-     * @param  string $stub
-     * @return $this
-     */
-    protected function replaceName(&$stub)
-    {
-        $stub = str_replace('{{Class}}', $this->scaffoldCommandObj->getObjName('Names'), $stub);
-        $stub = str_replace('{{class}}', $this->scaffoldCommandObj->getObjName('names'), $stub);
-        $stub = str_replace('{{classSingle}}', $this->scaffoldCommandObj->getObjName('name'), $stub);
-
-        $prefix = $this->scaffoldCommandObj->option('prefix');
-
-        if ($prefix != null)
-        {
-            $stub = str_replace('{{prefix}}',$prefix.'.', $stub);
-        }
-        else
-        {
-            $stub = str_replace('{{prefix}}', '', $stub);
-        }
-
-        return $this;
-    }
-
-    /**
-     * Replace the schema for the index.stub.
-     *
-     * @param  string $stub
-     * @return $this
-     */
-    protected function replaceSchemaIndex(&$stub)
-    {
-        $schema = (new SyntaxBuilder)->create(
-            $this->schemaArray,
-            $this->scaffoldCommandObj->getMeta(), 
-            'view-index-header'
-        );
-
-        $stub = str_replace('{{header_fields}}', $schema, $stub);
-
-        $schema = (new SyntaxBuilder)->create(
-            $this->schemaArray, 
-            $this->scaffoldCommandObj->getMeta(), 
-            'view-index-content'
-        );
-
-        $stub = str_replace('{{content_fields}}', $schema, $stub);
-
-        return $this;
-    }
-
-    /**
-     * Replace the schema for the show.stub.
-     *
-     * @param  string $stub
-     * @return $this
-     */
-    protected function replaceSchemaShow(&$stub)
-    {
-        $schema = (new SyntaxBuilder)->create(
-            $this->schemaArray, 
-            $this->scaffoldCommandObj->getMeta(), 
-            'view-show-content'
-        );
-        
-        $stub = str_replace('{{content_fields}}', $schema, $stub);
-
-        return $this;
-    }
-
-    /**
-     * Replace the schema for the edit.stub.
-     *
-     * @param  string $stub
-     * @return $this
-     */
-    private function replaceSchemaEdit(&$stub)
-    {
-        $schema = (new SyntaxBuilder)->create(
-            $this->schemaArray,
+        $viewsFiles = $this->getStubViews();
+        $destination = $this->getDestinationViews($this->scaffoldCommandObj->getMeta()['models']);
+        $metas = array_merge_recursive
+        (
             $this->scaffoldCommandObj->getMeta(),
+            [
+                'form_fields_fillable' => $this->getFieldsFillable(),
+                'form_fields_empty' => $this->getFieldsEmpty(),
+                'content_fields' => $this->getFieldsIndex(),
+                'header_fields' => $this->getFieldsHeaderIndex()
+            ]
+        );
+
+        foreach ($viewsFiles as $viewFileBaseName => $viewFile)
+        {
+            $viewFileName = str_replace('.stub', '', $viewFileBaseName);
+            $viewDestination = $destination . $viewFileName;
+
+            if ($this->files->exists($viewDestination))
+            {
+                $this->scaffoldCommandObj->comment("   x $viewFileName");
+                continue;
+            }
+
+            $stub = $this->files->get($viewFile);
+            $stub = $this->buildStub($metas, $stub);
+            
+            $this->makeDirectory($viewDestination);
+            $this->files->put($viewDestination, $stub);
+            $this->scaffoldCommandObj->info("   + $viewFileName");
+        }
+    }
+
+    private function getFieldsFillable()
+    {
+        return (new SyntaxBuilder)->create(
+            $this->getSchemaArray(), 
+            $this->scaffoldCommandObj->getMeta(), 
             'view-edit-content',
             $this->scaffoldCommandObj->option('form')
         );
-        
-        $stub = str_replace('{{content_fields}}', $schema, $stub);
-
-        return $this;
     }
 
-    /**
-     * Replace the schema for the edit.stub.
-     *
-     * @param  string $stub
-     * @return $this
-     */
-    private function replaceSchemaCreate(&$stub)
+    private function getFieldsEmpty()
     {
-        $schema = (new SyntaxBuilder)->create(
-            $this->schemaArray,
-            $this->scaffoldCommandObj->getMeta(),
+        return (new SyntaxBuilder)->create(
+            $this->getSchemaArray(), 
+            $this->scaffoldCommandObj->getMeta(), 
             'view-create-content',
             $this->scaffoldCommandObj->option('form')
         );
+    }
 
-        $stub = str_replace('{{content_fields}}', $schema, $stub);
+    private function getFieldsIndex()
+    {
+        return (new SyntaxBuilder)->create(
+            $this->getSchemaArray(),
+            $this->scaffoldCommandObj->getMeta(),
+            'view-index-content'
+        );
+    }
 
-        return $this;
+    private function getFieldsHeaderIndex()
+    {
+        return (new SyntaxBuilder)->create(
+            $this->getSchemaArray(),
+            $this->scaffoldCommandObj->getMeta(), 
+            'view-index-header'
+        );
     }
 }
