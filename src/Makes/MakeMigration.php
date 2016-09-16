@@ -90,9 +90,9 @@ class MakeMigration
      * @param string $type
      * @return $this
      */
-    protected function replaceSchema(&$stub, $type='migration')
+    protected function replaceSchema(&$stub)
     {
-        if ($schema = $this->scaffoldCommandObj->option('schema'))
+        if ($schema = $this->scaffoldCommandObj->getMeta()['schema'])
         {
             $schema = (new SchemaParser)->parse($schema);
         }
