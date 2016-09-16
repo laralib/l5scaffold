@@ -79,8 +79,9 @@ class ScaffoldMakeCommand extends Command
      */
     public function fire()
     {        
-        $header = "scaffold: {$this->getObjName("Name")}";
+        $header = "scaffolding: {$this->getObjName("Name")}";
         $footer = str_pad('', strlen($header), '-');
+        $dump = str_pad('>DUMP AUTOLOAD<', strlen($header), ' ', STR_PAD_BOTH);
 
         $this->line("\n----------- $header -----------\n");
 
@@ -94,7 +95,7 @@ class ScaffoldMakeCommand extends Command
         $this->makeViewLayout();
 
         $this->line("\n----------- $footer -----------");
-        $this->comment("-> DUMP AUTOLOAD <-");
+        $this->comment("----------- $dump -----------");
 
         $this->composer->dumpAutoloads();
         
@@ -113,13 +114,7 @@ class ScaffoldMakeCommand extends Command
         $this->meta['var_name'] = $this->getObjName("name");
         $this->meta['table'] = $this->getObjName("names");//obsoleto
 
-        // $namespace = $model_name = $this->getAppNamespace();
-        // $Name = $this->scaffoldCommandObj->getObjName('Name');
-        // $name = $this->scaffoldCommandObj->getObjName('name');
-        // $names =  $this->scaffoldCommandObj->getObjName('names');
-        // $prefix = $this->scaffoldCommandObj->option('prefix');
-
-        // ToDo - Method getObjName repeating...
+        
         $this->meta['namespace'] = $this->getAppNamespace();
         
         $this->meta['Model'] = $this->getObjName('Name');
