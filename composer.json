@@ -21,7 +21,7 @@
   },
   "scripts": {
     "post-update-cmd": [
-      "php -r \"copy('src/stubs/i18l/en.stub', '../../../resources/lang/en/l5scaffold.php');\""
+      "php -r \"copy('src/stubs/i18n/en.stub', '../../../resources/lang/en/l5scaffold.php');\""
     ]
   }
 }
