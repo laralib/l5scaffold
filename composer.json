@@ -18,5 +18,10 @@
     "psr-4": {
       "Laralib\\L5scaffold\\": "src/"
     }
+  },
+  "scripts": {
+    "post-update-cmd": [
+      "php -r \"copy('src/stubs/i18n/en.stub', '../../../resources/lang/en/l5scaffold.php');\""
+    ]
   }
 }

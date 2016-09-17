@@ -4,7 +4,7 @@
 @endsection
 @section('header')
     <div class="page-header">
-        <h1><i class="glyphicon glyphicon-edit"></i> {{Class}} / Edit #{{${{classSingle}}->id}}</h1>
+        <h1><i class="glyphicon glyphicon-edit"></i> {{Class}} / @lang('l5scaffold.edit') #{{${{classSingle}}->id}}</h1>
     </div>
 @endsection
 
@@ -20,8 +20,8 @@
 
                 {{content_fields}}
                 <div class="well well-sm">
-                    <button type="submit" class="btn btn-primary">Save</button>
-                    <a class="btn btn-link pull-right" href="{{ route('{{prefix}}{{class}}.index') }}"><i class="glyphicon glyphicon-backward"></i>  Back</a>
+                    <button type="submit" class="btn btn-primary">@lang('l5scaffold.save')</button>
+                    <a class="btn btn-link pull-right" href="{{ route('{{prefix}}{{class}}.index') }}"><i class="glyphicon glyphicon-backward"></i> @lang('l5scaffold.back')</a>
                 </div>
             </form>
 
