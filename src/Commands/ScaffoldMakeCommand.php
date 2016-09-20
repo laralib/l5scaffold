@@ -114,6 +114,7 @@ class ScaffoldMakeCommand extends Command
         $this->meta['var_name'] = $this->getObjName("name");
         $this->meta['table'] = $this->getObjName("names");//obsoleto
 
+        $this->meta['ui'] = $this->option('ui');
         
         $this->meta['namespace'] = $this->getAppNamespace();
         
@@ -224,6 +225,13 @@ class ScaffoldMakeCommand extends Command
                 InputOption::VALUE_REQUIRED, 
                 'Schema to generate scaffold files. (Ex: --schema="title:string")', 
                 null
+            ],
+            [
+                'ui',
+                'ui',
+                InputOption::VALUE_OPTIONAL,
+                'UI Framework to generate scaffold. (Default bs3 - bootstrap 3)',
+                'bs3'
             ],
             [
                 'validator',

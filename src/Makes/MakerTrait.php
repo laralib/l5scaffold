@@ -76,9 +76,9 @@ trait MakerTrait
      *
      * @return array views
      */
-    protected function getStubViews()
+    protected function getStubViews($ui)
     {
-        $viewsPath = $this->getStubPath().'views/';
+        $viewsPath = $this->getStubPath()."views/$ui/pages/";
         $files = $this->getFilesRecursive($viewsPath);
         $viewFiles = [];
 

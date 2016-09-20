@@ -75,7 +75,7 @@ class MakeView
     {
         $this->scaffoldCommandObj->line("\n--- Views ---");
 
-        $viewsFiles = $this->getStubViews();
+        $viewsFiles = $this->getStubViews($this->scaffoldCommandObj->getMeta()['ui']);
         $destination = $this->getDestinationViews($this->scaffoldCommandObj->getMeta()['models']);
         $metas = array_merge_recursive
         (
