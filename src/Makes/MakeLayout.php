@@ -61,6 +61,7 @@ class MakeLayout
         }
 
         $html = $this->files->get($path_stub);
+        $html = $this->buildStub($this->scaffoldCommandObj->getMeta(), $html);
         $this->files->put($path_file, $html);
         $this->scaffoldCommandObj->info("+ $name");
     }
