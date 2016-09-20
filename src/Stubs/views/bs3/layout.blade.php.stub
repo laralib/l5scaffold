@@ -16,6 +16,28 @@
 
     <!-- CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- THEMES -->
+
+    <!-- <link rel="stylesheet" href="https://bootswatch.com/cerulean/bootstrap.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://bootswatch.com/cosmo/bootstrap.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://bootswatch.com/cyborg/bootstrap.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://bootswatch.com/darkly/bootstrap.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://bootswatch.com/flatly/bootstrap.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://bootswatch.com/journal/bootstrap.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://bootswatch.com/lumen/bootstrap.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://bootswatch.com/paper/bootstrap.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://bootswatch.com/readable/bootstrap.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://bootswatch.com/sandstone/bootstrap.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://bootswatch.com/simplex/bootstrap.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://bootswatch.com/slate/bootstrap.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://bootswatch.com/spacelab/bootstrap.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://bootswatch.com/superhero/bootstrap.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://bootswatch.com/united/bootstrap.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://bootswatch.com/yeti/bootstrap.min.css"> -->
+
+    <!-- /THEMES -->
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/css/bootstrap-datepicker.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
