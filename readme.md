@@ -1,10 +1,7 @@
-# Laravel 5.2 Scaffold Generator
+# Laravel 5.x Scaffold Generator
 [![Travis](https://img.shields.io/travis/laralib/l5scaffold.svg?style=flat-square)](https://github.com/laralib/l5scaffold)
 [![Packagist](https://img.shields.io/packagist/dt/laralib/l5scaffold.svg?style=flat-square)](https://packagist.org/packages/laralib/l5scaffold)
-
-Hi, this is a scaffold generator for Laravel 5.2. (Laravel scaffold for Laravel 5.1? change branch to laravel-5.1 )
-
-
+[![Tag](https://img.shields.io/github/tag/laralib/l5scaffold.svg)](https://github.com/laralib/l5scaffold/tags)
 ## Usage
 
 ### Step 1: Install Through Composer
@@ -18,7 +15,7 @@ composer require 'laralib/l5scaffold' --dev
 Open `config/app.php` and, to your **providers** array at the bottom, add:
 
 ```
-"Laralib\L5scaffold\GeneratorsServiceProvider"
+Laralib\L5scaffold\GeneratorsServiceProvider::class
 ```
 
 ### Step 3: Run Artisan!
@@ -29,7 +26,12 @@ You're all set. Run `php artisan` from the console, and you'll see the new comma
 
 
 ```
-php artisan make:scaffold Tweet --schema="title:string:default('Tweet #1'), body:text"
+php artisan make:scaffold Tweet \
+	--schema="title:string:default('Tweet #1'), body:text" \
+	--validator="lastname:unique(tweets,id),firstname:required|unique(tweets)" \
+	--lang="en" \
+	--ui="bs3" \
+	--prefix="admin"
 ```
 This command will generate:
 
