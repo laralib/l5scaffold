@@ -16,8 +16,8 @@
                 <table class="table table-condensed table-striped">
                     <thead>
                         <tr>
-                            <th>#</th>
-                            {{header_fields}}
+                            <th class="text-center">#</th>
+                            {{table_fields_header}}
                             <th class="text-right">OPTIONS</th>
                         </tr>
                     </thead>
@@ -25,9 +25,9 @@
                     <tbody>
                         @foreach(${{models}} as ${{model}})
                             <tr>
-                                <td>{{${{model}}->id}}</td>
+                                <td class="text-center"><strong>{{${{model}}->id}}</strong></td>
 
-                                {{content_fields}}
+                                {{table_fields_content}}
                                 
                                 <td class="text-right">
                                     <a class="btn btn-xs btn-primary" href="{{ route('{{prefix}}{{models}}.show', ${{model}}->id) }}">
