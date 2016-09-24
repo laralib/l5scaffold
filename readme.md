@@ -24,82 +24,54 @@ You're all set. Run `php artisan` from the console, and you'll see the new comma
 
 ## Examples
 
-
+Use this command to generator scaffolding of **Tweet** in your project:
+```
+php artisan make:scaffold Tweet \
+	--schema="title:string:default('Tweet #1'), body:text"
+```
+or with more options
 ```
 php artisan make:scaffold Tweet \
 	--schema="title:string:default('Tweet #1'), body:text" \
-	--validator="lastname:unique(tweets,id),firstname:required|unique(tweets)" \
-	--lang="en" \
 	--ui="bs3" \
 	--prefix="admin"
 ```
+
 This command will generate:
 
 ```
 app/Tweet.php
 app/Http/Controllers/TweetController.php
-database/migrations/2015_04_23_234422_create_tweets_table.php
+
+database/migrations/201x_xx_xx_xxxxxx_create_tweets_table.php
 database/seeds/TweetTableSeeder.php
+
 resources/views/layout.blade.php
 resources/views/tweets/index.blade.php
 resources/views/tweets/show.blade.php
 resources/views/tweets/edit.blade.php
 resources/views/tweets/create.blade.php
 ```
-And don't forget to run:
+
+After don't forget to run:
+
 
 ```
 php artisan migrate
 ```
+## Custom stub
+Create a new folder inside **Stubs > views** with your UI name custom 
+![image](http://i66.tinypic.com/10ndpgw.png)
 
-## Validations
-```
-php artisan make:scaffold Tweet --schema="firstname:string" --validator="lastname:unique(tweets,id),firstname:required|unique(tweets)"
-```
+Custom fields in `Stubs > views > **ui-name** > fields`
 
-## Localization
-Localization required two arguments, the first being the `--localization` one which is a key value pair the key being the string that you want to reference the Localized value string by. 
-```
-php artisan make:scaffold Tweet --schema="firstname:string" --localization="key:value" --lang="country_code"
-```
+Custom pages in `Stubs > views > **ui-name** > pages`
 
-### Other Examples (new)
+<br>
 
-Same as above with use of the prefix. It will create the prefix in redirects of controller and the links of views (v1.0.7):
-```
-php artisan make:scaffold Tweet --schema="title:string:default('Tweet #1'), body:text" --prefix="admin"
-```
-Create the empty scaffold views, controller, seed, migration and model (v1.0.6):
-```
-php artisan make:scaffold Tweet
-```
-Create the empty scaffold (with prefix) views, controller, seed, migration and model (v1.0.7):
-```
-php artisan make:scaffold Tweet --prefix="admin"
-```
-
-## Scaffold
-![image](http://i62.tinypic.com/11maveb.png)
-![image](http://i58.tinypic.com/eqchat.png)
-![image](http://i62.tinypic.com/20h7k8n.png)
-
-###Data type Date (on view)
-![image](http://i65.tinypic.com/29wooxl.png) 
-
-###Data type Boolean (on view)
-![image](http://i65.tinypic.com/afehl5.jpg)
-
-# Todo task list
-1 - More fields type
-
-2 - Default tests file
-
-3 - sass and js with gulp
-
-**Send us your ideas.** (send message to @fernandobritofl (Twitter))
+:thought_balloon: **Send us your ideas.** (creating issues)
 
 
-<br/><br/>
 ##Collaborators
  [Fernando Brito](https://github.com/fernandobritofl "fernandobritofl")
  <br/>[Sylvio Tavares](https://github.com/sylviot "Sylviot")
