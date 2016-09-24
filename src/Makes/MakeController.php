@@ -66,28 +66,28 @@ class MakeController
         $stub = $this->files->get(substr(__DIR__,0, -5) . 'Stubs/controller.stub');
 
         $this->buildStub($this->scaffoldCommandObj->getMeta(), $stub);
-        $this->replaceValidator($stub);
+        // $this->replaceValidator($stub);
 
         return $stub;
     }
 
 
-    /**
-     * Replace validator in the controller stub.
-     *
-     * @return $this
-     */
-    private function replaceValidator(&$stub)
-    {
-        if($schema = $this->scaffoldCommandObj->option('validator')){
-            $schema = (new ValidatorParser)->parse($schema);
-        }
+    // /**
+    //  * Replace validator in the controller stub.
+    //  *
+    //  * @return $this
+    //  */
+    // private function replaceValidator(&$stub)
+    // {
+    //     if($schema = $this->scaffoldCommandObj->option('validator')){
+    //         $schema = (new ValidatorParser)->parse($schema);
+    //     }
 
-        $schema = (new ValidatorSyntax)->create($schema, $this->scaffoldCommandObj->getMeta(), 'validation');
-        $stub = str_replace('{{validation_fields}}', $schema, $stub);
+    //     $schema = (new ValidatorSyntax)->create($schema, $this->scaffoldCommandObj->getMeta(), 'validation');
+    //     $stub = str_replace('{{validation_fields}}', $schema, $stub);
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
 
 }

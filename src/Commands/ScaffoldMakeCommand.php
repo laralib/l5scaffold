@@ -89,7 +89,7 @@ class ScaffoldMakeCommand extends Command
         $this->makeSeed();
         $this->makeModel();
         $this->makeController();
-        $this->makeLocalization();
+        // $this->makeLocalization(); //ToDo - implement in future version
         $this->makeViews();
         $this->makeViewLayout();
 
@@ -97,8 +97,7 @@ class ScaffoldMakeCommand extends Command
         $this->comment("----------- $dump -----------");
 
         $this->composer->dumpAutoloads();
-        
-        $this->makeRoute();
+        $this->error("Don't forget to adjust: 'migrate' and 'routes'");
     }
 
     /**
@@ -278,10 +277,6 @@ class ScaffoldMakeCommand extends Command
     public function getMeta()
     {
         return $this->meta;
-    }
-
-    public function makeRoute(){
-        new MakeRoute($this, $this->files);
     }
 
     /**

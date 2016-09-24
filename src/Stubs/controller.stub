@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use {{namespace}}{{Model}};
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
 
 class {{Model}}Controller extends Controller
 {
@@ -56,17 +55,7 @@ class {{Model}}Controller extends Controller
 	 */
 	public function store(Request $request)
 	{
-        $validator = Validator::make($request->input(), [
-            {{validation_fields}}
-        ]);
-
-        if($validator->fails()){
-
-            return redirect()->back()->withErrors($validator)->withInput();
-
-        }
-
-		$inputs = $this->inputs($request);
+		$inputs = $request->all();
 		$this->model->create($inputs);
 
 		return redirect()->route('{{prefix}}{{models}}.index')->with('message', 'Item created successfully.');
@@ -80,16 +69,6 @@ class {{Model}}Controller extends Controller
 	 */
 	public function show($id)
 	{
-        $validator = Validator::make(['id' => $id], [
-            'id' => 'required|exists:{{models}},id'
-        ]);
-
-        if($validator->fails()){
-
-            return redirect()->back()->withErrors($validator);
-
-        }
-
 		${{model}} = $this->model->findOrFail($id);
 		
 		return view('{{models}}.show', compact('{{model}}'));
@@ -103,16 +82,6 @@ class {{Model}}Controller extends Controller
 	 */
 	public function edit($id)
 	{
-	    $validator = Validator::make(['id' => $id], [
-            'id' => 'required|exists:{{models}},id'
-        ]);
-
-        if($validator->fails()){
-
-            return redirect()->back()->withErrors($validator);
-
-        }
-
 		${{model}} = $this->model->findOrFail($id);
 		
 		return view('{{models}}.edit', compact('{{model}}'));
@@ -127,17 +96,7 @@ class {{Model}}Controller extends Controller
 	 */
 	public function update(Request $request, $id)
 	{
-        $validator = Validator::make($request->input(), [
-            {{validation_fields}}
-        ]);
-
-        if($validator->fails()){
-
-            return redirect()->back()->withErrors($validator)->withInput();
-
-        }
-
-		$inputs = $this->inputs($request);
+		$inputs = $request->all();
 
 		${{model}} = $this->model->findOrFail($id);		
 		${{model}}->update($inputs);
@@ -153,31 +112,8 @@ class {{Model}}Controller extends Controller
 	 */
 	public function destroy($id)
 	{
-        $validator = Validator::make(['id' => $id], [
-            'id' => 'required|exists:{{models}},id'
-        ]);
-
-        if($validator->fails()){
-
-            return redirect()->back()->withErrors($validator)->withInput();
-
-        }
-
 		$this->model->destroy($id);
 
 		return redirect()->route('{{prefix}}{{models}}.index')->with('message', 'Item deleted successfully.');
 	}
-
-	/**
-	* Return the correct array of inputs
-	*
-	* @param null
-	*
-	*/
-	protected function inputs(Request $request){
-	    $inputs = $request->all();
-	    unset($inputs['_token'], $inputs['_method']);
-	    return $inputs;
-	}
-
 }
