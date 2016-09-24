@@ -77,14 +77,17 @@ class MakeView
 
         $viewsFiles = $this->getStubViews($this->scaffoldCommandObj->getMeta()['ui']);
         $destination = $this->getDestinationViews($this->scaffoldCommandObj->getMeta()['models']);
+        $metas = $this->scaffoldCommandObj->getMeta();
+
         $metas = array_merge_recursive
         (
-            $this->scaffoldCommandObj->getMeta(),
+            $metas,
             [
-                'form_fields_fillable' => $this->getFieldsFillable(),
-                'form_fields_empty' => $this->getFieldsEmpty(),
-                'content_fields' => $this->getFieldsIndex(),
-                'header_fields' => $this->getFieldsHeaderIndex()
+                'form_fields_fillable' => $this->getFields($metas['ui'], 'fillable'),
+                'form_fields_empty' => $this->getFields($metas['ui'], 'empty'),
+                'form_fields_show' => $this->getFields($metas['ui'], 'show'),
+                'table_fields_header' => $this->getFields($metas['ui'], 'header'),
+                'table_fields_content' => $this->getFields($metas['ui'], 'content'),
             ]
         );
 
@@ -107,42 +110,45 @@ class MakeView
             $this->scaffoldCommandObj->info("   + $viewFileName");
         }
     }
-
-    private function getFieldsFillable()
+    
+    protected function getFields($ui, $type)
     {
-        return (new SyntaxBuilder)->create(
-            $this->getSchemaArray(), 
-            $this->scaffoldCommandObj->getMeta(), 
-            'view-edit-content',
-            $this->scaffoldCommandObj->option('form')
-        );
+        $stubsFields = $this->getStubFields($ui, $type);
+        $stubsFieldsAllow = array_keys($stubsFields);
+        $schemas = $this->getSchemaArray();
+        $metas = $this->scaffoldCommandObj->getMeta();
+
+        $stubs = [];
+
+        foreach ($schemas as $schema)
+        {
+            $variablesFromField = $this->getVariablesFromField($schema);
+            $fieldType = $variablesFromField['field.type'];
+            
+            if(!in_array($fieldType, $stubsFieldsAllow))
+            {
+                $fieldType = 'default';
+            }
+
+            $stub = $stubsFields[$fieldType];
+            $stub = $this->buildStub($variablesFromField, $stub);
+            $stub = $this->buildStub($metas, $stub);
+
+            $stubs[] = $stub;
+        }
+
+        return join(' ', $stubs);
     }
 
-    private function getFieldsEmpty()
+    private function getVariablesFromField($options)
     {
-        return (new SyntaxBuilder)->create(
-            $this->getSchemaArray(), 
-            $this->scaffoldCommandObj->getMeta(), 
-            'view-create-content',
-            $this->scaffoldCommandObj->option('form')
-        );
-    }
+        $data = [];
+     
+        $data['field.name'] = $options['name'];
+        $data['field.Name'] = ucwords($options['name']);
+        $data['field.type'] = @$options['type'];
+        $data['field.value.default'] = @$options['options']['default'];
 
-    private function getFieldsIndex()
-    {
-        return (new SyntaxBuilder)->create(
-            $this->getSchemaArray(),
-            $this->scaffoldCommandObj->getMeta(),
-            'view-index-content'
-        );
-    }
-
-    private function getFieldsHeaderIndex()
-    {
-        return (new SyntaxBuilder)->create(
-            $this->getSchemaArray(),
-            $this->scaffoldCommandObj->getMeta(), 
-            'view-index-header'
-        );
+        return $data;
     }
 }

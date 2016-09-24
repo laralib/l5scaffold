@@ -34,6 +34,28 @@ trait MakerTrait
         $this->generateNames($this->scaffoldCommandM);
     }
 
+    protected function getArrayRecursive(array $array, $parent = '')
+    {
+        $data = [];
+        
+        foreach ($array as $key => $value)
+        {
+            if(gettype($value) == 'array')
+            {
+                array_merge(
+                    $data,
+                    $this->getArrayRecursive($value, "$parent")
+                );
+                continue;
+            }
+
+            $data["$parent.$key"] = $value;
+        }
+
+        return $data;
+    }
+
+
     protected function getFilesRecursive($path)
     {
         $files = [];
@@ -70,6 +92,33 @@ trait MakerTrait
     {
         return substr(__DIR__,0, -5) . 'Stubs/';
     }
+
+    /**
+     * Get fields stubs.
+     *
+     * @return array fields
+     */
+    protected function getStubFields($ui, $type)
+    {
+        $stubsFieldsPath= $this->getStubPath()."views/$ui/fields/$type/";
+
+        if($this->existsDirectory($stubsFieldsPath))
+        {
+            $this->scaffoldCommandM->error('Stub not found');
+            return;
+        }
+        
+        $stubsFieldsFiles = $this->getFilesRecursive($stubsFieldsPath);
+
+        $stubs = [];
+
+        foreach ($stubsFieldsFiles as $file)
+        {
+            $stubs[str_replace($stubsFieldsPath, '', $file)] = $this->getFile($file);
+        }
+
+        return $stubs;
+    }    
 
     /**
      * Get views stubs.
@@ -156,6 +205,16 @@ trait MakerTrait
         elseif($path == "route"){
             return './app/Http/routes.php';
         }
+    }
+
+    protected function getFile($file)
+    {
+        return $this->files->get($file);
+    }
+
+    protected function existsDirectory($path)
+    {
+        return !$this->files->isDirectory($path);
     }
 
     /**
