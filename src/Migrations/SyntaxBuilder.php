@@ -468,6 +468,10 @@ class SyntaxBuilder
                 $layout = "<input type=\"email\" id=\"$column-field\" name=\"$column\" class=\"form-control\" value=\"$value\"  placeholder=\"$column\" data-error=\"Email address is invalid\"  />";
                 $layout = $layout.$error_layout;
                 break;
+            case 'phone_us':
+                $layout = "<input type=\"text\" id=\"$column-field\" pattern=\"^((\(\d{3}\) ?)|(\d{3}-))?\d{3}-\d{4}$\"  name=\"$column\" class=\"form-control\" value=\"$value\"  placeholder=\"$column\" data-error=\"Please set U.S. phone valid\"  />";
+                $layout = $layout.$error_layout;
+                break;
             case 'date':
                 $layout = "<input type=\"text\" id=\"$column-field\" name=\"$column\"   placeholder=\"$column\" class=\"form-control date-picker\" value=\"$value\"/>";
                 break;
