@@ -4,7 +4,7 @@
 @endsection
 @section('header')
     <div class="page-header">
-        <h1><i class="glyphicon glyphicon-plus"></i> {{Class}} / Create </h1>
+        <h1><i class="glyphicon glyphicon-plus"></i> {{Model}} / Create </h1>
     </div>
 @endsection
 
@@ -14,13 +14,13 @@
     <div class="row">
         <div class="col-md-12">
 
-            <form action="{{ route('{{prefix}}{{class}}.store') }}" method="POST" data-toggle="validator" role="form">
+            <form action="{{ route('{{prefix}}{{models}}.store') }}" method="POST" data-toggle="validator" role="form">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                 {{content_fields}}
                 <div class="well well-sm">
                     <button type="submit" class="btn btn-primary">Create</button>
-                    <a class="btn btn-link pull-right" href="{{ route('{{prefix}}{{class}}.index') }}"><i class="glyphicon glyphicon-backward"></i> Back</a>
+                    <a class="btn btn-link pull-right" href="{{ route('{{prefix}}{{models}}.index') }}"><i class="glyphicon glyphicon-backward"></i> Back</a>
                 </div>
 
                 <div class="help-block with-errors"></div>
