@@ -193,7 +193,7 @@ class SyntaxBuilder
      */
     private function getCreateSchemaWrapper()
     {
-        return file_get_contents(__DIR__ . '/../Stubs/schema-create.stub');
+        return file_get_contents(__DIR__ . '/../stubs/schema-create.stub');
     }
 
     /**
@@ -203,7 +203,7 @@ class SyntaxBuilder
      */
     private function getChangeSchemaWrapper()
     {
-        return file_get_contents(__DIR__ . '/../Stubs/schema-change.stub');
+        return file_get_contents(__DIR__ . '/../stubs/schema-change.stub');
     }
 
     /**
@@ -240,8 +240,9 @@ class SyntaxBuilder
 
 
         if ($type == 'migration') {
+            $fieldType = $this->_getFieldType($field['type']);
 
-            $syntax = sprintf("\$table->%s('%s')", $field['type'], $field['name']);
+            $syntax = sprintf("\$table->%s('%s')", $fieldType, $field['name']);
 
             // If there are arguments for the schema type, like decimal('amount', 5, 2)
             // then we have to remember to work those in.
@@ -291,6 +292,48 @@ class SyntaxBuilder
 
 
         return $syntax;
+    }
+
+    /**
+     * Adding support for new field types
+     *
+     * @param $type
+     * @return null|string
+     */
+    private function _getFieldType($type)
+    {
+        $fieldType = null;
+        switch ($type) {
+            case 'colorpicker':
+            case 'phone_us':
+            case 'phone_intl':
+            case 'url':
+            case 'email':
+            case 'file':
+            case 'image':
+            case 'oembed':
+                $fieldType = 'string';
+                break;
+            case 'money':
+                $fieldType = 'decimal';
+                break;
+            case 'checkbox':
+                $fieldType = 'boolean';
+                break;
+            case 'time':
+                $fieldType = 'time';
+                break;
+            case 'date':
+                $fieldType = 'date';
+                break;
+            case 'datetime':
+                $fieldType = 'date';
+                break;
+            default:
+                $fieldType = $type;
+                break;
+        }
+        return $fieldType;
     }
 
     /**
@@ -416,20 +459,25 @@ class SyntaxBuilder
         }
 
         switch ($field['type']) {
+            case 'string':
+            default:
+                $layout = "<input type=\"text\" id=\"$column-field\" name=\"$column\" class=\"form-control\" value=\"$value\"/>";
+                break;
+            case 'email':
+                $layout = "<input type=\"email\" id=\"$column-field\" name=\"$column\" class=\"form-control\" value=\"$value\"/>";
+                break;
             case 'date':
                 $layout = "<input type=\"text\" id=\"$column-field\" name=\"$column\" class=\"form-control date-picker\" value=\"$value\"/>";
                 break;
             case 'boolean':
-                $layout = "<div class=\"btn-group\" data-toggle=\"buttons\"><label class=\"btn btn-primary\"><input type=\"radio\" value=\"true\" name=\"$column\" id=\"$column-field\" autocomplete=\"off\"> True</label><label class=\"btn btn-primary active\"><input type=\"radio\" name=\"$column-field\" value=\"false\" id=\"$column-field\" autocomplete=\"off\"> False</label></div>";
+                $layout = "<div class=\"btn-group\" data-toggle=\"buttons\"><label class=\"btn btn-primary\"><input type=\"radio\" value=\"true\" name=\"$column-field\" id=\"$column-field\" autocomplete=\"off\"> True</label><label class=\"btn btn-primary active\"><input type=\"radio\" name=\"$column-field\" value=\"false\" id=\"$column-field\" autocomplete=\"off\"> False</label></div>";
                 break;
             case 'text':
                 $layout = "<textarea class=\"form-control\" id=\"$column-field\" rows=\"3\" name=\"$column\">$value</textarea>";
                 break;
-            case 'string':
-            default:
-                $layout = "<input type=\"text\" id=\"$column-field\" name=\"$column\" class=\"form-control\" value=\"$value\"/>";
         }
 
         return $layout;
     }
+
 }
