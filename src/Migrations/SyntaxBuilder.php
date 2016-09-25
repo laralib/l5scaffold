@@ -458,22 +458,24 @@ class SyntaxBuilder
             $value = '{{ is_null(old("'.$column.'")) ? $'.$variable.'->'.$column.' : old("'.$column.'") }}';
         }
 
+        $error_layout = "<div class=\"help-block with-errors\"></div>";
         switch ($field['type']) {
             case 'string':
             default:
-                $layout = "<input type=\"text\" id=\"$column-field\" name=\"$column\" class=\"form-control\" value=\"$value\"/>";
+                $layout = "<input type=\"text\"  placeholder=\"$column\" id=\"$column-field\" name=\"$column\" class=\"form-control\" value=\"$value\"/>";
                 break;
             case 'email':
-                $layout = "<input type=\"email\" id=\"$column-field\" name=\"$column\" class=\"form-control\" value=\"$value\"/>";
+                $layout = "<input type=\"email\" id=\"$column-field\" name=\"$column\" class=\"form-control\" value=\"$value\"  placeholder=\"$column\" data-error=\"Email address is invalid\"  />";
+                $layout = $layout.$error_layout;
                 break;
             case 'date':
-                $layout = "<input type=\"text\" id=\"$column-field\" name=\"$column\" class=\"form-control date-picker\" value=\"$value\"/>";
+                $layout = "<input type=\"text\" id=\"$column-field\" name=\"$column\"   placeholder=\"$column\" class=\"form-control date-picker\" value=\"$value\"/>";
                 break;
             case 'boolean':
                 $layout = "<div class=\"btn-group\" data-toggle=\"buttons\"><label class=\"btn btn-primary\"><input type=\"radio\" value=\"true\" name=\"$column-field\" id=\"$column-field\" autocomplete=\"off\"> True</label><label class=\"btn btn-primary active\"><input type=\"radio\" name=\"$column-field\" value=\"false\" id=\"$column-field\" autocomplete=\"off\"> False</label></div>";
                 break;
             case 'text':
-                $layout = "<textarea class=\"form-control\" id=\"$column-field\" rows=\"3\" name=\"$column\">$value</textarea>";
+                $layout = "<textarea class=\"form-control\" placeholder=\"$column\" id=\"$column-field\" rows=\"3\" name=\"$column\">$value</textarea>";
                 break;
         }
 
