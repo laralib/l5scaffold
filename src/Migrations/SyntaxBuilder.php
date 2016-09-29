@@ -13,6 +13,13 @@ use Laralib\L5scaffold\GeneratorException;
 class SyntaxBuilder
 {
 
+    private $reg_exp_list = [
+        'phone_us' => '\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$',
+        'url' => '#\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#iS',
+        'decimal' => '^\d+(\.\d{1,2})?$',
+        'money' => '^\d+(\.\d{1,2})?$',
+    ];
+
     /**
      * A template to be inserted.
      *
@@ -465,12 +472,24 @@ class SyntaxBuilder
                 $layout = "<input type=\"text\"  placeholder=\"$column\" id=\"$column-field\" name=\"$column\" class=\"form-control\" value=\"$value\"/>";
                 break;
             case 'email':
-                $layout = "<input type=\"email\" id=\"$column-field\" name=\"$column\" class=\"form-control\" value=\"$value\"  placeholder=\"$column\" data-error=\"Email address is invalid\"  />";
-                $layout = $layout.$error_layout;
+                $layout = $this->_getCustomValidationField('email',$column,$value,'Email address is invalid');
+                $layout .= $error_layout;
                 break;
             case 'phone_us':
-                $layout = "<input type=\"text\" id=\"$column-field\" pattern=\"^((\(\d{3}\) ?)|(\d{3}-))?\d{3}-\d{4}$\"  name=\"$column\" class=\"form-control\" value=\"$value\"  placeholder=\"$column\" data-error=\"Please set U.S. phone valid\"  />";
-                $layout = $layout.$error_layout;
+                $layout = $this->_getCustomValidationField('text',$column,$value,'Please set U.S. phone valid', 'phone_us', '(000) 000-0000');
+                $layout .= $error_layout;
+                break;
+            case 'phone_intl':
+                $layout = $this->_getCustomValidationField('text',$column,$value,'Please set phone valid', '', '(00) 0000-0000');
+                $layout .= $error_layout;
+                break;
+            case 'url':
+                $layout = $this->_getCustomValidationField('url',$column,$value,'Please set URL valid');
+                $layout .= $error_layout;
+                break;
+            case 'money':
+                $layout = $this->_getCustomValidationField('text',$column,$value,'Decimal number is invalid', 'decimal', '00.00', true);
+                $layout .= $error_layout;
                 break;
             case 'date':
                 $layout = "<input type=\"text\" id=\"$column-field\" name=\"$column\"   placeholder=\"$column\" class=\"form-control date-picker\" value=\"$value\"/>";
@@ -484,6 +503,18 @@ class SyntaxBuilder
         }
 
         return $layout;
+    }
+
+    private function _getCustomValidationField($type, $column, $value, $errorMsg, $reg = '', $mask = '', $mask_reverse = false)
+    {
+        $regExp = isset($this->reg_exp_list[$reg]) ? $this->reg_exp_list[$reg] : '';
+        $data_mask = trim($mask) != '' ? ' data-mask="'. $mask .'" ' : '';
+        $data_mask_reverse = trim($mask_reverse) == true  ? ' data-mask-reverse="'. $mask_reverse.'" ' : '';
+        if (trim($regExp) == '') {
+            return "<input $data_mask $data_mask_reverse type=\"$type\" id=\"$column-field\" name=\"$column\" class=\"form-control\" value=\"$value\"  placeholder=\"$column\" data-error=\"$errorMsg\"  />";
+        } else {
+            return "<input $data_mask $data_mask_reverse type=\"$type\" id=\"$column-field\" pattern=\"$regExp\"  name=\"$column\" class=\"form-control\" value=\"$value\"  placeholder=\"$column\" data-error=\"$errorMsg\"  />";
+        }
     }
 
 }
