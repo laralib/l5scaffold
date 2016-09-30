@@ -334,7 +334,7 @@ class SyntaxBuilder
                 $fieldType = 'date';
                 break;
             case 'datetime':
-                $fieldType = 'date';
+                $fieldType = 'datetime';
                 break;
             default:
                 $fieldType = $type;
@@ -492,7 +492,13 @@ class SyntaxBuilder
                 $layout .= $error_layout;
                 break;
             case 'date':
-                $layout = "<input type=\"text\" id=\"$column-field\" name=\"$column\"   placeholder=\"$column\" class=\"form-control date-picker\" value=\"$value\"/>";
+                $layout = "<input type=\"text\" id=\"$column-field\" name=\"$column\"   placeholder=\"$column\" class=\"form-control datepicker\" value=\"$value\"/>";
+                break;
+            case 'time':
+                $layout = "<input type=\"text\" id=\"$column-field\" name=\"$column\"   placeholder=\"$column\" class=\"form-control timepicker\" value=\"$value\"/>";
+                break;
+            case 'datetime':
+                $layout = "<input type=\"text\" id=\"$column-field\" name=\"$column\"   placeholder=\"$column\" class=\"form-control datetimepicker\" value=\"$value\"/>";
                 break;
             case 'boolean':
                 $layout = "<div class=\"btn-group\" data-toggle=\"buttons\"><label class=\"btn btn-primary\"><input type=\"radio\" value=\"true\" name=\"$column-field\" id=\"$column-field\" autocomplete=\"off\"> True</label><label class=\"btn btn-primary active\"><input type=\"radio\" name=\"$column-field\" value=\"false\" id=\"$column-field\" autocomplete=\"off\"> False</label></div>";
