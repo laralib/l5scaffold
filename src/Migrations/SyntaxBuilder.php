@@ -500,6 +500,14 @@ class SyntaxBuilder
             case 'datetime':
                 $layout = "<input type=\"text\" id=\"$column-field\" name=\"$column\"   placeholder=\"$column\" class=\"form-control datetimepicker\" value=\"$value\"/>";
                 break;
+            case 'colorpicker':
+
+                $layout = "<div id=\"$column-field\" class=\"colorpicker-element input-group colorpicker-component\">";
+                $layout.=   "<input type=\"text\" value=\"$value\" class=\"form-control\" name=\"$column\"  placeholder=\"$column\" />";
+                $layout.=   "<span class=\"input-group-addon\"><i></i></span>";
+                $layout.= "</div>";
+
+                break;
             case 'boolean':
                 $layout = "<div class=\"btn-group\" data-toggle=\"buttons\"><label class=\"btn btn-primary\"><input type=\"radio\" value=\"true\" name=\"$column-field\" id=\"$column-field\" autocomplete=\"off\"> True</label><label class=\"btn btn-primary active\"><input type=\"radio\" name=\"$column-field\" value=\"false\" id=\"$column-field\" autocomplete=\"off\"> False</label></div>";
                 break;

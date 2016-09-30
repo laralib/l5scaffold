@@ -2,6 +2,7 @@
 @section('css')
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/css/bootstrap-datepicker.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.4/jquery.datetimepicker.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.3.5/css/bootstrap-colorpicker.css" rel="stylesheet">
 @endsection
 @section('header')
     <div class="page-header">
@@ -32,33 +33,36 @@
     </div>
 @endsection
 @section('scripts')
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.0/jquery.mask.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.4/build/jquery.datetimepicker.full.min.js"></script>
-  <script>
-    $(function(){
-        $.datetimepicker.setLocale('en');
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.0/jquery.mask.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.4/build/jquery.datetimepicker.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.3.5/js/bootstrap-colorpicker.js"></script>
+    <script>
+      $(function(){
+          $.datetimepicker.setLocale('en');
 
-        $('.date-picker').datepicker({});
-        $('form[role="form"]').validator();
-        $('.timepicker').datetimepicker({
-            datepicker:false,
-            format:'H:i',
-            step:5
-        });
+          $('.date-picker').datepicker({});
+          $('form[role="form"]').validator();
+          $('.timepicker').datetimepicker({
+              datepicker:false,
+              format:'H:i',
+              step:5
+          });
 
-        $('.datepicker').datetimepicker({
-            timepicker:false,
-            format: "Y/m/d"
-        });
+          $('.datepicker').datetimepicker({
+              timepicker:false,
+              format: "Y/m/d"
+          });
 
-        $('.datetimepicker').datetimepicker({
-            dayOfWeekStart : 1,
-            lang:'en',
-            disabledDates:[],
-            startDate:	'2016/01/01'
-        });
-    })
-  </script>
+          $('.datetimepicker').datetimepicker({
+              dayOfWeekStart : 1,
+              lang:'en',
+              disabledDates:[],
+              startDate:	'2016/01/01'
+          });
+
+          $('.colorpicker-element').colorpicker();
+      })
+    </script>
 @endsection
