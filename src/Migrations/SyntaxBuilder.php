@@ -13,6 +13,13 @@ use Laralib\L5scaffold\GeneratorException;
 class SyntaxBuilder
 {
 
+    private $reg_exp_list = [
+        'phone_us' => '\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$',
+        'url' => '#\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#iS',
+        'decimal' => '^\d+(\.\d{1,2})?$',
+        'money' => '^\d+(\.\d{1,2})?$',
+    ];
+
     /**
      * A template to be inserted.
      *
@@ -240,8 +247,9 @@ class SyntaxBuilder
 
 
         if ($type == 'migration') {
+            $fieldType = $this->_getFieldType($field['type']);
 
-            $syntax = sprintf("\$table->%s('%s')", $field['type'], $field['name']);
+            $syntax = sprintf("\$table->%s('%s')", $fieldType, $field['name']);
 
             // If there are arguments for the schema type, like decimal('amount', 5, 2)
             // then we have to remember to work those in.
@@ -291,6 +299,48 @@ class SyntaxBuilder
 
 
         return $syntax;
+    }
+
+    /**
+     * Adding support for new field types
+     *
+     * @param $type
+     * @return null|string
+     */
+    private function _getFieldType($type)
+    {
+        $fieldType = null;
+        switch ($type) {
+            case 'colorpicker':
+            case 'phone_us':
+            case 'phone_intl':
+            case 'url':
+            case 'email':
+            case 'file':
+            case 'image':
+            case 'oembed':
+                $fieldType = 'string';
+                break;
+            case 'money':
+                $fieldType = 'decimal';
+                break;
+            case 'checkbox':
+                $fieldType = 'boolean';
+                break;
+            case 'time':
+                $fieldType = 'time';
+                break;
+            case 'date':
+                $fieldType = 'date';
+                break;
+            case 'datetime':
+                $fieldType = 'datetime';
+                break;
+            default:
+                $fieldType = $type;
+                break;
+        }
+        return $fieldType;
     }
 
     /**
@@ -415,21 +465,71 @@ class SyntaxBuilder
             $value = '{{ is_null(old("'.$column.'")) ? $'.$variable.'->'.$column.' : old("'.$column.'") }}';
         }
 
+        $error_layout = "<div class=\"help-block with-errors\"></div>";
         switch ($field['type']) {
-            case 'date':
-                $layout = "<input type=\"text\" id=\"$column-field\" name=\"$column\" class=\"form-control date-picker\" value=\"$value\"/>";
-                break;
-            case 'boolean':
-                $layout = "<div class=\"btn-group\" data-toggle=\"buttons\"><label class=\"btn btn-primary\"><input type=\"radio\" value=\"true\" name=\"$column\" id=\"$column-field\" autocomplete=\"off\"> True</label><label class=\"btn btn-primary active\"><input type=\"radio\" name=\"$column-field\" value=\"false\" id=\"$column-field\" autocomplete=\"off\"> False</label></div>";
-                break;
-            case 'text':
-                $layout = "<textarea class=\"form-control\" id=\"$column-field\" rows=\"3\" name=\"$column\">$value</textarea>";
-                break;
             case 'string':
             default:
-                $layout = "<input type=\"text\" id=\"$column-field\" name=\"$column\" class=\"form-control\" value=\"$value\"/>";
+                $layout = "<input type=\"text\"  placeholder=\"$column\" id=\"$column-field\" name=\"$column\" class=\"form-control\" value=\"$value\"/>";
+                break;
+            case 'email':
+                $layout = $this->_getCustomValidationField('email',$column,$value,'Email address is invalid');
+                $layout .= $error_layout;
+                break;
+            case 'phone_us':
+                $layout = $this->_getCustomValidationField('text',$column,$value,'Please set U.S. phone valid', 'phone_us', '(000) 000-0000');
+                $layout .= $error_layout;
+                break;
+            case 'phone_intl':
+                $layout = $this->_getCustomValidationField('text',$column,$value,'Please set phone valid', '', '(00) 0000-0000');
+                $layout .= $error_layout;
+                break;
+            case 'url':
+            case 'oembed':
+                $layout = $this->_getCustomValidationField('url',$column,$value,'Please set URL valid');
+                $layout .= $error_layout;
+                break;
+            case 'money':
+                $layout = $this->_getCustomValidationField('text',$column,$value,'Decimal number is invalid', 'decimal', '00.00', true);
+                $layout .= $error_layout;
+                break;
+            case 'date':
+                $layout = "<input type=\"text\" id=\"$column-field\" name=\"$column\"   placeholder=\"$column\" class=\"form-control datepicker\" value=\"$value\"/>";
+                break;
+            case 'time':
+                $layout = "<input type=\"text\" id=\"$column-field\" name=\"$column\"   placeholder=\"$column\" class=\"form-control timepicker\" value=\"$value\"/>";
+                break;
+            case 'datetime':
+                $layout = "<input type=\"text\" id=\"$column-field\" name=\"$column\"   placeholder=\"$column\" class=\"form-control datetimepicker\" value=\"$value\"/>";
+                break;
+            case 'colorpicker':
+
+                $layout = "<div id=\"$column-field\" class=\"colorpicker-element input-group colorpicker-component\">";
+                $layout.=   "<input type=\"text\" value=\"$value\" class=\"form-control\" name=\"$column\"  placeholder=\"$column\" />";
+                $layout.=   "<span class=\"input-group-addon\"><i></i></span>";
+                $layout.= "</div>";
+
+                break;
+            case 'boolean':
+                $layout = "<div class=\"btn-group\" data-toggle=\"buttons\"><label class=\"btn btn-primary\"><input type=\"radio\" value=\"true\" name=\"$column-field\" id=\"$column-field\" autocomplete=\"off\"> True</label><label class=\"btn btn-primary active\"><input type=\"radio\" name=\"$column-field\" value=\"false\" id=\"$column-field\" autocomplete=\"off\"> False</label></div>";
+                break;
+            case 'text':
+                $layout = "<textarea class=\"form-control\" placeholder=\"$column\" id=\"$column-field\" rows=\"3\" name=\"$column\">$value</textarea>";
+                break;
         }
 
         return $layout;
     }
+
+    private function _getCustomValidationField($type, $column, $value, $errorMsg, $reg = '', $mask = '', $mask_reverse = false)
+    {
+        $regExp = isset($this->reg_exp_list[$reg]) ? $this->reg_exp_list[$reg] : '';
+        $data_mask = trim($mask) != '' ? ' data-mask="'. $mask .'" ' : '';
+        $data_mask_reverse = trim($mask_reverse) == true  ? ' data-mask-reverse="'. $mask_reverse.'" ' : '';
+        if (trim($regExp) == '') {
+            return "<input $data_mask $data_mask_reverse type=\"$type\" id=\"$column-field\" name=\"$column\" class=\"form-control\" value=\"$value\"  placeholder=\"$column\" data-error=\"$errorMsg\"  />";
+        } else {
+            return "<input $data_mask $data_mask_reverse type=\"$type\" id=\"$column-field\" pattern=\"$regExp\"  name=\"$column\" class=\"form-control\" value=\"$value\"  placeholder=\"$column\" data-error=\"$errorMsg\"  />";
+        }
+    }
+
 }

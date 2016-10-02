@@ -1,5 +1,9 @@
 @extends('layout')
-
+@section('css')
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/css/bootstrap-datepicker.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.4/jquery.datetimepicker.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.3.5/css/bootstrap-colorpicker.css" rel="stylesheet">
+@endsection
 @section('header')
     <div class="page-header">
         <h1><i class="glyphicon glyphicon-edit"></i> {{Model}} / Edit #{{${{model}}->id}}</h1>
@@ -12,7 +16,7 @@
     <div class="row">
         <div class="col-md-12">
 
-            <form action="{{ route('{{prefix}}{{models}}.update', ${{model}}->id) }}" method="POST">
+            <form action="{{ route('{{prefix}}{{models}}.update', ${{model}}->id) }}" method="POST" data-toggle="validator" role="form">
                 <input type="hidden" name="_method" value="PUT">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
@@ -22,8 +26,44 @@
                     <button type="submit" class="btn btn-primary">Save</button>
                     <a class="btn btn-link pull-right" href="{{ route('{{prefix}}{{models}}.index') }}"><i class="glyphicon glyphicon-backward"></i>  Back</a>
                 </div>
+
+                <div class="help-block with-errors"></div>
             </form>
 
         </div>
     </div>
+@endsection
+@section('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.0/jquery.mask.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.4/build/jquery.datetimepicker.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.3.5/js/bootstrap-colorpicker.js"></script>
+    <script>
+      $(function(){
+          $.datetimepicker.setLocale('en');
+
+          $('.date-picker').datepicker({});
+          $('form[role="form"]').validator();
+          $('.timepicker').datetimepicker({
+              datepicker:false,
+              format:'H:i',
+              step:5
+          });
+
+          $('.datepicker').datetimepicker({
+              timepicker:false,
+              format: "Y/m/d"
+          });
+
+          $('.datetimepicker').datetimepicker({
+              dayOfWeekStart : 1,
+              lang:'en',
+              disabledDates:[],
+              startDate:	'2016/01/01'
+          });
+
+          $('.colorpicker-element').colorpicker();
+      })
+    </script>
 @endsection
