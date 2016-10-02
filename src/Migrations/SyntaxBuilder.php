@@ -484,6 +484,7 @@ class SyntaxBuilder
                 $layout .= $error_layout;
                 break;
             case 'url':
+            case 'oembed':
                 $layout = $this->_getCustomValidationField('url',$column,$value,'Please set URL valid');
                 $layout .= $error_layout;
                 break;
