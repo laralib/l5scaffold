@@ -501,6 +501,9 @@ class SyntaxBuilder
             case 'datetime':
                 $layout = "<input type=\"text\" id=\"$column-field\" name=\"$column\"   placeholder=\"$column\" class=\"form-control datetimepicker\" value=\"$value\"/>";
                 break;
+            case 'file':
+                $layout = "<input type=\"filepicker\" id=\"$column-field\" name=\"$column\"   placeholder=\"$column\" class=\"form-control\" value=\"$value\"/>";
+                break;
             case 'colorpicker':
 
                 $layout = "<div id=\"$column-field\" class=\"colorpicker-element input-group colorpicker-component\">";
