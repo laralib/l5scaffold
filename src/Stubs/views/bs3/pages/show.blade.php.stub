@@ -1,13 +1,16 @@
 @extends('layout')
+@section('css')
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+@endsection
 @section('header')
 <div class="page-header">
-        <h1>{{Model}} / Show #{{${{model}}->id}}</h1>
-        <form action="{{ route('{{prefix}}{{models}}.destroy', ${{model}}->id) }}" method="POST" style="display: inline;" onsubmit="if(confirm('Delete? Are you sure?')) { return true } else {return false };">
+        <h1>{{Class}} / Show #{{${{classSingle}}->id}}</h1>
+        <form action="{{ route('{{prefix}}{{class}}.destroy', ${{classSingle}}->id) }}" method="POST" style="display: inline;" onsubmit="if(confirm('Delete? Are you sure?')) { return true } else {return false };">
             <input type="hidden" name="_method" value="DELETE">
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
             <div class="btn-group pull-right" role="group" aria-label="...">
-                <a class="btn btn-warning btn-group" role="group" href="{{ route('{{prefix}}{{models}}.edit', ${{model}}->id) }}"><i class="glyphicon glyphicon-edit"></i> Edit</a>
-                <button type="submit" class="btn btn-danger">Delete <i class="glyphicon glyphicon-trash"></i></button>
+                <a class="btn btn-warning btn-group" role="group" href="{{ route('{{class}}.edit', ${{classSingle}}->id) }}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
+                <button type="submit" class="btn btn-danger">Delete <i class="fa fa-trash" aria-hidden="true"></i></button>
             </div>
         </form>
     </div>
@@ -20,12 +23,12 @@
             <form action="#">
                 <div class="form-group">
                     <label for="nome">ID</label>
-                    <p class="form-control-static">{{ ${{model}}->id }}</p>
+                    <p class="form-control-static"></p>
                 </div>
                 {{content_fields}}
             </form>
 
-            <a class="btn btn-link" href="{{ route('{{prefix}}{{models}}.index') }}"><i class="glyphicon glyphicon-backward"></i>  Back</a>
+            <a class="btn btn-link" href="{{ route('{{prefix}}{{class}}.index') }}"><i class="fa fa-backward" aria-hidden="true"></i>  Back</a>
 
         </div>
     </div>

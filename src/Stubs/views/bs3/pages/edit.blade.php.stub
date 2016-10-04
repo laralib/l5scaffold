@@ -3,10 +3,11 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/css/bootstrap-datepicker.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.4/jquery.datetimepicker.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.3.5/css/bootstrap-colorpicker.css" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 @endsection
 @section('header')
     <div class="page-header">
-        <h1><i class="glyphicon glyphicon-edit"></i> {{Model}} / Edit #{{${{model}}->id}}</h1>
+        <h1><i class="fa fa-pencil-square-o" aria-hidden="true"></i> {{Class}} / Edit #{{${{classSingle}}->id}}</h1>
     </div>
 @endsection
 
@@ -16,15 +17,14 @@
     <div class="row">
         <div class="col-md-12">
 
-            <form action="{{ route('{{prefix}}{{models}}.update', ${{model}}->id) }}" method="POST" data-toggle="validator" role="form">
+            <form action="{{ route('{{prefix}}{{class}}.update', ${{classSingle}}->id) }}" method="POST" data-toggle="validator" role="form">
                 <input type="hidden" name="_method" value="PUT">
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-                {{form_fields_fillable}}
-
+                {{content_fields}}
                 <div class="well well-sm">
                     <button type="submit" class="btn btn-primary">Save</button>
-                    <a class="btn btn-link pull-right" href="{{ route('{{prefix}}{{models}}.index') }}"><i class="glyphicon glyphicon-backward"></i>  Back</a>
+                    <a class="btn btn-link pull-right" href="{{ route('{{prefix}}{{class}}.index') }}"><i class="fa fa-backward" aria-hidden="true"></i>  Back</a>
                 </div>
 
                 <div class="help-block with-errors"></div>
@@ -34,36 +34,36 @@
     </div>
 @endsection
 @section('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.0/jquery.mask.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.4/build/jquery.datetimepicker.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.3.5/js/bootstrap-colorpicker.js"></script>
-    <script>
-      $(function(){
-          $.datetimepicker.setLocale('en');
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/js/bootstrap-datepicker.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.0/jquery.mask.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.4/build/jquery.datetimepicker.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-colorpicker/2.3.5/js/bootstrap-colorpicker.js"></script>
+  <script>
+    $(function(){
+        $.datetimepicker.setLocale('en');
 
-          $('.date-picker').datepicker({});
-          $('form[role="form"]').validator();
-          $('.timepicker').datetimepicker({
-              datepicker:false,
-              format:'H:i',
-              step:5
-          });
+        $('.date-picker').datepicker({});
+        $('form[role="form"]').validator();
+        $('.timepicker').datetimepicker({
+            datepicker:false,
+            format:'H:i',
+            step:5
+        });
 
-          $('.datepicker').datetimepicker({
-              timepicker:false,
-              format: "Y/m/d"
-          });
+        $('.datepicker').datetimepicker({
+            timepicker:false,
+            format: "Y/m/d"
+        });
 
-          $('.datetimepicker').datetimepicker({
-              dayOfWeekStart : 1,
-              lang:'en',
-              disabledDates:[],
-              startDate:	'2016/01/01'
-          });
+        $('.datetimepicker').datetimepicker({
+            dayOfWeekStart : 1,
+            lang:'en',
+            disabledDates:[],
+            startDate:	'2016/01/01'
+        });
 
-          $('.colorpicker-element').colorpicker();
-      })
-    </script>
+        $('.colorpicker-element').colorpicker();
+    })
+  </script>
 @endsection
