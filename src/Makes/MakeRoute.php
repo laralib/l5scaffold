@@ -16,7 +16,7 @@ use Laralib\L5scaffold\Migrations\SyntaxBuilder;
 
 class MakeRoute
 {
-    use AppNamespaceDetectorTrait, MakerTrait;
+    use DetectsApplicationNamespace, MakerTrait;
 
     /**
      * Create a new instance.

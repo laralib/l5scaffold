@@ -10,7 +10,7 @@ use Laralib\L5scaffold\Validators\SyntaxBuilder as ValidatorSyntax;
 
 class MakeController
 {
-    use AppNamespaceDetectorTrait, MakerTrait;
+    use DetectsApplicationNamespace, MakerTrait;
 
     /**
      * Store name from Model

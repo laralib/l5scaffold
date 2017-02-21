@@ -20,7 +20,7 @@ use Symfony\Component\Console\Input\InputArgument;
 
 class ScaffoldMakeCommand extends Command
 {
-    use AppNamespaceDetectorTrait, MakerTrait;
+    use DetectsApplicationNamespace, MakerTrait;
 
     /**
      * The console command name!
