@@ -1,7 +1,7 @@
 <?php
 namespace Laralib\L5scaffold\Makes;
 
-use Illuminate\Console\AppNamespaceDetectorTrait;
+use Illuminate\Console\DetectsApplicationNamespace;
 use Illuminate\Filesystem\Filesystem;
 use Laralib\L5scaffold\Commands\ScaffoldMakeCommand;
 use Laralib\L5scaffold\Validators\SchemaParser as ValidatorParser;
@@ -10,7 +10,7 @@ use Laralib\L5scaffold\Validators\SyntaxBuilder as ValidatorSyntax;
 
 class MakeController
 {
-    use AppNamespaceDetectorTrait, MakerTrait;
+    use DetectsApplicationNamespace, MakerTrait;
 
     /**
      * Store name from Model
@@ -44,7 +44,7 @@ class MakeController
         $name = $this->scaffoldCommandObj->getObjName('Name') . 'Controller';
         $path = $this->getPath($name, 'controller');
 
-        if ($this->files->exists($path)) 
+        if ($this->files->exists($path))
         {
             return $this->scaffoldCommandObj->comment("x $name");
         }
