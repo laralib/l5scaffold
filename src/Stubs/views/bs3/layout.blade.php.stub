@@ -63,7 +63,7 @@
             </div>
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="{{route('{{models}}.index')}}">{{Model}}</a></li>
+                    <li><a href="{{route('{{prefix}}{{models}}.index')}}">{{Model}}</a></li>
                 </ul>
             </div>
         </div>
